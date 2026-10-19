@@ -57,12 +57,20 @@
           return res.text();
         })
         .then(function (text) {
+          var meta = {};
+          var metaMatch = text.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
+          if (metaMatch) {
+            metaMatch[1].split("\n").forEach(function (line) {
+              var i = line.indexOf(":");
+              if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+            });
+            text = text.slice(metaMatch[0].length);
+          }
           box.innerHTML = marked.parse(text);
           var h1 = box.querySelector("h1");
-          if (h1) {
-            document.title = h1.textContent + " | 拾光集";
-            h1.remove();
-          }
+          var title = meta.title || (h1 ? h1.textContent : "文章");
+          document.title = title + " | 拾光集";
+          if (h1) h1.remove();
         })
         .catch(function (err) {
           box.innerHTML = '<p class="md-error">文章加载失败：' + err.message + '。请确认文件名正确、文件已推送。</p>';
