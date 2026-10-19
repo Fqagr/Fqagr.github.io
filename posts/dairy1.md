@@ -1,8 +1,8 @@
 ---
-title: Dairy · 2026/10/19 @ZJU
+title: Dairy of 19/10/2026 in ZJU
 date: 2026-10-19
 category: reviews
-summary: 了却几件大事，吃饭踩坑，开始啃数据结构。
+summary: 第一次写日记~
 ---
 
 # Dairy of 19/10/2026 in ZJU

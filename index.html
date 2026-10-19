@@ -78,7 +78,7 @@
     fetch("posts/post.json")
       .then(r => r.json())
       .then(posts => {
-        document.getElementById("recent-list").innerHTML = posts.slice(0, 5).map(p => `
+        document.getElementById("recent-list").innerHTML = posts.slice(0, 3).map(p => `
           <a class="recent-item" href="posts/post.html?md=${p.file}">
             <span class="date">${p.date.replaceAll("-", ".")}</span>
             <div><h3>${p.title}</h3><p>${p.summary}</p></div>
