@@ -1,3 +1,10 @@
+---
+title: Dairy · 2026/10/19 @ZJU
+date: 2026-10-19
+category: reviews
+summary: 了却几件大事，吃饭踩坑，开始啃数据结构。
+---
+
 # Dairy of 19/10/2026 in ZJU
 
 ## 了却了几件大事

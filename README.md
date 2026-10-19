@@ -1,42 +1,24 @@
 # 拾光集
 
-这是一个纯手写的静态博客，托管在 GitHub Pages 上。
+纯手写静态博客，托管在 GitHub Pages。文章用 Markdown 写，列表自动生成。
 
-## 怎么发布一篇文章（Markdown 方式，推荐）
+## 发新文章（自动化流程）
 
-1. 在 `posts/` 里新建一个 `.md` 文件，比如 `my-first-post.md`（文件名建议英文或拼音）。
-2. 用 Markdown 语法正常写文章，第一行用 `# 标题` 作为文章标题。
-3. 打开对应分类页面（`reviews.html` 或 `notes.html`），添加链接，格式：
+1. 在 `posts/` 里新建 `.md` 文件（文件名建议英文/拼音），开头写元信息块：
 
-```html
-<a class="post-item" href="posts/post.html?md=my-first-post.md">
-  <span class="date">2026-10-19</span>
-  <h3>文章标题</h3>
-  <span class="arrow">→</span>
-</a>
+```
+---
+title: 文章标题
+date: 2026-10-19
+category: notes
+summary: 一句话摘要，显示在首页 recent 里
+---
+
+# 正文从下面开始写...
 ```
 
-4. 打开 `index.html`，在 `recent/` 区块同样加一条（用 recent-item 的格式）：
-
-```html
-<a class="recent-item" href="posts/post.html?md=my-first-post.md">
-  <span class="date">2026.10.19</span>
-  <div>
-    <h3>文章标题</h3>
-    <p>一句话摘要。</p>
-  </div>
-</a>
-```
-
-5. 推送后访客点开就是渲染好的排版文章。
-
-## 怎么发布一篇文章（HTML 方式）
-
-1. 复制 `posts/_template.html`，改名为你的文章文件名，比如 `my-first-post.html`（建议用英文或拼音，别用中文文件名，避免链接出问题）。
-2. 打开这个新文件，修改 `<title>`、日期、标题和正文。
-3. 打开对应分类页面（`reviews.html` 或 `notes.html`），在注释标记的地方添加一条文章链接（格式注释里写了）。
-4. 打开 `index.html`，在 `recent/` 区块也加一条同样格式的链接。
-5. 推送到 GitHub：
+- `category` 只能填 `notes` 或 `reviews`，决定文章出现在哪个分类页
+2. 推送到 GitHub：
 
 ```bash
 git add -A
@@ -44,13 +26,14 @@ git commit -m "发布新文章"
 git push
 ```
 
-## 怎么添加电子书
+3. GitHub 会自动扫描所有文章、生成 `posts/post.json`，首页 recent 和对应分类页会自动更新，**不需要手动改任何链接**。
 
-1. 把 PDF 文件放进 `books/` 文件夹（文件名建议用英文）。
+## 添加电子书
+
+1. 把 PDF 放进 `books/` 文件夹（文件名建议英文）。
 2. 打开 `library.html`，按注释里的格式添加一张书卡，`href` 指向 `books/文件名.pdf`。
-3. 推送即可。访客点开书卡就能在浏览器里直接阅读。
 
 ## 注意
 
-- 改完任何文件都要走一遍「add → commit → push」才会更新到线上网站。
-- 线上更新一般有 1-2 分钟延迟，刷新时按 `Ctrl + F5`。
+- 推送后线上更新有 1-2 分钟延迟，刷新按 `Ctrl + F5`。
+- 本地预览 Markdown 文章：在 `blog` 目录地址栏输入 `cmd`，运行 `python -m http.server 8000`，浏览器开 `http://localhost:8000`。

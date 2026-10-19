@@ -29,15 +29,7 @@
     <div class="section-head">
       <h2 class="mono-head">recent/</h2>
     </div>
-    <!-- 发新文章后，在这里按下面的格式添加一条：
-    <a class="recent-item" href="posts/文章文件名.html">
-      <span class="date">2026.10.19</span>
-      <div>
-        <h3>文章标题</h3>
-        <p>一句话摘要。</p>
-      </div>
-    </a>
-    -->
+    <div id="recent-list"></div>
     <a class="recent-item" href="posts/文章文件名.html">
       <span class="date">2026.10.19</span>
       <div>
@@ -82,5 +74,16 @@
   <footer class="site-footer">
     <p>© 2026 Fq丶拾光集 · Powered by GitHub Pages</p>
   </footer>
+  <script>
+    fetch("posts/post.json")
+      .then(r => r.json())
+      .then(posts => {
+        document.getElementById("recent-list").innerHTML = posts.slice(0, 5).map(p => `
+          <a class="recent-item" href="posts/post.html?md=${p.file}">
+            <span class="date">${p.date.replaceAll("-", ".")}</span>
+            <div><h3>${p.title}</h3><p>${p.summary}</p></div>
+          </a>`).join("");
+      });
+  </script>
 </body>
 </html>
