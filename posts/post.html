@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章 | 拾光集</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .md-body table { border-collapse: collapse; margin: 1rem 0; width: 100%; }
+    .md-body th, .md-body td { border: 1px solid var(--border); padding: 0.5rem 0.8rem; text-align: left; }
+    .md-body img { max-width: 100%; border-radius: 8px; }
+    .md-body blockquote {
+      margin: 1rem 0; padding: 0.2rem 1.2rem;
+      border-left: 3px solid var(--accent); color: var(--muted);
+    }
+    .md-error { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="logo" href="../index.html">拾光集</a>
+      <div class="nav-links">
+        <a href="../index.html"><span class="zh">首页</span><span class="en">Home</span></a>
+        <a href="../reviews.html"><span class="zh">日周月总结</span><span class="en">Reviews</span></a>
+        <a href="../notes.html"><span class="zh">学习笔记与感悟</span><span class="en">Notes</span></a>
+        <a href="../library.html"><span class="zh">图书馆</span><span class="en">Library</span></a>
+        <a href="../about.html"><span class="zh">关于</span><span class="en">About</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    <article class="md-body" id="content">
+      <p class="md-error">正在加载文章…</p>
+    </article>
+    <a class="back" href="javascript:history.back()">← 返回</a>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 拾光集 · Powered by GitHub Pages</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var file = params.get("md");
+      var box = document.getElementById("content");
+      if (!file) {
+        box.innerHTML = '<p class="md-error">没有指定文章。链接格式：post.html?md=文件名.md</p>';
+        return;
+      }
+      fetch(file)
+        .then(function (res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.text();
+        })
+        .then(function (text) {
+          box.innerHTML = marked.parse(text);
+          var h1 = box.querySelector("h1");
+          if (h1) {
+            document.title = h1.textContent + " | 拾光集";
+            h1.remove();
+          }
+        })
+        .catch(function (err) {
+          box.innerHTML = '<p class="md-error">文章加载失败：' + err.message + '。请确认文件名正确、文件已推送。</p>';
+        });
+    })();
+  </script>
+</body>
+</html>

@@ -2,7 +2,35 @@
 
 这是一个纯手写的静态博客，托管在 GitHub Pages 上。
 
-## 怎么发布一篇文章
+## 怎么发布一篇文章（Markdown 方式，推荐）
+
+1. 在 `posts/` 里新建一个 `.md` 文件，比如 `my-first-post.md`（文件名建议英文或拼音）。
+2. 用 Markdown 语法正常写文章，第一行用 `# 标题` 作为文章标题。
+3. 打开对应分类页面（`reviews.html` 或 `notes.html`），添加链接，格式：
+
+```html
+<a class="post-item" href="posts/post.html?md=my-first-post.md">
+  <span class="date">2026-10-19</span>
+  <h3>文章标题</h3>
+  <span class="arrow">→</span>
+</a>
+```
+
+4. 打开 `index.html`，在 `recent/` 区块同样加一条（用 recent-item 的格式）：
+
+```html
+<a class="recent-item" href="posts/post.html?md=my-first-post.md">
+  <span class="date">2026.10.19</span>
+  <div>
+    <h3>文章标题</h3>
+    <p>一句话摘要。</p>
+  </div>
+</a>
+```
+
+5. 推送后访客点开就是渲染好的排版文章。
+
+## 怎么发布一篇文章（HTML 方式）
 
 1. 复制 `posts/_template.html`，改名为你的文章文件名，比如 `my-first-post.html`（建议用英文或拼音，别用中文文件名，避免链接出问题）。
 2. 打开这个新文件，修改 `<title>`、日期、标题和正文。
