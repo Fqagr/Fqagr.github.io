@@ -71,6 +71,11 @@
           var title = meta.title || (h1 ? h1.textContent : "文章");
           document.title = title + " | 拾光集";
           if (h1) h1.remove();
+          if (title) {
+            var heading = document.createElement("h1");
+            heading.textContent = title;
+            box.prepend(heading);
+          }
         })
         .catch(function (err) {
           box.innerHTML = '<p class="md-error">文章加载失败：' + err.message + '。请确认文件名正确、文件已推送。</p>';
