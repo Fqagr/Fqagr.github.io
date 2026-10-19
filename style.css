@@ -229,6 +229,15 @@ h1, h2, h3 { font-family: "Noto Serif SC", serif; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.3rem 1.5rem;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.book:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 .book .tag {
   font-size: 0.72rem;
