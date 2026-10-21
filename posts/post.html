@@ -6,13 +6,6 @@
   <title>文章 | 拾光集</title>
   <link rel="stylesheet" href="../style.css">
   <style>
-    .md-body table { border-collapse: collapse; margin: 1rem 0; width: 100%; }
-    .md-body th, .md-body td { border: 1px solid var(--border); padding: 0.5rem 0.8rem; text-align: left; }
-    .md-body img { max-width: 100%; border-radius: 8px; }
-    .md-body blockquote {
-      margin: 1rem 0; padding: 0.2rem 1.2rem;
-      border-left: 3px solid var(--accent); color: var(--muted);
-    }
     .md-error { color: var(--muted); }
     .katex-display { overflow-x: auto; padding: 0.3rem 0; }
   </style>
@@ -43,8 +36,9 @@
   </footer>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
   <script>
     (function () {
       var params = new URLSearchParams(location.search);
@@ -79,17 +73,17 @@
             heading.textContent = title;
             box.prepend(heading);
           }
+          if (window.renderMathInElement) {
+            renderMathInElement(box, {
+              delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false},
+                {left: "\\(", right: "\\)", display: false},
+                {left: "\\[", right: "\\]", display: true}
+              ]
+            });
+          }
         })
-      if (window.renderMathInElement) {
-        renderMathInElement(box, {
-          delimiters: [
-            {left: "$$", right: "$$", display: true},
-            {left: "$", right: "$", display: false},
-            {left: "\\(", right: "\\)", display: false},
-            {left: "\\[", right: "\\]", display: true}
-          ]
-        });
-      }
         .catch(function (err) {
           box.innerHTML = '<p class="md-error">文章加载失败：' + err.message + '。请确认文件名正确、文件已推送。</p>';
         });
