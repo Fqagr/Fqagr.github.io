@@ -2,7 +2,7 @@
 title: Dairy of 10/21/2026 in ZJU
 date: 2026-10-21
 category: reviews
-summary: vjf小测、跳舞进步，以及第一次用望远镜看到土星。
+summary: 又是忙碌的一天~
 ---
 # Dairy of 10/21/2026 in ZJU
 
