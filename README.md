@@ -11,6 +11,8 @@
 title: 文章标题
 date: 2026-10-19
 category: notes
+subject: calculus
+; subject 只在 category 为 notes 时有用，可选值: calculus / linear-algebra / python / linux / dsa（不写则归入其他 Others）
 summary: 一句话摘要，显示在首页 recent 里
 ---
 
