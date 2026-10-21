@@ -26,9 +26,7 @@ summary: 浙江大学人工智能专业 · 大一到大二学习路线（必须�
 
 ## 大一上学期
 
-### 课内重点
-
-- Python
+### Python
 
  - 对 AI 来说，Python 是“工具语言”，重点是语法熟练、数据处理、调用库和写脚本，不必一开始就钻研冷门特性。
  - 推荐路径：
@@ -43,13 +41,11 @@ summary: 浙江大学人工智能专业 · 大一到大二学习路线（必须�
    - Python 官方中文文档：<https://docs.python.org/zh-cn/3/>
    - Python-100-Days：<https://github.com/jackfrued/Python-100-Days>
    - Python Cookbook：<https://python3-cookbook.readthedocs.io/zh_CN/latest/index.html>
-- 线性代数
+### 线性代数
  - 是 AI 最重要的数学基础：矩阵乘法、特征值、奇异值分解
  - 资料：[3Blue1Brown《线性代数的本质》](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)
 
-### 尽早开始的工具
-
-- Linux
+### Linux
 
  - AI 专业不能只会 Windows。Linux 是跑实验、管理环境、使用 GPU、部署模型的基础。
 
@@ -67,7 +63,7 @@ summary: 浙江大学人工智能专业 · 大一到大二学习路线（必须�
   - Linux 零基础入门：<https://www.bilibili.com/video/BV1wyZnY2Ey6/>
   - Linux 操作系统基础到进阶：<https://www.bilibili.com/video/BV1duwReGEp9/>
   - Linux 零基础教程：<https://www.bilibili.com/video/BV1KL411W7KY/>
-- Git
+### Git
  - 所有课程代码放进 Git 仓库，用 Markdown 记笔记
  - 课程：[MIT Missing Semester](https://missing.csail.mit.edu/)（命令行、Shell、Vim、Git、调试工具）（每周看一两节）
 
