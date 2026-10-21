@@ -21,32 +21,58 @@
   </header>
 
   <main class="page">
-    <h1 class="mono-head">notes/</h1>
-    <p class="page-sub">学过的东西讲清楚，才算真正学会。</p>
-    <div class="post-list" id="cat-list"></div>
-    <a class="post-item" href="posts/post.html?md=AI学习规划.md">
-      <span class="date">2026-10-19</span>
-      <h3>AI学习规划</h3>
-      <span class="arrow">→</span>
-    </a>
+    <h1 class="mono-head" id="page-title">notes/</h1>
+    <p class="page-sub" id="page-sub">学过的东西讲清楚，才算真正学会。</p>
+    <div id="content-area"></div>
+    <a class="back" id="back-link" href="notes.html" style="display:none">← 全部分类</a>
   </main>
 
   <footer class="site-footer">
     <p>© 2026 拾光集 · Powered by GitHub Pages</p>
   </footer>
   <script>
-    fetch("posts/post.json")
-      .then(r => r.json())
-      .then(posts => {
-        document.getElementById("cat-list").innerHTML = posts
-          .filter(p => p.category === "notes")
-          .map(p => `
-            <a class="post-item" href="posts/post.html?md=${p.file}">
-              <span class="date">${p.date}</span>
-              <h3>${p.title}</h3>
-              <span class="arrow">→</span>
-            </a>`).join("");
-      });
+    var SUBJECTS = [
+      { key: "calculus",      zh: "微积分",           en: "Calculus" },
+      { key: "linear-algebra", zh: "线性代数",        en: "Linear Algebra" },
+      { key: "python",        zh: "Python",           en: "Python" },
+      { key: "linux",         zh: "Linux",            en: "Linux" },
+      { key: "dsa",           zh: "数据结构与算法",   en: "Data Structures & Algorithms" },
+      { key: "others",        zh: "其他",             en: "Others" }
+    ];
+    var cat = new URLSearchParams(location.search).get("cat");
+    var area = document.getElementById("content-area");
+    var backLink = document.getElementById("back-link");
+
+    if (!cat) {
+      document.getElementById("content-area").innerHTML =
+        '<div class="cat-grid">' +
+        SUBJECTS.map(function (s) {
+          return '<a class="cat-tile" href="notes.html?cat=' + s.key + '">' +
+                 '<h2>' + s.en + '/ <span class="arrow">→</span></h2>' +
+                 '<span class="cat-zh">' + s.zh + '</span></a>';
+        }).join("") +
+        '</div>';
+    } else {
+      backLink.style.display = "inline-block";
+      fetch("posts/post.json")
+        .then(function (r) { return r.json(); })
+        .then(function (posts) {
+          var subject = SUBJECTS.find(function (s) { return s.key === cat; });
+          document.getElementById("page-title").textContent = subject ? subject.en.toLowerCase() + "/" : cat + "/";
+          document.getElementById("page-sub").textContent = subject ? subject.zh : cat;
+          var list = posts.filter(function (p) {
+            if (cat === "others") return p.category === "notes" && !p.subject;
+            return p.category === "notes" && p.subject === cat;
+          });
+          area.innerHTML = list.length
+            ? '<div class="post-list">' + list.map(function (p) {
+                return '<a class="post-item" href="posts/post.html?md=' + p.file + '">' +
+                       '<span class="date">' + p.date + '</span>' +
+                       '<h3>' + p.title + '</h3><span class="arrow">→</span></a>';
+              }).join("") + '</div>'
+            : '<p class="page-sub">这个分类下还没有文章。</p>';
+        });
+    }
   </script>
 </body>
 </html>

@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parent.parent
 POSTS = ROOT / "posts"
 
 META_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
-FIELD_RE = re.compile(r"^(title|date|category|summary):\s*(.+)$", re.MULTILINE)
+FIELD_RE = re.compile(r"^(title|date|category|summary|subject):\s*(.+)$", re.MULTILINE)
 
 def parse_meta(text, filename):
     match = META_RE.match(text)
@@ -23,13 +23,16 @@ def main():
     for md in sorted(POSTS.glob("*.md")):
         text = md.read_text(encoding="utf-8")
         meta = parse_meta(text, md.name)
-        entries.append({
+        entry = {
             "file": md.name,
             "title": meta["title"].strip(),
             "date": meta["date"].strip(),
             "category": meta["category"].strip(),
             "summary": meta.get("summary", "").strip(),
-        })
+        }
+        if "subject" in meta:
+            entry["subject"] = meta["subject"].strip()
+        entries.append(entry)
     entries.sort(key=lambda e: e["date"], reverse=True)
     out = POSTS / "post.json"
     out.write_text(json.dumps(entries, ensure_ascii=False, indent=2), encoding="utf-8")
