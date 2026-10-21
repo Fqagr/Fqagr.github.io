@@ -7,7 +7,13 @@
   <link rel="stylesheet" href="../style.css">
   <style>
     .md-error { color: var(--muted); }
-    .katex-display { overflow-x: auto; padding: 0.3rem 0; }
+    .katex-display { margin: 1.4rem 0; overflow-x: auto; padding: 0.3rem 0; }
+    article h2 { margin-top: 2.6rem; }
+    article h3 { margin-top: 2.2rem; }
+    article h4 { margin-top: 1.6rem; }
+    article ul, article ol { margin: 0.6rem 0; }
+    article li { margin-bottom: 0.5rem; }
+    article hr { margin: 2.4rem 0; border: none; border-top: 1px solid var(--border); }
   </style>
 </head>
 <body>
@@ -63,7 +69,24 @@
             });
             text = text.slice(metaMatch[0].length);
           }
-          box.innerHTML = marked.parse(text);
+
+          var mathStore = [];
+          function stash(m) {
+            mathStore.push(m[0]);
+            return "@@MATH" + (mathStore.length - 1) + "@@";
+          }
+          text = text.replace(/\$\$[\s\S]*?\$\$/g, stash);
+          text = text.replace(/\$[^$\n]+?\$/g, stash);
+
+          var html = marked.parse(text);
+          html = html.replace(/@@MATH(\d+)@@/g, function (_, i) {
+            return mathStore[i]
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;");
+          });
+          box.innerHTML = html;
+
           var h1 = box.querySelector("h1");
           var title = meta.title || (h1 ? h1.textContent : "文章");
           document.title = title + " | 拾光集";
@@ -80,7 +103,8 @@
                 {left: "$", right: "$", display: false},
                 {left: "\\(", right: "\\)", display: false},
                 {left: "\\[", right: "\\]", display: true}
-              ]
+              ],
+              throwOnError: false
             });
           }
         })
