@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="../style.css">
   <style>
     .md-error { color: var(--muted); }
+    article pre { background: #f6f5f2; border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; overflow-x: auto; margin: 1.2rem 0; }
+    article pre code { background: none; border: none; padding: 0; font-size: 1rem; line-height: 1.7; }
     .katex-display { margin: 1.4rem 0; overflow-x: auto; padding: 0.3rem 0; }
     .md-body img { display: block; max-width: 55%; max-height: 480px; width: auto; height: auto; margin: 1.5rem auto; border-radius: 10px; }
     article h2 { margin-top: 2.6rem; }
@@ -78,7 +80,8 @@
           var h1 = box.querySelector("h1");
           var title = meta.title || (h1 ? h1.textContent : "文章");
           document.title = title + " | 拾光集";
-          if (h1) h1.remove();
+          var isTitleDup = !!h1 && !!meta.title && h1.textContent.trim() === meta.title.trim();
+          if (isTitleDup) h1.remove();
           if (title) {
             var heading = document.createElement("h1");
             heading.textContent = title;
