@@ -17,9 +17,11 @@ summary: 作业整理
 ### 请实现函数 pascal()。
 
 函数接口定义：
+```python
 def pascal(n, k):
-参数满足 0≤k≤n≤20。返回该格的数。
+```
 
+参数满足 0≤k≤n≤20。返回该格的数。
 ## Answer
 
 ```python 
