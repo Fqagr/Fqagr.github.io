@@ -278,7 +278,7 @@ article code {
   border: 1px solid var(--border);
   padding: 0.1rem 0.45rem;
   border-radius: 5px;
-  font-size: 0.87em;
+  font-size: 0.95em;
 }
 article a { color: var(--accent); text-decoration: none; }
 article a:hover { text-decoration: underline; }
