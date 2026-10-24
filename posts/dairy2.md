@@ -1,10 +1,10 @@
 ---
-title: Dairy of 10/21/2026 in ZJU
+title: Dairy of 21/10/2026 in ZJU
 date: 2026-10-21
 category: reviews
 summary: 又是忙碌的一天~
 ---
-# Dairy of 10/21/2026 in ZJU
+# Dairy of 21/10/2026 in ZJU
 
 ## 又是忙碌的一天~
 
