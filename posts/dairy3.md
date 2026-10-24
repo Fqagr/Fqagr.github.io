@@ -1,3 +1,9 @@
+---
+title: Dairy of 23/10/2026 in ZJU
+date: 2026-10-23
+category: reviews
+summary: 雨夜堕落街之行，以及雨中玉湖的十张照片。
+---
 # Dairy of 23/10/2026 in ZJU in rain!
 
 **虽然今天是24日但我在写23日的日记（绷**
