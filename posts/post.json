@@ -1,5 +1,12 @@
 [
   {
+    "file": "reviews1.md",
+    "title": "秋学期W6周总结",
+    "date": "2026-10-26",
+    "category": "reviews",
+    "summary": "周总结复盘"
+  },
+  {
     "file": "alg1.md",
     "title": "Algorithm · Sort 排序",
     "date": "2026-10-23",
