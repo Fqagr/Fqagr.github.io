@@ -382,7 +382,78 @@ def quick_third_sort(a):
 
 ---
 
-## 7. 融合排序
+## 7. 归并排序
+
+```cpp
+int h[MAXN];//辅助数组
+void merge_sort(int l,int r){
+    if(l>=r) return
+    int mid=(l+r)/2;
+    merge_sort(l,mid);
+    merge_sort(mid+1,r);
+    int i=l,j=mid+1,k=l;
+    while(i<=mid && j<=r){
+        if(a[i]<=a[j]) h[k++]=a[i++];
+        else h[k++]=a[j++]; 
+    }
+    while(i<=mid) h[k++]=a[i++];
+    while(j<=r) h[k++]=a[j++];
+    for(int i=l;i<=r;i++){
+        a[i]=h[i];
+    }
+}
+```
+```python
+def merge_sort(arr):
+    if len(arr)<=1:
+        return arr
+    mid=len(arr)//2
+    left=merge_sort(arr[:mid]) #需要一个left 和 right 接受返回值，不像cpp是void，python函数会返回值，必须接收
+    right=merge_sort(arr[mid:])
+    i,j=0
+    ans=[]
+    while(i<=len(left) and j<=len(right)):
+        if arr[i]<=arr[j]:
+            ans.append(left[i])
+            i+=1
+        else:
+            ans.append(right[j])
+            j+=1
+    ans.extend(left[i:])
+    ans.extend(right[j:])
+    return ans
+```
+
+## 8.基数排序
+
+```cpp
+const int MAXN=1e5+8;
+const int BASE=10; //按照什么进制位数去寻找
+int cnt[BASE];
+int h[MAXN];//辅助数组
+
+void radix_sort(){
+    //1. 找最大值确认执行次数
+    int maxv=a[1];//a从1开始
+    for(int i=1;i<=n;i++){
+        maxv=max(maxv,a[i]);
+    }
+    int t=0;//执行次数
+    while(maxv){
+        maxv/=BASE;
+        t++;
+    }
+    //2. 计算每一位出现的次数
+    for(int i=1,offset=1;i<=t;i++,offset*=BASE){
+        memset(cnt,0,sizeof cnt);//初始化
+        for(int j=1;j<=n;j++){
+            cnt[a[j]/offset%BASE]
+        }
+    }
+    
+}
+```
+
 
 
 
