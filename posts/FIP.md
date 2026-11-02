@@ -314,7 +314,7 @@ for one in range(x + 1):
 
 注意上界。2 分硬币最多 `x // 2` 个，5 分硬币最多 `x // 5` 个。`range` 右端点不包含，所以要 `+ 1`。
 
-### 8. 分解质因数
+### 8. *分解质因数*（值得看）
 
 外层 `for` 枚举候选因子，内层 `while` 反复除尽当前因子。
 
@@ -373,7 +373,7 @@ while True:
 
 浮点数不要用 `f(m) == 0` 判断，要用 `abs(f(m)) < eps`。
 
-### 11. 牛顿法和弦截法
+### 11. *牛顿法和弦截法*（公式会手推）
 
 牛顿法用切线代替曲线，公式是 `x = x - f(x) / f'(x)`。求平方根等价于解 `x ** 2 - a = 0`。
 
@@ -394,7 +394,7 @@ print(x)
 eps = 1e-3
 xp, xc = 1.0, 2.0
 while True:
-    fp = xp ** 2 - 2
+    fp = xp ** 2 - 2  # f_prev and f_curr 必须在循环里求值
     fc = xc ** 2 - 2
     if abs(fc) < eps:
         print(xc)
@@ -469,7 +469,9 @@ greet("李", title="老师")
 ```python
 def secant(f, x0: float, x1: float, eps: float) -> float:
     """用弦截法求 f(x)=0 的近似根。f 必须可调用。"""
-    ...
+    while abs(f(x1)) >= eps:
+        x0, x1 = x1, x1 - f(x1) * (x1 - x0) / (f(x1) - f(x0))
+    return x1
 ```
 
 ### 5. 高阶函数和 lambda
@@ -511,7 +513,7 @@ print(eval("x ** 2 - 2"))
 | `random.seed(a)` | 固定随机种子，便于复现 |
 | `random.random()` | 返回 `[0, 1)` 的浮点数 |
 | `random.uniform(a, b)` | 返回区间内的随机浮点数 |
-| `random.randint(a, b)` | 返回 `[a, b]` 内随机整数，端点都含 |
+| `random.randint(a, b)` | 返回 `[a, b]` 内随机整数，**端点都含** |
 | `random.randrange(start, stop, step)` | 类似 `range` 规则，右端点不含 |
 | `random.choice(seq)` | 从非空序列随机选一个 |
 | `random.shuffle(x)` | 原地打乱可变序列 |
@@ -525,7 +527,7 @@ import random
 random.seed(42)
 n = 1000000
 inside = 0
-for _ in range(n):
+for _ in range(n):  # 一定要有循环，投针n次
     x = random.random()
     y = random.random()
     if x * x + y * y <= 1:
@@ -595,7 +597,7 @@ for _ in range(max_iter):
     x = new_x
 ```
 
-### 10. 大数加法
+### 10. *大数加法*（值得看）
 
 当数字太大超出普通类型范围时，可以用字符串逐位模拟竖式加法。Python 的 `int` 其实支持大整数，但这里训练的是逐位处理思想。
 
@@ -619,8 +621,9 @@ def big_add(a, b):
 ```python
 a = "123"
 b = 45
+base = a
 for _ in range(b - 1):
-    a = big_add(a, a)
+    a = big_add(a, base)
 print(a)
 ```
 
@@ -659,7 +662,7 @@ print(xs[::-1])
 |---|---|
 | `append(x)` | 末尾追加一个元素 |
 | `extend(iterable)` | 逐个追加多个元素 |
-| `insert(i, x)` | 在下标 i 处插入 |
+| `insert(i, x)` | 在下标 i 处插入,让索引为i处变为x |
 | `remove(x)` | 删除第一个等于 x 的元素 |
 | `pop()` | 弹出末尾元素 |
 | `pop(i)` | 弹出并返回指定位置元素 |
@@ -731,6 +734,7 @@ def f(a, *args, **kwargs):
     print(a, args, kwargs)
 
 f(1, 2, 3, eps=1e-3)
+#1 (2, 3) {'eps': 0.001}
 ```
 
 调用时 `*xs` 把列表拆开，`**d` 把字典按关键字拆开。
@@ -783,7 +787,8 @@ def find_max_index(xs):
 
 ```python
 def linear_search(xs, target):
-    for i, x in enumerate(xs):
+    for i, x in enumerate(xs): # .items()操作是dict的，返回key and value
+                               # enumerate()才是list的，别记混了
         if x == target:
             return i
     return -1
@@ -874,6 +879,10 @@ def lookup(key):
 线性探测：冲突时向后找空位。
 
 ```python
+# 线性探测表必须初始化为 None；它和上面的链地址表不是同一种结构。
+table_size = 13
+hash_table = [None] * table_size
+
 def insert_probe(hash_table, key, value, table_size):
     idx = hash_func(key, table_size)
     while hash_table[idx] is not None:
@@ -921,7 +930,7 @@ for k, v in d.items():
 
 ### 4. set 集合
 
-集合只关心成员是否存在。元素唯一、无序、必须可哈希。空集合是 `set()`，不是 `{}`。
+集合只关心成员是否存在。元素唯一、无序、必须可哈希。**空集合是 `set()`，不是 `{}`。**
 
 ```python
 s = set()
@@ -942,6 +951,8 @@ print(2 in s)
 | 子集 | `<=` | `issubset` |
 | 超集 | `>=` | `issuperset` |
 | 无交集 | 无 | `isdisjoint` |
+
+对称差：并集-交集
 
 查重一行代码：
 
@@ -1002,7 +1013,7 @@ def find_two_singles(xs):
     return result
 ```
 
-### 7. 两数之和
+### 7. *两数之和*（重点看）
 
 用字典记录已经见过的补数。
 
@@ -1131,17 +1142,10 @@ def fib(n):
 朴素版会重复计算大量子问题。用字典记忆化可以把时间复杂度降为 `O(n)`。
 
 ```python
-def fib_memo(n, memo=None):
-    if memo is None:
-        memo = {}
-    if n in memo:
-        return memo[n]
-    if n <= 1:
-        result = n
-    else:
-        result = fib_memo(n - 1, memo) + fib_memo(n - 2, memo)
-    memo[n] = result
-    return result
+def fib_memo(n, memo={0:0,1:1}):
+    if n not in memo:
+        memo[n]=fib_memo(n-1)+fib_memo(n-2)
+    return memo[n]
 ```
 
 也可以用 `functools.lru_cache`。
@@ -1175,18 +1179,18 @@ def pascal(n):
 ```
 
 迭代版：
-
 ```python
 def pascal_iter(n):
     row = [1]
     for _ in range(n):
-        new_row = [1]
-        for j in range(len(row) - 1):
-            new_row.append(row[j] + row[j + 1])
-        new_row.append(1)
-        row = new_row
+        next_row = [1]
+        for i in range(len(row) - 1):
+            next_row.append(row[i] + row[i + 1])
+        next_row.append(1)
+        row = next_row
     return row
 ```
+
 
 ### 7. 函数默认参数和注解
 
@@ -1254,46 +1258,61 @@ def binary_search_iter(xs, target):
 
 归并排序分三步：对半分，递归排两半，合并两个有序列表。
 
+
+切片版：
 ```python
-def merge_sort(xs):
-    if len(xs) <= 1:
-        return xs
-    mid = len(xs) // 2
-    left = merge_sort(xs[:mid])
-    right = merge_sort(xs[mid:])
-    return merge(left, right)
+def merge_sort(arr):
+    if len(arr)<=1:return arr
+    mid=len(arr)//2
+    left=merge_sort(arr[:mid])  # 切片复制，切片上的更改，在原列表不会更改，此时函数返回值便是一个产物结果必须接收
+    right=merge_sort(arr[mid:])
+    h=[]
+    i=j=0
+    while i<len(left) and j<len(right):
+        if left[i]<=right[j]:
+            h.append(left[i])
+            i+=1
+        else:
+            h.append(right[j])
+            j+=1
+    h.extend(left[i:])
+    h.extend(right[j:])
+    arr[:]=h
+    return arr
 ```
 
-合并两个有序列表：
+无需切片，无需def两个函数，我**最喜**版：
 
 ```python
-def merge(left, right):
-    result = []
-    i = j = 0
-    while i < len(left) and j < len(right):
-        if left[i] <= right[j]:
-            result.append(left[i])
+def merge_sort(xs, left=0, right=None):
+    if right is None:
+        right = len(xs)
+
+    if right - left <= 1:
+        return xs # 只是为了能够打印函数，其实可以不加
+
+    mid = (left + right) // 2
+    merge_sort(xs, left, mid)  # 而此时这个，一直传的是xs这一个列表，作用的结果是位于原列表的，其返回值就不重要了
+    merge_sort(xs, mid, right)
+
+    i, j = left, mid
+    temp = []
+
+    while i < mid and j < right:
+        if xs[i] <= xs[j]:
+            temp.append(xs[i])
             i += 1
         else:
-            result.append(right[j])
+            temp.append(xs[j])
             j += 1
-    result.extend(left[i:])
-    result.extend(right[j:])
-    return result
+
+    temp.extend(xs[i:mid])
+    temp.extend(xs[j:right]) # 不能是[j:] 现在是在xs的所有内存上，不能直接跑到底
+
+    xs[left:right] = temp
+    return xs  #同理可以不加
 ```
 
-`<=` 保证相等时先取左半，有利于稳定性。漏掉最后的 `extend` 是高频错误。
-
-`arr[:mid]` 是切片拷贝，不是窗口。工程上可以用下标版本减少拷贝。
-
-```python
-def merge_sort_inplace(arr, lo, hi):
-    if hi - lo <= 1:
-        return
-    mid = (lo + hi) // 2
-    merge_sort_inplace(arr, lo, mid)
-    merge_sort_inplace(arr, mid, hi)
-```
 
 ### 4. 跨中点最大子段和
 
@@ -1315,7 +1334,7 @@ def max_crossing(arr, lo, mid, hi):
 
 def max_subarray(arr, lo, hi):
     if hi - lo == 1:
-        return arr[lo]
+        return arr[lo]  # base case
     mid = (lo + hi) // 2
     return max(
         max_subarray(arr, lo, mid),
@@ -1328,86 +1347,110 @@ def max_subarray(arr, lo, hi):
 
 逆序对指 `i < j` 且 `arr[i] > arr[j]`。归并排序在合并时左右两半已有序，取右半元素时，左半剩余元素都比它大，可以一次性计数。
 
+
+切片版：
 ```python
-def merge_count(left, right):
-    result = []
-    i = j = inv = 0
+def merge_count(arr):
+    if len(arr) <= 1:
+        return 0
+
+    mid = len(arr) // 2
+    left = arr[:mid]
+    right = arr[mid:]
+
+    count = merge_count(left) + merge_count(right)
+
+    i = j = 0
+    temp = []
+
     while i < len(left) and j < len(right):
         if left[i] <= right[j]:
-            result.append(left[i])
+            temp.append(left[i])
             i += 1
         else:
-            result.append(right[j])
+            count += len(left) - i
+            temp.append(right[j])
             j += 1
-            inv += len(left) - i
-    result.extend(left[i:])
-    result.extend(right[j:])
-    return result, inv
 
-def inversions(arr):
-    if len(arr) <= 1:
-        return arr, 0
-    mid = len(arr) // 2
-    left, c1 = inversions(arr[:mid])
-    right, c2 = inversions(arr[mid:])
-    merged, c3 = merge_count(left, right)
-    return merged, c1 + c2 + c3
+    temp.extend(left[i:])
+    temp.extend(right[j:])
+
+    arr[:] = temp
+    return count
 ```
 
-`return merged, total` 实际返回元组，调用处可以拆成两个变量。
+原地版：
+```python
+def merge_count(xs, left=0, right=None):
+    ans=0
+    if right is None:
+        right = len(xs)
+
+    if right - left <= 1:
+        return 0
+
+    mid = (left + right) // 2
+    ans+=merge_count(xs, left, mid)  # 而此时这个，一直传的是xs这一个列表，作用的结果是位于原列表的
+    ans+=merge_count(xs, mid, right) # 一定要+到ans里！！！
+
+    i, j = left, mid
+    temp = []
+
+    while i < mid and j < right:
+        if xs[i] <= xs[j]:
+            temp.append(xs[i])
+            i += 1
+        else:
+            ans+=mid-i
+            temp.append(xs[j])
+
+            j += 1
+    temp.extend(xs[i:mid])
+    temp.extend(xs[j:right]) # 不能是[j:] 现在是在xs的所有内存上，不能直接跑到底
+    xs[left:right] = temp
+    return ans
+```
+
+
 
 ### 6. 快速排序
 
 快速排序先选基准，把更小的放左、更大的放右，再递归两侧。
 
 ```python
-def quick_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[0]
-    left = [x for x in arr[1:] if x < pivot]
-    right = [x for x in arr[1:] if x >= pivot]
-    return quick_sort(left) + [pivot] + quick_sort(right)
-```
-
-基准必须从参与分区的数组中排除，所以这里用 `arr[1:]`。首元素作基准时，已排序输入会退化，可以随机选基准或用三路分区。
-
-```python
-import random
-
-def quick_sort_random(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = random.choice(arr)
-    less = [x for x in arr if x < pivot]
-    equal = [x for x in arr if x == pivot]
-    greater = [x for x in arr if x > pivot]
-    return quick_sort_random(less) + equal + quick_sort_random(greater)
+def quick_sort(a):
+    if len(a)<=1:
+        return a
+    mid=(len(a))//2
+    a[0],a[mid]=a[mid],a[0]
+    t=a[0]
+    i,j,k=0,len(a)-1,0
+    while k<=j :
+        if a[k]>t:
+            a[k],a[j]=a[j],a[k]
+            j-=1
+        elif a[k]==t:
+            k+=1
+        else:
+            a[k],a[i]=a[i],a[k]
+            i+=1
+            k+=1
+    return quick_sort(a[:i])+[t]*(j-i+1)+quick_sort(a[j+1:])
 ```
 
 ### 7. 杨辉三角格子版
 
 `pascal(n, k)` 返回第 n 行第 k 个数。两侧都是 1，中间是上一行两个肩膀之和。
 
-```python
-def pascal(n, k):
-    if k == 0 or k == n:
-        return 1
-    return pascal(n - 1, k - 1) + pascal(n - 1, k)
-```
-
 用 `(n, k)` 作记忆化键。
 
 ```python
-def pascal_memo(n, k, memo=None):
-    if memo is None:
-        memo = {}
-    if (n, k) in memo:
-        return memo[(n, k)]
-    if k == 0 or k == n:
-        return 1
-    memo[(n, k)] = pascal_memo(n - 1, k - 1, memo) + pascal_memo(n - 1, k, memo)
-    return memo[(n, k)]
+def pascal(n,k,memory={(0,0):1}):
+    if k==0 or n==k:        # 注意base case
+        memory[(n,k)]=1
+    if (n,k) not in memory:
+        memory[(n,k)]=pascal(n-1,k-1)+pascal(n-1,k)
+    return memory[(n,k)]
 ```
 
 ## W8 简单线性数据结构
