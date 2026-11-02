@@ -1,4 +1,11 @@
-# FIP W1-W8 复习讲义
+---
+title: FIP W1-W8 复习讲义
+date: 2026-11-02
+category: notes
+subject: python
+summary: 期中笔记整理
+---
+
 
 ## 使用说明
 
