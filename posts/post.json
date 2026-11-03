@@ -1,5 +1,13 @@
 [
   {
+    "file": "FIPquestions.md",
+    "title": "FIP 期中模拟题",
+    "date": "2026-11-03",
+    "category": "notes",
+    "summary": "期中模拟题",
+    "subject": "python"
+  },
+  {
     "file": "FIP.md",
     "title": "FIP W1-W8 复习讲义",
     "date": "2026-11-02",
