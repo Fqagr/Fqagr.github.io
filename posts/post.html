@@ -7,16 +7,51 @@
   <link rel="stylesheet" href="../style.css">
   <style>
     .md-error { color: var(--muted); }
-    article pre { background: #f6f5f2; border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; overflow-x: auto; margin: 1.2rem 0; }
-    article pre code { background: none; border: none; padding: 0; font-size: 1rem; line-height: 1.7; }
     .katex-display { margin: 1.4rem 0; overflow-x: auto; padding: 0.3rem 0; }
-    .md-body img { display: block; max-width: 55%; max-height: 480px; width: auto; height: auto; margin: 1.5rem auto; border-radius: 10px; }
     article h2 { margin-top: 2.6rem; }
     article h3 { margin-top: 2.2rem; }
     article h4 { margin-top: 1.6rem; }
     article ul, article ol { margin: 0.6rem 0; }
     article li { margin-bottom: 0.5rem; }
     article hr { margin: 2.4rem 0; border: none; border-top: 1px solid var(--border); }
+    article pre { background: #f6f5f2; border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; overflow-x: auto; margin: 1.2rem 0; }
+    article pre code { background: none; border: none; padding: 0; font-size: 1rem; line-height: 1.7; }
+    article [id] { scroll-margin-top: 90px; }
+    .layout { max-width: 720px; margin: 0 auto; padding: 3.5rem 1.5rem 5rem; }
+    .toc { display: none; }
+    @media (min-width: 1200px) {
+      .layout {
+        max-width: 1020px;
+        display: grid;
+        grid-template-columns: minmax(0, 720px) 230px;
+        gap: 2.5rem;
+        align-items: start;
+      }
+      .toc {
+        display: block;
+        position: sticky;
+        top: 90px;
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        border-left: 2px solid var(--border);
+        padding-left: 1rem;
+        font-size: 0.85rem;
+      }
+      .toc-title {
+        font-weight: 700;
+        font-family: "Noto Serif SC", serif;
+        margin-bottom: 0.6rem;
+      }
+      .toc a {
+        display: block;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 0.15rem 0;
+        line-height: 1.5;
+      }
+      .toc a:hover { color: var(--accent); }
+      .toc a.toc-h3 { padding-left: 1rem; font-size: 0.8rem; }
+    }
   </style>
 </head>
 <body>
@@ -33,11 +68,16 @@
     </nav>
   </header>
 
-  <main class="page">
-    <article class="md-body" id="content">
-      <p class="md-error">正在加载文章…</p>
-    </article>
-    <a class="back" href="javascript:history.back()">← 返回</a>
+  <main>
+    <div class="layout">
+      <article class="md-body" id="content">
+        <p class="md-error">正在加载文章…</p>
+      </article>
+      <nav class="toc" id="toc"></nav>
+    </div>
+    <div style="max-width:720px; margin:0 auto; padding:0 1.5rem;">
+      <a class="back" href="javascript:history.back()">← 返回</a>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -45,15 +85,16 @@
   </footer>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension@5.1.3/lib/index.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
   <script>
     (function () {
       var params = new URLSearchParams(location.search);
       var file = params.get("md");
       var box = document.getElementById("content");
+      var toc = document.getElementById("toc");
       if (!file) {
         box.innerHTML = '<p class="md-error">没有指定文章。链接格式：post.html?md=文件名.md</p>';
         return;
@@ -80,14 +121,12 @@
           var h1 = box.querySelector("h1");
           var title = meta.title || (h1 ? h1.textContent : "文章");
           document.title = title + " | 拾光集";
-          var isTitleDup = !!h1 && !!meta.title && h1.textContent.trim() === meta.title.trim();
-          if (isTitleDup) h1.remove();
+          if (h1) h1.remove();
           if (title) {
             var heading = document.createElement("h1");
             heading.textContent = title;
             box.prepend(heading);
           }
-
           if (window.renderMathInElement) {
             renderMathInElement(box, {
               delimiters: [
@@ -98,6 +137,19 @@
               ],
               throwOnError: false
             });
+          }
+
+          var headings = box.querySelectorAll("h2, h3");
+          if (headings.length >= 2) {
+            var html = '<div class="toc-title">目录</div>';
+            headings.forEach(function (h, idx) {
+              var id = "sec-" + idx;
+              h.id = id;
+              html += '<a class="toc-' + h.tagName.toLowerCase() + '" href="#' + id + '">' +
+                      h.textContent + '</a>';
+            });
+            toc.innerHTML = html;
+            toc.style.display = "";
           }
         })
         .catch(function (err) {
