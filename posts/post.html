@@ -153,7 +153,7 @@
           });
       }
 
-      var metaPromise = fetch("posts/post.json")
+      var metaPromise = fetch("post.json")
         .then(function (r) { return r.json(); })
         .then(function (posts) {
           for (var i = 0; i < posts.length; i++)
@@ -162,7 +162,7 @@
         })
         .catch(function () { return {}; });
 
-      fetch("posts/html/" + file.replace(/\.md$/, ".html"))
+      fetch("html/" + file.replace(/\.md$/, ".html"))
         .then(function (res) {
           if (!res.ok) throw new Error("no prerendered html");
           return res.text();
