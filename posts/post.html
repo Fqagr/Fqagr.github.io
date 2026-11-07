@@ -16,6 +16,11 @@
     article hr { margin: 2.4rem 0; border: none; border-top: 1px solid var(--border); }
     article pre { background: #f6f5f2; border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; overflow-x: auto; margin: 1.2rem 0; }
     article pre code { background: none; border: none; padding: 0; font-size: 1rem; line-height: 1.7; }
+    article table { border-collapse: collapse; margin: 1.2rem 0; width: 100%; font-size: 0.95rem; }
+    article th, article td { border: 1px solid var(--border); padding: 0.5rem 0.8rem; text-align: left; }
+    article th { background: var(--paper); }
+    article blockquote { margin: 1rem 0; padding: 0.2rem 1.2rem; border-left: 3px solid var(--accent); color: var(--muted); }
+    article img { display: block; max-width: 55%; max-height: 480px; width: auto; height: auto; margin: 1.5rem auto; border-radius: 10px; }
     article [id] { scroll-margin-top: 90px; }
     .layout { max-width: 720px; margin: 0 auto; padding: 3.5rem 1.5rem 5rem; }
     .toc { display: none; }
@@ -37,18 +42,8 @@
         padding-left: 1rem;
         font-size: 0.85rem;
       }
-      .toc-title {
-        font-weight: 700;
-        font-family: "Noto Serif SC", serif;
-        margin-bottom: 0.6rem;
-      }
-      .toc a {
-        display: block;
-        color: var(--muted);
-        text-decoration: none;
-        padding: 0.15rem 0;
-        line-height: 1.5;
-      }
+      .toc-title { font-weight: 700; font-family: "Noto Serif SC", serif; margin-bottom: 0.6rem; }
+      .toc a { display: block; color: var(--muted); text-decoration: none; padding: 0.15rem 0; line-height: 1.5; }
       .toc a:hover { color: var(--accent); }
       .toc a.toc-h3 { padding-left: 1rem; font-size: 0.8rem; }
     }
@@ -102,59 +97,83 @@
       if (window.markedKatex) {
         marked.use(markedKatex({ throwOnError: false }));
       }
-      fetch(file)
+
+      function finish(meta) {
+        var title = meta.title || "文章";
+        document.title = title + " | 拾光集";
+        var heading = document.createElement("h1");
+        heading.textContent = title;
+        box.prepend(heading);
+        if (window.renderMathInElement) {
+          renderMathInElement(box, {
+            delimiters: [
+              {left: "\\(", right: "\\)", display: false},
+              {left: "\\[", right: "\\]", display: true},
+              {left: "$$", right: "$$", display: true},
+              {left: "$", right: "$", display: false}
+            ],
+            throwOnError: false
+          });
+        }
+        var headings = box.querySelectorAll("h2, h3");
+        if (headings.length >= 2) {
+          var html = '<div class="toc-title">目录</div>';
+          headings.forEach(function (h, idx) {
+            var id = "sec-" + idx;
+            h.id = id;
+            html += '<a class="toc-' + h.tagName.toLowerCase() + '" href="#' + id + '">' +
+                    h.textContent + '</a>';
+          });
+          toc.innerHTML = html;
+          toc.style.display = "";
+        }
+      }
+
+      function renderMarkdownFallback() {
+        fetch(file)
+          .then(function (res) {
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            return res.text();
+          })
+          .then(function (text) {
+            var meta = {};
+            var metaMatch = text.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
+            if (metaMatch) {
+              metaMatch[1].split("\n").forEach(function (line) {
+                var i = line.indexOf(":");
+                if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+              });
+              text = text.slice(metaMatch[0].length);
+            }
+            box.innerHTML = marked.parse(text);
+            finish(meta);
+          })
+          .catch(function (err) {
+            box.innerHTML = '<p class="md-error">文章加载失败：' + err.message + '。</p>';
+          });
+      }
+
+      var metaPromise = fetch("posts/post.json")
+        .then(function (r) { return r.json(); })
+        .then(function (posts) {
+          for (var i = 0; i < posts.length; i++)
+            if (posts[i].file === file) return posts[i];
+          return {};
+        })
+        .catch(function () { return {}; });
+
+      fetch("posts/html/" + file.replace(/\.md$/, ".html"))
         .then(function (res) {
-          if (!res.ok) throw new Error("HTTP " + res.status);
+          if (!res.ok) throw new Error("no prerendered html");
           return res.text();
         })
-        .then(function (text) {
-          var meta = {};
-          var metaMatch = text.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
-          if (metaMatch) {
-            metaMatch[1].split("\n").forEach(function (line) {
-              var i = line.indexOf(":");
-              if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim();
-            });
-            text = text.slice(metaMatch[0].length);
-          }
-          box.innerHTML = marked.parse(text);
-          var h1 = box.querySelector("h1");
-          var title = meta.title || (h1 ? h1.textContent : "文章");
-          document.title = title + " | 拾光集";
-          if (h1) h1.remove();
-          if (title) {
-            var heading = document.createElement("h1");
-            heading.textContent = title;
-            box.prepend(heading);
-          }
-          if (window.renderMathInElement) {
-            renderMathInElement(box, {
-              delimiters: [
-                {left: "$$", right: "$$", display: true},
-                {left: "$", right: "$", display: false},
-                {left: "\\(", right: "\\)", display: false},
-                {left: "\\[", right: "\\]", display: true}
-              ],
-              throwOnError: false
-            });
-          }
-
-          var headings = box.querySelectorAll("h2, h3");
-          if (headings.length >= 2) {
-            var html = '<div class="toc-title">目录</div>';
-            headings.forEach(function (h, idx) {
-              var id = "sec-" + idx;
-              h.id = id;
-              html += '<a class="toc-' + h.tagName.toLowerCase() + '" href="#' + id + '">' +
-                      h.textContent + '</a>';
-            });
-            toc.innerHTML = html;
-            toc.style.display = "";
-          }
+        .then(function (html) {
+          return metaPromise.then(function (meta) {
+            box.innerHTML = html;
+            finish(meta);
+          });
         })
-        .catch(function (err) {
-          box.innerHTML = '<p class="md-error">文章加载失败：' + err.message + '。请确认文件名正确、文件已推送。</p>';
-        });
+        .catch(renderMarkdownFallback);
     })();
   </script>
 </body>
