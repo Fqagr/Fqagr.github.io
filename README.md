@@ -1,4 +1,4 @@
-# 拾光集
+# Fq丶blog
 
 纯手写静态博客，托管在 GitHub Pages。文章用 Markdown 写，列表自动生成。
 
