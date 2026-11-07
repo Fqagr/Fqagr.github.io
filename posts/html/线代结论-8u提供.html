@@ -1,0 +1,2415 @@
+<h1></h1>
+<h1>结论篇：</h1>
+<blockquote>
+<p><strong>范围</strong>：习题 1（1—13）、补充题 1（1—3）；习题 2（1—31）、补充题 2（1—9）；习题 3（1—64）、补充题 3（1—12）。</p>
+<p><strong>取材</strong>：只读印刷题目，未采用书上的手写笔记；只提炼结论、判定、公式和套路，不写推导。</p>
+<p><strong>记号</strong>：<span class="arithmatex">\(E\)</span> 为单位矩阵，<span class="arithmatex">\(O\)</span> 为零矩阵；<span class="arithmatex">\(\operatorname{r}(A)\)</span> 为秩；<span class="arithmatex">\(\lvert A\rvert\)</span> 或 <span class="arithmatex">\(\det(A)\)</span> 为行列式；<span class="arithmatex">\(A^{T}\)</span> 为转置；<span class="arithmatex">\(A^{-1}\)</span> 为逆；<span class="arithmatex">\(A^{*}\)</span> 为伴随矩阵；<span class="arithmatex">\(\operatorname{tr}(A)\)</span> 为迹；<span class="arithmatex">\(\begin{bmatrix}A &amp; B \\ C &amp; D\end{bmatrix}\)</span> 表示 2×2 分块矩阵；<span class="arithmatex">\(\alpha , \beta\)</span> 一般指列向量。</p>
+<p><strong>数域</strong>：未特别说明时按实数域或复数域理解；涉及 <span class="arithmatex">\(\operatorname{char}\ne 2\)</span>、<span class="arithmatex">\(A^{T}A\)</span>、实对称等特殊条件的地方已单独标注。</p>
+<p><strong>用法</strong>：先把第 0 节当“条件反射表”；要写严格过程时，再到对应小节查条件和公式。少数条目是由习题方法直接推广的常用形式，不是原题原文。</p>
+<p><strong>公式</strong>：本文件使用 LaTeX 行内公式（美元符号定界）和 bmatrix/vmatrix 环境；请用支持 KaTeX 的 Markdown 预览器打开。</p>
+</blockquote>
+<p><strong>目录</strong>：0 条件反射表 · 1 行列式 · 2 矩阵运算 · 3 分块矩阵 · 4 秩 · 5 线性方程组 · 6 易错点与反例 · 7 公式速查 · 8 特征值验算（选读） · 9 来源索引。</p>
+<hr />
+<h2>0. 先看这张“条件反射表”</h2>
+<table>
+<thead>
+<tr>
+<th>题面信号</th>
+<th>第一反应</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\det(A)=0\)</span></td>
+<td>行（列）线性相关；<span class="arithmatex">\(\operatorname{r}(A)&lt;n\)</span>；<span class="arithmatex">\(Ax=0\)</span> 有非零解；<span class="arithmatex">\(A\)</span> 不可逆</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\det(A)\ne 0\)</span></td>
+<td>行（列）线性无关；<span class="arithmatex">\(\operatorname{r}(A)=n\)</span>；<span class="arithmatex">\(A\)</span> 可逆；可用 Cramer 法则</td>
+</tr>
+<tr>
+<td>齐次方程 <span class="arithmatex">\(Ax=0\)</span></td>
+<td>必有零解；有非零解 ⇔ <span class="arithmatex">\(\operatorname{r}(A)&lt;n\)</span>；<span class="arithmatex">\(m&lt;n\)</span> 时必有非零解</td>
+</tr>
+<tr>
+<td>非齐次 <span class="arithmatex">\(Ax=b\)</span></td>
+<td>先比 <span class="arithmatex">\(\operatorname{r}(A)\)</span> 与 <span class="arithmatex">\(\operatorname{r}\left(\begin{bmatrix}A &amp; b\end{bmatrix}\right)\)</span>；有解时解的自由度是 <span class="arithmatex">\(n-\operatorname{r}(A)\)</span></td>
+</tr>
+<tr>
+<td>两个不同解</td>
+<td>必有无穷多解；两解之差是 <span class="arithmatex">\(Ax=0\)</span> 的非零解</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(AB=0\)</span></td>
+<td><span class="arithmatex">\(\operatorname{Im} B \subseteq  \ker A\)</span>；<span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(B)\le n\)</span>；<span class="arithmatex">\(B\)</span> 的每一列都是 <span class="arithmatex">\(Ax=0\)</span> 的解</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(AB=E_{m}\)</span></td>
+<td><span class="arithmatex">\(A\)</span> 行满秩、<span class="arithmatex">\(B\)</span> 列满秩；<span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(B)=m\)</span>；<span class="arithmatex">\(B\)</span> 是 <span class="arithmatex">\(A\)</span> 的右逆</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\operatorname{r}(A)=1\)</span></td>
+<td><span class="arithmatex">\(A=\alpha \beta ^{T}\)</span>；<span class="arithmatex">\(A^{2}=\operatorname{tr}(A)A\)</span>；行（列）全成比例；<span class="arithmatex">\(Ax=0\)</span> 即 <span class="arithmatex">\(\beta ^{T} x=0\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\operatorname{r}(A)=n-1\)</span></td>
+<td><span class="arithmatex">\(A^{*}\)</span> 的秩为 1；<span class="arithmatex">\(Ax=0\)</span> 的基础解系可由 <span class="arithmatex">\(A^{*}\)</span> 的任一非零列给出</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(A^{2}=A\)</span></td>
+<td>幂等；<span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(E-A)=n\)</span>；<span class="arithmatex">\(\operatorname{r}(A)=\operatorname{tr}(A)\)</span>；若 <span class="arithmatex">\(A\)</span> 可逆则 <span class="arithmatex">\(A=E\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(A^{2}=E\)</span></td>
+<td>对合；<span class="arithmatex">\(A^{-1}=A\)</span>；<span class="arithmatex">\(\operatorname{r}(E-A)+\operatorname{r}(E+A)=n\)</span>；<span class="arithmatex">\((E-A)(E+A)=0\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(A^{k}=0\)</span></td>
+<td>幂零；<span class="arithmatex">\(E\pm A\)</span> 可逆；<span class="arithmatex">\((E-A)^{-1}=E+A+\dots +A^{k-1}\)</span></td>
+</tr>
+<tr>
+<td>分块矩阵</td>
+<td>先看块的行数、列数是否协调；再想对角、上三角、反角、Schur 补</td>
+</tr>
+<tr>
+<td>分块上三角 <span class="arithmatex">\(\begin{bmatrix}A &amp; C \\ 0 &amp; B\end{bmatrix}\)</span></td>
+<td><span class="arithmatex">\(\det=\det(A)\det(B)\)</span>；秩 ≥ <span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(B)\)</span>；可逆 ⇔ <span class="arithmatex">\(A,B\)</span> 都可逆</td>
+</tr>
+<tr>
+<td>秩一更新 <span class="arithmatex">\(A+\alpha \beta ^{T}\)</span></td>
+<td>行列式引理；Sherman–Morrison；秩最多降 1</td>
+</tr>
+<tr>
+<td>行和相等</td>
+<td><span class="arithmatex">\(A1=s1\)</span>，<span class="arithmatex">\(s\)</span> 是特征值；把各列加到第一列，提出 <span class="arithmatex">\(s\)</span></td>
+</tr>
+<tr>
+<td>范德蒙德</td>
+<td>节点互异则行列式非零；插值唯一；值为 <span class="arithmatex">\(\prod (x_{j}-x_{i})\)</span></td>
+</tr>
+<tr>
+<td>三线共点</td>
+<td>三条直线方程系数组成的 3×3 行列式为 0</td>
+</tr>
+<tr>
+<td>四点共圆</td>
+<td>无三点共线时，四点共圆的 4×4 判定行列式为 0</td>
+</tr>
+<tr>
+<td>五点二次曲线</td>
+<td>二次曲线有 6 个系数、5 个方程，必有非零解</td>
+</tr>
+<tr>
+<td>参数方程</td>
+<td>先算 <span class="arithmatex">\(\det(A(\lambda ))\)</span>，在根处分情况比较 <span class="arithmatex">\(\operatorname{r}(A)\)</span> 与 <span class="arithmatex">\(\operatorname{r}\left(\begin{bmatrix}A &amp; b\end{bmatrix}\right)\)</span>；不要直接套 Cramer</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. 行列式</h2>
+<h3>1.1 排列、定义与基本性质</h3>
+<ul>
+<li>
+<p><strong>排列与符号</strong>：n 级排列 <span class="arithmatex">\(i_{1}i_{2}\dots i_{n}\)</span> 的逆序数记为 <span class="arithmatex">\(\tau (i_{1}\dots i_{n})\)</span>，符号为 <span class="arithmatex">\(\operatorname{sgn}=(-1)^{\tau}\)</span>。行列式<br />
+<span class="arithmatex">\(\det(A)=\sum _{\sigma \in S_n} \operatorname{sgn}(\sigma ) a_{1\sigma (1)}a_{2\sigma (2)}\dots a_{n\sigma (n)}\)</span>。<br />
+  看到“某一项前面带什么符号”，就看行下标按自然顺序排好后，列下标排列的逆序数。</p>
+</li>
+<li>
+<p><strong>倒序排列</strong>：<span class="arithmatex">\(\tau (i_{n}\dots i_{1})=n(n-1)/2-\tau (i_{1}\dots i_{n})\)</span>，所以<br />
+<span class="arithmatex">\(\operatorname{sgn}(i_{n}\dots i_{1})=(-1)^{n(n-1)/2}\operatorname{sgn}(i_{1}\dots i_{n})\)</span>。<br />
+<span class="arithmatex">\(n\ge 2\)</span> 时，奇排列与偶排列各占一半，均为 <span class="arithmatex">\(n!/2\)</span> 个。</p>
+</li>
+<li>
+<p><strong>对换与奇偶性</strong>：交换排列中任意两个元素，逆序数改变奇数，因此排列的奇偶性翻转。要构造奇排列或偶排列，可从自然排列出发做一次或两次对换（习题 2.3）。</p>
+</li>
+<li>
+<p><strong>置换矩阵</strong>：每行每列恰有一个 1 的矩阵 <span class="arithmatex">\(P_{\sigma}\)</span> 满足 <span class="arithmatex">\(\det(P_{\sigma} )=\operatorname{sgn}(\sigma )\)</span>，且 <span class="arithmatex">\(P_{\sigma} ^{-1}=P_{\sigma} ^{T}\)</span>。</p>
+</li>
+<li>
+<p><strong>基本性质</strong>：</p>
+</li>
+<li><span class="arithmatex">\(\det(A^{T})=\det(A)\)</span>；</li>
+<li>交换两行（列），行列式变号；</li>
+<li>某行（列）乘 <span class="arithmatex">\(c\)</span>，行列式乘 <span class="arithmatex">\(c\)</span>；</li>
+<li>把某行（列）的 <span class="arithmatex">\(k\)</span> 倍加到另一行（列），行列式不变；</li>
+<li>两行（列）相同或成比例，行列式为 0；</li>
+<li>
+<p>有一行（列）全为 0，行列式为 0。</p>
+</li>
+<li>
+<p><strong>数乘与乘积</strong>：<span class="arithmatex">\(\det(cA)=c^{n} \det(A)\)</span>；<span class="arithmatex">\(\det(AB)=\det(A)\det(B)\)</span>；<span class="arithmatex">\(\det(A^{k})=\det(A)^{k}\)</span>；<span class="arithmatex">\(\det(A^{-1})=1/\det(A)\)</span>；<span class="arithmatex">\(\det(A^{*})=\det(A)^{n-1}\)</span>。<br />
+  注意：<span class="arithmatex">\(\det(A+B)\)</span> 一般没有简单公式，不能拆成 <span class="arithmatex">\(\det(A)+\det(B)\)</span>。</p>
+</li>
+<li>
+<p><strong>零判定</strong>：<span class="arithmatex">\(\det(A)=0\)</span> ⇔ <span class="arithmatex">\(A\)</span> 的行（列）线性相关 ⇔ <span class="arithmatex">\(\operatorname{r}(A)&lt;n\)</span>；<span class="arithmatex">\(\det(A)\ne 0\)</span> ⇔ 行（列）是一组基 ⇔ <span class="arithmatex">\(\operatorname{r}(A)=n\)</span>。</p>
+</li>
+<li>
+<p><strong>易错</strong>：<span class="arithmatex">\(n\ge 3\)</span> 时，<span class="arithmatex">\(\det(A)=0\)</span> 只说明存在线性关系，<strong>不一定是某两行（列）成比例</strong>；<span class="arithmatex">\(n=2\)</span> 时，<span class="arithmatex">\(\det=0\)</span> 才等价于两行（列）成比例。反例：三行分别为 <span class="arithmatex">\((1,0,0),(0,1,0),(1,1,0)\)</span>，第三行是前两行之和，但任意两行都不成比例。</p>
+</li>
+</ul>
+<h3>1.2 展开、余子式与 Cramer 法则</h3>
+<ul>
+<li>
+<p><strong>余子式</strong>：<span class="arithmatex">\(A_{ij}=(-1)^{i+j}M_{ij}\)</span>，其中 <span class="arithmatex">\(M_{ij}\)</span> 是划去第 i 行、第 j 列后的行列式。</p>
+</li>
+<li>
+<p><strong>按行（列）展开</strong>：对任意一行 i，<br />
+<span class="arithmatex">\(\det(A)=\sum _{j} a_{ij}A_{ij}\)</span>；对任意一列 j，<br />
+<span class="arithmatex">\(\det(A)=\sum _{i} a_{ij}A_{ij}\)</span>。<br />
+  不要求该行（列）只有一个非零元；选零多的行（列）只是为了计算方便。</p>
+</li>
+<li>
+<p><strong>异乘变零</strong>：<span class="arithmatex">\(\sum _{j} a_{kj}A_{ij}=0\)</span>（<span class="arithmatex">\(k\ne i\)</span>）；<span class="arithmatex">\(\sum _{i} a_{ik}A_{ij}=0\)</span>（<span class="arithmatex">\(k\ne j\)</span>）。<br />
+  即“用别的行（列）乘这一行（列）的代数余子式，和为 0”。</p>
+</li>
+<li>
+<p><strong>Laplace 定理</strong>：任取 k 行（k 列），由这些行（列）形成的所有 k 阶子式与对应代数余子式乘积之和等于 <span class="arithmatex">\(\det(A)\)</span>。分块三角行列式是它的特例。</p>
+</li>
+<li>
+<p><strong>Cramer 法则</strong>：若 <span class="arithmatex">\(A\)</span> 是 n 阶方阵且 <span class="arithmatex">\(\det(A)\ne 0\)</span>，则 <span class="arithmatex">\(Ax=b\)</span> 有唯一解<br />
+<span class="arithmatex">\(x_{i}=\det(A_{i})/\det(A)\)</span>，其中 <span class="arithmatex">\(A_{i}\)</span> 是把 <span class="arithmatex">\(A\)</span> 的第 i 列换成 <span class="arithmatex">\(b\)</span> 得到的矩阵。</p>
+</li>
+<li>
+<p><strong>Cramer 的边界</strong>：</p>
+</li>
+<li><span class="arithmatex">\(\det(A)\ne 0\)</span>：唯一解，可直接用 Cramer；</li>
+<li><span class="arithmatex">\(\det(A)=0\)</span> 且某个 <span class="arithmatex">\(\det(A_{i})\ne 0\)</span>：必无解；</li>
+<li>
+<p><span class="arithmatex">\(\det(A)=0\)</span> 且所有 <span class="arithmatex">\(\det(A_{i})=0\)</span>：可能无解，也可能无穷多解，必须比较 <span class="arithmatex">\(\operatorname{r}(A)\)</span> 与 <span class="arithmatex">\(\operatorname{r}(A\mid b)\)</span>，不能直接下结论。</p>
+</li>
+<li>
+<p><strong>齐次情形</strong>：<span class="arithmatex">\(Ax=0\)</span> 有非零解 ⇔ <span class="arithmatex">\(\det(A)=0\)</span>；<span class="arithmatex">\(\det(A)\ne 0\)</span> 时只有零解。</p>
+</li>
+<li>
+<p><strong>超定系统的一个小结论</strong>（习题 2.26）：若 <span class="arithmatex">\(A\)</span> 是 n 阶可逆矩阵，则“用前 n-1 列线性表示最后一列”的 n 个方程、n-1 个未知量的方程组<strong>无解</strong>。否则最后一列落在前 n-1 列的张成空间里，n 列线性相关，与 <span class="arithmatex">\(\det(A)\ne 0\)</span> 矛盾。</p>
+</li>
+<li>
+<p><strong>几何意义</strong>：二阶行列式的绝对值是以两列为边的平行四边形面积；三阶行列式的绝对值是以三列为棱的平行六面体体积。<span class="arithmatex">\(\det=0\)</span> 对应降维（共线、共面）；<span class="arithmatex">\(\det\ne 0\)</span> 时 Cramer 法则本质上是“在基下的坐标公式”。</p>
+</li>
+</ul>
+<h3>1.3 特殊行列式公式</h3>
+<ul>
+<li>
+<p><strong>三角、对角</strong>：上（下）三角矩阵、对角矩阵的行列式都等于对角元乘积。</p>
+</li>
+<li>
+<p><strong>范德蒙德（Vandermonde）</strong>：<br />
+<span class="arithmatex">\(\det[1 x_{i} \dots  x_{i}^{n-1}]_{i=1..n}=\prod _{1\le i&lt;j\le n}(x_{j}-x_{i})\)</span>。<br />
+  因此节点 <span class="arithmatex">\(x_{i}\)</span> 互异 ⇔ 范德蒙德矩阵可逆；过 n 个互异点的次数不超过 n-1 的多项式唯一。</p>
+</li>
+<li>
+<p><strong>缺一个幂次的范德蒙德</strong>（习题 2.14）：<br />
+  若第 i 行为 <span class="arithmatex">\((1, x_{i}, \dots , x_{i}^{n-2}, x_{i}^{n})\)</span>，则行列式为<br />
+<span class="arithmatex">\([\prod _{i&lt;j}(x_{j}-x_{i})]\cdot (x_{1}+x_{2}+\dots +x_{n})\)</span>。<br />
+  直观记法：把最后的 <span class="arithmatex">\(x_{i}^{n}\)</span> 看成 <span class="arithmatex">\(x_{i}\cdot x_{i}^{n-1}\)</span>，等价于用 <span class="arithmatex">\(x_{i}\)</span> 去替换范德蒙德的最后一列，提取出的因子就是 <span class="arithmatex">\(\sum x_{i}\)</span>。</p>
+</li>
+<li>
+<p><strong>全 1 矩阵 <span class="arithmatex">\(J_{n}\)</span></strong>：</p>
+</li>
+<li><span class="arithmatex">\(\det(J_{n})=0\)</span>（<span class="arithmatex">\(n\ge 2\)</span>）；</li>
+<li><span class="arithmatex">\(\det(aE+bJ_{n})=a^{n-1}(a+nb)\)</span>；</li>
+<li>若对角为 <span class="arithmatex">\(a\)</span>、非对角为 <span class="arithmatex">\(b\)</span>，即矩阵为 <span class="arithmatex">\(aE+b(J_{n}-E)\)</span>，则<br />
+<span class="arithmatex">\(\det=(a-b)^{n-1}(a+(n-1)b)\)</span>；</li>
+<li>
+<p>特例：<span class="arithmatex">\(\det(E-J_{n})=1-n\)</span>。</p>
+</li>
+<li>
+<p><strong>对角为 <span class="arithmatex">\(a_{i}\)</span>、非对角全为 <span class="arithmatex">\(b\)</span></strong>：<br />
+<span class="arithmatex">\(\det=(\prod _{i=1}^{n}(a_{i}-b))\cdot (1+b\sum _{i=1}^{n} 1/(a_{i}-b))\)</span>（分母不为 0 时）。<br />
+  若所有 <span class="arithmatex">\(a_{i}=a\)</span>，就回到上一条公式。</p>
+</li>
+<li>
+<p><strong>箭头矩阵</strong>：对角为 <span class="arithmatex">\(d_{1},\dots ,d_{n}\)</span>，第一行非对角为 <span class="arithmatex">\(a_{2},\dots ,a_{n}\)</span>，第一列非对角为 <span class="arithmatex">\(b_{2},\dots ,b_{n}\)</span>，其余为 0，则<br />
+<span class="arithmatex">\(\det=(\prod _{i=1}^{n} d_{i})\cdot (1-\sum _{i=2}^{n} a_{i} b_{i}/(d_{1} d_{i}))\)</span>（<span class="arithmatex">\(d_{i}\ne 0\)</span> 时）。<br />
+  更常用的做法是直接用 Schur 补或按第一行展开。</p>
+</li>
+<li>
+<p><strong>三对角递推</strong>：对角为 <span class="arithmatex">\(a\)</span>、上副对角为 <span class="arithmatex">\(b\)</span>、下副对角为 <span class="arithmatex">\(c\)</span> 的 n 阶三对角行列式 <span class="arithmatex">\(D_{n}\)</span> 满足<br />
+<span class="arithmatex">\(D_{n}=aD_{n-1}-bcD_{n-2}\)</span>，<span class="arithmatex">\(D_{0}=1\)</span>，<span class="arithmatex">\(D_{1}=a\)</span>。<br />
+  特例：对角为 2、上下副对角为 -1 时，<span class="arithmatex">\(D_{n}=n+1\)</span>。</p>
+</li>
+<li>
+<p><strong>循环矩阵</strong>：第一行为 <span class="arithmatex">\((a_{0},a_{1},\dots ,a_{n-1})\)</span>，每行向右循环移一位，则<br />
+<span class="arithmatex">\(\det=\prod _{j=0}^{n-1}(a_{0}+a_{1}\omega _{j}+\dots +a_{n-1}\omega _{j}^{n-1})\)</span>，其中 <span class="arithmatex">\(\omega _{j}=e^{2\pi ij/n}\)</span> 为 n 次单位根。<br />
+  3×3 循环矩阵的特例：<br />
+<span class="arithmatex">\(\det\begin{vmatrix}a &amp; b &amp; c \\ c &amp; a &amp; b \\ b &amp; c &amp; a\end{vmatrix}=a^{3}+b^{3}+c^{3}-3abc\)</span>。</p>
+</li>
+<li>
+<p><strong>1 到 n 的循环矩阵</strong>（习题 2.12(7)）：第一行为 <span class="arithmatex">\((1,2,\dots ,n)\)</span>，每行循环左移一位，则<br />
+<span class="arithmatex">\(D_{n}=(-1)^{n-1}\cdot n^{n-1}\cdot (n+1)/2\)</span>（<span class="arithmatex">\(n\ge 2\)</span>）。<br />
+  例如 <span class="arithmatex">\(n=2\)</span> 得 <span class="arithmatex">\(-3\)</span>，<span class="arithmatex">\(n=3\)</span> 得 <span class="arithmatex">\(18\)</span>，<span class="arithmatex">\(n=4\)</span> 得 <span class="arithmatex">\(-160\)</span>。</p>
+</li>
+<li>
+<p><strong>余弦行列式</strong>（补充题 2.3(8)）：<br />
+<span class="arithmatex">\(\det[\cos((i-1)\alpha _{j})]_{i,j=1..n}=2^{(n-1)(n-2)/2}\cdot \prod _{i&lt;j}(\cos \alpha _{j}-\cos \alpha _{i})\)</span>。<br />
+  它本质上是切比雪夫多项式 <span class="arithmatex">\(T_{k}(\cos \alpha )=\cos(k\alpha )\)</span> 的范德蒙德行列式。</p>
+</li>
+<li>
+<p><strong>秩一更新（行列式引理）</strong>：<br />
+<span class="arithmatex">\(\det(A+\alpha \beta ^{T})=\det(A)\cdot (1+\beta ^{T} A^{-1}\alpha )\)</span>（<span class="arithmatex">\(A\)</span> 可逆）。<br />
+  特例：<span class="arithmatex">\(\det(E+xx^{T})=1+x^{T} x\)</span>；更一般地 <span class="arithmatex">\(\det(E_{m}+UV^{T})=\det(E_{n}+V^{T} U)\)</span>。</p>
+</li>
+<li>
+<p><strong>Sylvester 行列式恒等式</strong>：<br />
+  若 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>、<span class="arithmatex">\(B\)</span> 为 <span class="arithmatex">\(n\times m\)</span>，则<br />
+<span class="arithmatex">\(\det(E_{m}-AB)=\det(E_{n}-BA)\)</span>；<br />
+  更一般地，<span class="arithmatex">\(\det(\lambda E_{n}-AB)=\lambda ^{n-m}\det(\lambda E_{m}-BA)\)</span>（<span class="arithmatex">\(\lambda \ne 0\)</span>）。</p>
+</li>
+<li>
+<p><strong>秩 ≤2 的结构</strong>：</p>
+</li>
+<li>若 <span class="arithmatex">\(a_{ij}=a_{i}-b_{j}\)</span>，则矩阵的秩不超过 2；<span class="arithmatex">\(n\ge 3\)</span> 时行列式为 0；<span class="arithmatex">\(n=2\)</span> 时<br />
+<span class="arithmatex">\(\det=(a_{1}-a_{2})(b_{1}-b_{2})\)</span>。</li>
+<li>
+<p>若 <span class="arithmatex">\(a_{ij}=a_{i} b_{j}\)</span>，则矩阵的秩不超过 1；<span class="arithmatex">\(n\ge 2\)</span> 时行列式为 0。</p>
+</li>
+<li>
+<p><strong>边框矩阵</strong>：<span class="arithmatex">\(\det\begin{vmatrix}1 &amp; 1^{T} \\ 1 &amp; E_{n-1}\end{vmatrix}=2-n\)</span>（<span class="arithmatex">\(n\ge 2\)</span>）。更一般地，把第一行换成 <span class="arithmatex">\(t^{T}=(t_{1},\dots ,t_{n})\)</span> 后，行列式等于 <span class="arithmatex">\(\sum _{i} t_{i} A_{1i}\)</span>（按第一行展开），这是习题 2.13 的常用结论。</p>
+</li>
+<li>
+<p><strong>±2 矩阵的整除性</strong>（补充题 2.2）：若 n 阶矩阵的元素全为 2 或 -2，则 <span class="arithmatex">\(\det(A)\)</span> 被 <span class="arithmatex">\(2^{2n-1}\)</span> 整除。理由：每行提出因子 2 后化为 ±1 矩阵，而 ±1 矩阵的行列式被 <span class="arithmatex">\(2^{n-1}\)</span> 整除。</p>
+</li>
+<li>
+<p><strong>行和（列和）相等</strong>：若每一行元素之和都等于 <span class="arithmatex">\(s\)</span>，则 <span class="arithmatex">\(A\cdot 1=s\cdot 1\)</span>，<span class="arithmatex">\(s\)</span> 是特征值；计算行列式时把各列加到第一列，提出 <span class="arithmatex">\(s\)</span>，再把第一行适当减到其余行，常能化成三角。列和相等同理。</p>
+</li>
+</ul>
+<h3>1.4 行列式计算套路</h3>
+<ul>
+<li><strong>行和（列和）相等</strong>：先加列（行）提公因式，再制造零。</li>
+<li><strong>化三角</strong>：用倍加消元，尽量不改变行列式；交换行、数乘行要记账。</li>
+<li><strong>提公因式</strong>：某行（列）有共同因子时先提出；有时需要先拆项。</li>
+<li><strong>递推</strong>：三对角、箭头、循环、缺项行列式，先按第一行（列）展开，找 <span class="arithmatex">\(D_{n}\)</span> 与 <span class="arithmatex">\(D_{n-1}\)</span>、<span class="arithmatex">\(D_{n-2}\)</span> 的关系。</li>
+<li><strong>分块与 Schur 补</strong>：出现大块零、单位块、对角块时，优先用分块行列式公式。</li>
+<li><strong>加边法</strong>：把 n 阶行列式扩成 n+1 阶，使新行列式容易计算，再回代。</li>
+<li><strong>归纳法</strong>：先算 <span class="arithmatex">\(n=1,2,3\)</span>，猜出公式，再用递推或展开证明。</li>
+<li><strong>范德蒙德</strong>：出现 <span class="arithmatex">\(1,x,x^{2},\dots\)</span> 或 <span class="arithmatex">\(x_{i}^{j}\)</span> 时，先想范德蒙德；缺项、变体通过拆列或比较系数处理。</li>
+<li><strong>行列式引理</strong>：出现“对角矩阵 + 秩一矩阵”时，先想 <span class="arithmatex">\(\det(A+\alpha \beta ^{T})\)</span>。</li>
+<li><strong>用秩判零</strong>：只要能说明行（列）线性相关、秩小于阶数，就不必硬算。</li>
+<li><strong>选稀疏行（列）展开</strong>：展开本身对任意行（列）都成立，选零多的行（列）只是减少计算。</li>
+<li><strong>打洞</strong>：用分块消元把 <span class="arithmatex">\(\begin{bmatrix}A &amp; B \\ C &amp; D\end{bmatrix}\)</span> 化成 <span class="arithmatex">\(\begin{bmatrix}A &amp; 0 \\ C &amp; D-CA^{-1}B\end{bmatrix}\)</span> 或 <span class="arithmatex">\(\begin{bmatrix}A &amp; B \\ 0 &amp; D-CA^{-1}B\end{bmatrix}\)</span>。</li>
+<li><strong>拆项</strong>：利用行列式对某一行（列）的线性性，把复杂行拆成两个简单行之和。</li>
+<li><strong>换行换列</strong>：通过交换把特殊元素移到角落，但每次交换要乘 <span class="arithmatex">\(-1\)</span>。</li>
+</ul>
+<hr />
+<h2>2. 矩阵运算</h2>
+<h3>2.1 乘法、转置与矩阵单位</h3>
+<ul>
+<li>
+<p><strong>列向量观点</strong>：若 <span class="arithmatex">\(B=[b_{1},\dots ,b_{p}]\)</span>，则 <span class="arithmatex">\(AB=[Ab_{1},\dots ,Ab_{p}]\)</span>；若 <span class="arithmatex">\(A=[\alpha _{1},\dots ,\alpha _{n}]\)</span>，则<br />
+<span class="arithmatex">\(Ax=x_{1}\alpha _{1}+\dots +x_{n}\alpha _{n}\)</span>。所以 <span class="arithmatex">\(Ax\)</span> 就是 <span class="arithmatex">\(A\)</span> 的列向量的线性组合，组合系数是 <span class="arithmatex">\(x\)</span> 的分量。</p>
+</li>
+<li>
+<p><strong>行向量观点</strong>：<span class="arithmatex">\(AB\)</span> 的第 i 行是 <span class="arithmatex">\(A\)</span> 的第 i 行右乘 <span class="arithmatex">\(B\)</span>；<span class="arithmatex">\(AB\)</span> 的第 j 列是 <span class="arithmatex">\(A\)</span> 右乘 <span class="arithmatex">\(B\)</span> 的第 j 列。</p>
+</li>
+<li>
+<p><strong>外积观点</strong>：若 <span class="arithmatex">\(A\)</span> 的列为 <span class="arithmatex">\(a_{1},\dots ,a_{n}\)</span>，<span class="arithmatex">\(B\)</span> 的行为 <span class="arithmatex">\(b_{1}^{T},\dots ,b_{n}^{T}\)</span>，则<br />
+<span class="arithmatex">\(AB=\sum _{k=1}^{n} a_{k} b_{k}^{T}\)</span>。这是“把矩阵乘积写成若干个秩一矩阵之和”的基本公式。</p>
+</li>
+<li>
+<p><strong><span class="arithmatex">\(AB=0\)</span></strong>：等价于 <span class="arithmatex">\(B\)</span> 的每一列都属于 <span class="arithmatex">\(\ker A\)</span>；若 <span class="arithmatex">\(A\)</span> 可逆，则 <span class="arithmatex">\(B=0\)</span>；若 <span class="arithmatex">\(B\)</span> 可逆，则 <span class="arithmatex">\(A=0\)</span>。不要由 <span class="arithmatex">\(AB=0\)</span> 直接推出 <span class="arithmatex">\(A=0\)</span> 或 <span class="arithmatex">\(B=0\)</span>。</p>
+</li>
+<li>
+<p><strong>“对任意 X 都成立”的技巧</strong>：若 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>，且对任意 <span class="arithmatex">\(n\times p\)</span> 矩阵 <span class="arithmatex">\(X\)</span> 都有 <span class="arithmatex">\(AX=0\)</span>，则取 <span class="arithmatex">\(X=E_{n}\)</span> 得 <span class="arithmatex">\(A=0\)</span>（习题 3.9）。遇到“对所有矩阵都成立”的命题，优先取单位矩阵或矩阵单位 <span class="arithmatex">\(e_{ij}\)</span> 代入。</p>
+</li>
+<li>
+<p><strong>消去律</strong>：<span class="arithmatex">\(AB=AC\)</span> 且 <span class="arithmatex">\(A\)</span> 可逆 ⇒ <span class="arithmatex">\(B=C\)</span>；若 <span class="arithmatex">\(A\)</span> 不可逆，消去律一般不成立。<span class="arithmatex">\(A\ne O\)</span> 不能作为消去条件。</p>
+</li>
+<li>
+<p><strong>转置</strong>：<span class="arithmatex">\((A^{T})^{T}=A\)</span>，<span class="arithmatex">\((A+B)^{T}=A^{T}+B^{T}\)</span>，<span class="arithmatex">\((cA)^{T}=cA^{T}\)</span>，<span class="arithmatex">\((AB)^{T}=B^{T} A^{T}\)</span>。注意顺序反过来。</p>
+</li>
+<li>
+<p><strong>矩阵单位 <span class="arithmatex">\(e_{ij}\)</span></strong>：<span class="arithmatex">\(e_{ij}\)</span> 是只有第 i 行第 j 列元素为 1、其余为 0 的矩阵。</p>
+</li>
+<li><span class="arithmatex">\(e_{ij}e_{kl}=\delta _{jk}e_{il}\)</span>；</li>
+<li><span class="arithmatex">\(e_{ij}A\)</span> 的第 i 行等于 <span class="arithmatex">\(A\)</span> 的第 j 行，其余行为 0；</li>
+<li>
+<p><span class="arithmatex">\(A e_{ij}\)</span> 的第 j 列等于 <span class="arithmatex">\(A\)</span> 的第 i 列，其余列为 0。<br />
+  这是“用矩阵单位挑行、挑列”的常用工具。</p>
+</li>
+<li>
+<p><strong>置换矩阵</strong>：左乘置换矩阵交换行，右乘置换矩阵交换列；置换矩阵的逆等于其转置，行列式为 <span class="arithmatex">\(\pm 1\)</span>。</p>
+</li>
+<li>
+<p><strong>初等矩阵</strong>：对单位矩阵做一次初等变换得到的矩阵。</p>
+</li>
+<li>左乘初等矩阵 = 对行做相应初等变换；右乘初等矩阵 = 对列做相应初等变换；</li>
+<li>初等矩阵都可逆，逆仍是同类型初等矩阵；</li>
+<li>初等矩阵的转置仍是初等矩阵；</li>
+<li>
+<p>行交换矩阵的行列式为 <span class="arithmatex">\(-1\)</span>，行乘 <span class="arithmatex">\(c\)</span> 的矩阵行列式为 <span class="arithmatex">\(c\)</span>，倍加矩阵的行列式为 <span class="arithmatex">\(1\)</span>。</p>
+</li>
+<li>
+<p><strong>迹的基本性质</strong>：<span class="arithmatex">\(\operatorname{tr}(A+B)=\operatorname{tr}(A)+\operatorname{tr}(B)\)</span>，<span class="arithmatex">\(\operatorname{tr}(cA)=c \operatorname{tr}(A)\)</span>，<span class="arithmatex">\(\operatorname{tr}(A^{T})=\operatorname{tr}(A)\)</span>；<br />
+  对 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>、<span class="arithmatex">\(B\)</span> 为 <span class="arithmatex">\(n\times m\)</span>，<span class="arithmatex">\(\operatorname{tr}(AB)=\operatorname{tr}(BA)\)</span>；<br />
+  更一般地，<span class="arithmatex">\(\operatorname{tr}(ABC)=\operatorname{tr}(BCA)=\operatorname{tr}(CAB)\)</span>（循环置换不变）。<br />
+<span class="arithmatex">\(\operatorname{tr}(A^{T} A)=\sum _{i,j}a_{ij}^{2}\)</span>，在实矩阵中等于 0 当且仅当 <span class="arithmatex">\(A=0\)</span>。</p>
+</li>
+<li>
+<p><strong>交换子</strong>：<span class="arithmatex">\(\operatorname{tr}(AB-BA)=0\)</span>。因此在实数域或复数域上，<strong>不存在</strong> n 阶矩阵 <span class="arithmatex">\(A,B\)</span> 使 <span class="arithmatex">\(AB-BA=E\)</span>（因为右边迹为 n，左边迹为 0）。</p>
+</li>
+</ul>
+<h3>2.2 幂、多项式与特殊矩阵方程</h3>
+<ul>
+<li>
+<p><strong>相似幂</strong>：<span class="arithmatex">\((P^{-1}AP)^{k}=P^{-1}A^{k}P\)</span>。求高次幂时，先找可逆 <span class="arithmatex">\(P\)</span> 把 <span class="arithmatex">\(A\)</span> 对角化或化成简单形式。</p>
+</li>
+<li>
+<p><strong>二项式展开</strong>：<span class="arithmatex">\((A+B)^{2}=A^{2}+2AB+B^{2}\)</span> 成立 ⇔ <span class="arithmatex">\(AB=BA\)</span>；一般地，二项式定理成立 ⇔ <span class="arithmatex">\(A,B\)</span> 可交换。<br />
+<span class="arithmatex">\(A^{2}-B^{2}=(A+B)(A-B)\)</span> 成立 ⇔ <span class="arithmatex">\(AB=BA\)</span>。<br />
+  若 <span class="arithmatex">\(AB=BA\)</span>，则 <span class="arithmatex">\(A^{2}-B^{2}=(A+B)(A-B)\)</span>，且 <span class="arithmatex">\((A+B)^{n}\)</span> 可用二项式展开。</p>
+</li>
+<li>
+<p><strong>Jordan 块幂</strong>：<br />
+<span class="arithmatex">\(\begin{bmatrix}\lambda &amp; 1 \\ 0 &amp; \lambda\end{bmatrix}^{n}=[\lambda ^{n} n\lambda ^{n-1}; 0 \lambda ^{n}]\)</span>；<br />
+  三阶 Jordan 块 <span class="arithmatex">\(\begin{bmatrix}\lambda &amp; 1 &amp; 0 \\ 0 &amp; \lambda &amp; 1 \\ 0 &amp; 0 &amp; \lambda\end{bmatrix}^{n}\)</span> 的第 (1,2)、(2,3) 元为 <span class="arithmatex">\(n\lambda ^{n-1}\)</span>，第 (1,3) 元为 <span class="arithmatex">\(C(n,2)\lambda ^{n-2}\)</span>，对角元为 <span class="arithmatex">\(\lambda ^{n}\)</span>。</p>
+</li>
+<li>
+<p><strong>旋转矩阵</strong>：<span class="arithmatex">\(R(\varphi )=\begin{bmatrix}\cos\varphi &amp; -\sin\varphi \\ \sin\varphi &amp; \cos\varphi\end{bmatrix}\)</span>，则 <span class="arithmatex">\(R(\varphi )^{n}=R(n\varphi )\)</span>。</p>
+</li>
+<li>
+<p><strong>全 1 矩阵幂</strong>：<span class="arithmatex">\(J_{n}^{k}=n^{k-1}J_{n}\)</span>（<span class="arithmatex">\(k\ge 1\)</span>）。因此 <span class="arithmatex">\((aE+bJ_{n})^{k}\)</span> 可用二项式展开，因为 <span class="arithmatex">\(E\)</span> 与 <span class="arithmatex">\(J_{n}\)</span> 可交换。</p>
+</li>
+<li>
+<p><strong>秩一矩阵</strong>：若 <span class="arithmatex">\(A=\alpha \beta ^{T}\)</span>（<span class="arithmatex">\(\alpha ,\beta\)</span> 为非零列向量），则</p>
+</li>
+<li><span class="arithmatex">\(A^{2}=(\beta ^{T}\alpha )A\)</span>，<span class="arithmatex">\(A^{k}=(\beta ^{T}\alpha )^{k-1}A\)</span>（<span class="arithmatex">\(k\ge 1\)</span>）；</li>
+<li><span class="arithmatex">\(\operatorname{tr}(A)=\beta ^{T}\alpha\)</span>；</li>
+<li><span class="arithmatex">\(\operatorname{r}(A)=1\)</span>；</li>
+<li><span class="arithmatex">\(\ker A=\{x:\beta ^{T}x=0\}\)</span>，维数为 <span class="arithmatex">\(n-1\)</span>；</li>
+<li>
+<p>特征值为 <span class="arithmatex">\(\beta ^{T}\alpha ,0,\dots ,0\)</span>（若已学特征值）。</p>
+</li>
+<li>
+<p><strong>幂等矩阵</strong>：<span class="arithmatex">\(A^{2}=A\)</span>。</p>
+</li>
+<li><span class="arithmatex">\(A^{k}=A\)</span>（<span class="arithmatex">\(k\ge 1\)</span>）；</li>
+<li><span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(E-A)=n\)</span>；</li>
+<li><span class="arithmatex">\(\operatorname{r}(A)=\operatorname{tr}(A)\)</span>；</li>
+<li><span class="arithmatex">\(\det(A)=0\)</span> 或 <span class="arithmatex">\(1\)</span>；</li>
+<li><span class="arithmatex">\(\operatorname{Im} A\)</span> 与 <span class="arithmatex">\(\ker A\)</span> 直和；</li>
+<li>
+<p>若 <span class="arithmatex">\(A\)</span> 可逆，则 <span class="arithmatex">\(A=E\)</span>。</p>
+</li>
+<li>
+<p><strong>对合矩阵</strong>：<span class="arithmatex">\(A^{2}=E\)</span>。</p>
+</li>
+<li><span class="arithmatex">\(A^{-1}=A\)</span>；</li>
+<li><span class="arithmatex">\(A^{k}=E\)</span>（k 偶），<span class="arithmatex">\(A^{k}=A\)</span>（k 奇）；</li>
+<li><span class="arithmatex">\(\det(A)=\pm 1\)</span>；</li>
+<li><span class="arithmatex">\((E-A)(E+A)=0\)</span>；</li>
+<li><span class="arithmatex">\(\operatorname{r}(E-A)+\operatorname{r}(E+A)=n\)</span>（<span class="arithmatex">\(\operatorname{char}\ne 2\)</span>）；</li>
+<li>
+<p>对合矩阵一定可逆，但不一定是 <span class="arithmatex">\(\pm E\)</span>，也不一定是对角矩阵；例如 <span class="arithmatex">\(\begin{bmatrix}0 &amp; 1 \\ 1 &amp; 0\end{bmatrix}\)</span>。</p>
+</li>
+<li>
+<p><strong>幂零矩阵</strong>：<span class="arithmatex">\(A^{k}=0\)</span>。</p>
+</li>
+<li><span class="arithmatex">\(A\)</span> 不可逆，<span class="arithmatex">\(\det(A)=0\)</span>；</li>
+<li><span class="arithmatex">\(E-A\)</span> 与 <span class="arithmatex">\(E+A\)</span> 都可逆；</li>
+<li><span class="arithmatex">\((E-A)^{-1}=E+A+\dots +A^{k-1}\)</span>；</li>
+<li><span class="arithmatex">\((E+A)^{-1}=E-A+A^{2}-\dots +(-1)^{k-1}A^{k-1}\)</span>；</li>
+<li>若 <span class="arithmatex">\(A^{2}=0\)</span>，则 <span class="arithmatex">\((E-A)^{-1}=E+A\)</span>，<span class="arithmatex">\((E+A)^{-1}=E-A\)</span>，且 <span class="arithmatex">\(\operatorname{r}(A)\le n/2\)</span>；</li>
+<li>
+<p>若 <span class="arithmatex">\(A^{3}=0\)</span>，则 <span class="arithmatex">\(E\pm A\)</span> 都可逆，且 <span class="arithmatex">\((E-A)^{-1}=E+A+A^{2}\)</span>。</p>
+</li>
+<li>
+<p><strong>2×2 的 Cayley–Hamilton</strong>：对二阶矩阵 <span class="arithmatex">\(A\)</span>，<br />
+<span class="arithmatex">\(A^{2}-\operatorname{tr}(A)A+\det(A)E=0\)</span>。<br />
+  求高次幂时，可把 <span class="arithmatex">\(A^{2}\)</span> 不断降为 <span class="arithmatex">\(A\)</span> 与 <span class="arithmatex">\(E\)</span> 的组合。</p>
+</li>
+<li>
+<p><strong>2×2 的 <span class="arithmatex">\(A^{2}=0\)</span></strong>：<span class="arithmatex">\(A=0\)</span>，或 <span class="arithmatex">\(A\ne 0\)</span> 且 <span class="arithmatex">\(\operatorname{tr}(A)=0\)</span>、<span class="arithmatex">\(\det(A)=0\)</span>（后者为非零幂零矩阵）。写成元素形式：<span class="arithmatex">\(A=\begin{bmatrix}a &amp; b \\ c &amp; -a\end{bmatrix}\)</span> 且 <span class="arithmatex">\(a^{2}+bc=0\)</span>。</p>
+</li>
+<li>
+<p><strong>2×2 的 <span class="arithmatex">\(A^{2}=E\)</span></strong>：<span class="arithmatex">\(A=\pm E\)</span>，或 <span class="arithmatex">\(\operatorname{tr}(A)=0\)</span> 且 <span class="arithmatex">\(\det(A)=-1\)</span>。写成元素形式：<span class="arithmatex">\(A=\begin{bmatrix}a &amp; b \\ c &amp; -a\end{bmatrix}\)</span> 且 <span class="arithmatex">\(a^{2}+bc=1\)</span>。</p>
+</li>
+<li>
+<p><strong>多项式零点与逆</strong>：若 <span class="arithmatex">\(f(x)=a_{m}x^{m}+\dots +a_{1}x+a_{0}\)</span> 且 <span class="arithmatex">\(a_{0}\ne 0\)</span>，<span class="arithmatex">\(f(A)=0\)</span>，则 <span class="arithmatex">\(A\)</span> 可逆，且<br />
+<span class="arithmatex">\(A^{-1}=-(1/a_{0})(a_{m}A^{m-1}+\dots +a_{1}E)\)</span>。</p>
+</li>
+<li>
+<p><strong>二次方程特例</strong>：若 <span class="arithmatex">\(A^{2}+A-4E=0\)</span>，则<br />
+<span class="arithmatex">\(A^{-1}=(A+E)/4\)</span>，<span class="arithmatex">\((A-E)^{-1}=(A+2E)/2\)</span>。<br />
+  思路：把方程凑成 <span class="arithmatex">\(A(A+E)=4E\)</span>、<span class="arithmatex">\((A-E)(A+2E)=2E\)</span>。</p>
+</li>
+<li>
+<p><strong><span class="arithmatex">\(E-J_{n}\)</span> 的逆</strong>：<span class="arithmatex">\(n&gt;1\)</span> 时 <span class="arithmatex">\(E-J_{n}\)</span> 可逆，且<br />
+<span class="arithmatex">\((E-J_{n})^{-1}=E-J_{n}/(n-1)\)</span>。<br />
+  因为 <span class="arithmatex">\(J_{n}^{2}=nJ_{n}\)</span>。</p>
+</li>
+<li>
+<p><strong>两个逆的和</strong>：若 <span class="arithmatex">\(A,B,A+B\)</span> 都可逆，则<br />
+<span class="arithmatex">\((A^{-1}+B^{-1})^{-1}=A(A+B)^{-1}B=B(A+B)^{-1}A\)</span>。<br />
+  记忆：<span class="arithmatex">\(A^{-1}+B^{-1}=A^{-1}(A+B)B^{-1}\)</span>，再整体求逆。</p>
+</li>
+<li>
+<p><strong>Sherman–Morrison（秩一更新求逆）</strong>：若 <span class="arithmatex">\(A\)</span> 可逆，<span class="arithmatex">\(1+\beta ^{T}A^{-1}\alpha \ne 0\)</span>，则<br />
+<span class="arithmatex">\((A+\alpha \beta ^{T})^{-1}=A^{-1}-[A^{-1}\alpha \beta ^{T}A^{-1}]/(1+\beta ^{T}A^{-1}\alpha )\)</span>。<br />
+  特例：<span class="arithmatex">\((E+xx^{T})^{-1}=E-xx^{T}/(1+x^{T}x)\)</span>。</p>
+</li>
+</ul>
+<h3>2.3 逆矩阵与伴随矩阵</h3>
+<ul>
+<li>
+<p><strong>可逆的等价条件</strong>（n 阶方阵）：<br />
+<span class="arithmatex">\(A\)</span> 可逆 ⇔ <span class="arithmatex">\(\det(A)\ne 0\)</span> ⇔ <span class="arithmatex">\(\operatorname{r}(A)=n\)</span> ⇔ <span class="arithmatex">\(Ax=0\)</span> 只有零解 ⇔ <span class="arithmatex">\(A\)</span> 的行（列）线性无关 ⇔ <span class="arithmatex">\(A\)</span> 可写成若干初等矩阵的乘积。</p>
+</li>
+<li>
+<p><strong>严格对角占优</strong>（补充题 3.3）：若对每个 i 都有<br />
+<span class="arithmatex">\(\lvert a_{ii}\rvert&gt;\sum _{j\ne i}\lvert a_{ij}\rvert\)</span>，<br />
+  则 <span class="arithmatex">\(A\)</span> 可逆。习题中给的是更强的 <span class="arithmatex">\(2\lvert a_{ii}\rvert&gt;\sum _{j\ne i}\lvert a_{ij}\rvert\)</span>；条件越强，证明越容易，结论仍是“可逆”。</p>
+</li>
+<li>
+<p><strong>二阶逆公式</strong>：<span class="arithmatex">\(\begin{bmatrix}a &amp; b \\ c &amp; d\end{bmatrix}^{-1}=1/(ad-bc)\begin{bmatrix}d &amp; -b \\ -c &amp; a\end{bmatrix}\)</span>（<span class="arithmatex">\(ad-bc\ne 0\)</span>）。</p>
+</li>
+<li>
+<p><strong>伴随矩阵核心恒等式</strong>：<br />
+<span class="arithmatex">\(AA^{*}=A^{*}A=\det(A)E\)</span>。<br />
+  因此 <span class="arithmatex">\(A\)</span> 可逆时 <span class="arithmatex">\(A^{-1}=A^{*}/\det(A)\)</span>；<span class="arithmatex">\(A\)</span> 不可逆时 <span class="arithmatex">\(AA^{*}=O\)</span>。</p>
+</li>
+<li>
+<p><strong>伴随的运算</strong>：<br />
+<span class="arithmatex">\((AB)^{*}=B^{*}A^{*}\)</span>，<span class="arithmatex">\((A^{T})^{*}=(A^{*})^{T}\)</span>，<span class="arithmatex">\((cA)^{*}=c^{n-1}A^{*}\)</span>。</p>
+</li>
+<li>
+<p><strong>伴随的行列式与二次伴随</strong>：<br />
+<span class="arithmatex">\(\det(A^{*})=\det(A)^{n-1}\)</span>；<br />
+<span class="arithmatex">\((A^{*})^{*}=\det(A)^{n-2}A\)</span>（<span class="arithmatex">\(n\ge 2\)</span>）。</p>
+</li>
+<li>
+<p><strong>伴随的秩</strong>（<span class="arithmatex">\(n\ge 2\)</span>）：<br />
+<span class="arithmatex">\(\operatorname{r}(A^{*})=n\)</span>（<span class="arithmatex">\(\operatorname{r}(A)=n\)</span>），<span class="arithmatex">\(\operatorname{r}(A^{*})=1\)</span>（<span class="arithmatex">\(\operatorname{r}(A)=n-1\)</span>），<span class="arithmatex">\(\operatorname{r}(A^{*})=0\)</span>（<span class="arithmatex">\(\operatorname{r}(A)\le n-2\)</span>）。</p>
+</li>
+<li>
+<p><strong>秩 n-1 时用伴随求零空间</strong>：若 <span class="arithmatex">\(\operatorname{r}(A)=n-1\)</span>，则 <span class="arithmatex">\(A^{*}\ne 0\)</span> 且 <span class="arithmatex">\(AA^{*}=O\)</span>，所以 <span class="arithmatex">\(A^{*}\)</span> 的每一列都是 <span class="arithmatex">\(Ax=0\)</span> 的解。由于 <span class="arithmatex">\(\operatorname{r}(A^{*})=1\)</span>，<span class="arithmatex">\(A^{*}\)</span> 的任一非零列就是 <span class="arithmatex">\(Ax=0\)</span> 的一个基础解系。类似地，<span class="arithmatex">\(A^{*}\)</span> 的非零行给出 <span class="arithmatex">\(A^{T}y=0\)</span> 的基础解系。</p>
+</li>
+<li>
+<p><strong>余子式之和</strong>：<br />
+<span class="arithmatex">\(\sum_j A_{ij}\)</span> 等于“把 <span class="arithmatex">\(A\)</span> 的第 <span class="arithmatex">\(i\)</span> 行换成全 <span class="arithmatex">\(1\)</span> 向量”后的行列式；<br />
+<span class="arithmatex">\(\sum_i A_{ij}\)</span> 等于“把 <span class="arithmatex">\(A\)</span> 的第 <span class="arithmatex">\(j\)</span> 列换成全 <span class="arithmatex">\(1\)</span> 向量”后的行列式；<br />
+<span class="arithmatex">\(\sum_{i,j}A_{ij}=1^{T} A^{*} 1\)</span>。<br />
+  若已知各行（列）和，这个恒等式常比逐个算余子式快。</p>
+</li>
+<li>
+<p><strong>矩阵方程先提取公因式</strong>：若 <span class="arithmatex">\(BA=B+2E\)</span>，则 <span class="arithmatex">\(B(A-E)=2E\)</span>，所以 <span class="arithmatex">\(\det(B)\det(A-E)=2^{n}\)</span>；若 <span class="arithmatex">\(A-E\)</span> 可逆，则 <span class="arithmatex">\(\det(B)=2^{n}/\det(A-E)\)</span>（习题 3.16）。若 <span class="arithmatex">\(A,B\)</span> 可逆，<span class="arithmatex">\(AXB=C\)</span> 的解为 <span class="arithmatex">\(X=A^{-1}CB^{-1}\)</span>（习题 3.29）。</p>
+</li>
+<li>
+<p><strong>不要幻想 <span class="arithmatex">\((A+B)^{-1}=A^{-1}+B^{-1}\)</span></strong>：一般不等。常用的是 <span class="arithmatex">\((AB)^{-1}=B^{-1}A^{-1}\)</span>、<span class="arithmatex">\((A^{T})^{-1}=(A^{-1})^{T}\)</span>、<span class="arithmatex">\((cA)^{-1}=c^{-1}A^{-1}\)</span>。</p>
+</li>
+</ul>
+<h3>2.4 对称、反对称与迹</h3>
+<ul>
+<li>
+<p><strong>对称与反对称的分解</strong>：任意方阵 <span class="arithmatex">\(A\)</span> 可唯一写成<br />
+<span class="arithmatex">\(A=(A+A^{T})/2+(A-A^{T})/2\)</span>，<br />
+  前一项对称，后一项反对称。</p>
+</li>
+<li>
+<p><strong><span class="arithmatex">\(A^{T}A\)</span> 与 <span class="arithmatex">\(AA^{T}\)</span></strong>：都对称。实矩阵情形下<br />
+<span class="arithmatex">\(\operatorname{r}(A^{T}A)=\operatorname{r}(AA^{T})=\operatorname{r}(A)\)</span>；<br />
+  若 <span class="arithmatex">\(A\)</span> 列满秩，则 <span class="arithmatex">\(A^{T}A\)</span> 可逆（实矩阵）。</p>
+</li>
+<li>
+<p><strong>对称矩阵乘积</strong>：若 <span class="arithmatex">\(A,B\)</span> 都对称，则 <span class="arithmatex">\(AB\)</span> 对称 ⇔ <span class="arithmatex">\(AB=BA\)</span>。因为 <span class="arithmatex">\((AB)^{T}=BA\)</span>。</p>
+</li>
+<li>
+<p><strong>反对称矩阵</strong>：</p>
+</li>
+<li>主对角元全为 0；</li>
+<li>奇数阶反对称矩阵的行列式为 0（<span class="arithmatex">\(\operatorname{char}\ne 2\)</span>）；</li>
+<li>
+<p>实反对称矩阵满足 <span class="arithmatex">\(x^{T}Ax=0\)</span> 对任意实向量 x 成立。</p>
+</li>
+<li>
+<p><strong>实对称矩阵的补充</strong>：若 <span class="arithmatex">\(A\)</span> 实对称且 <span class="arithmatex">\(A^{2}=0\)</span>，则 <span class="arithmatex">\(A=0\)</span>（因为 <span class="arithmatex">\(\operatorname{tr}(A^{T}A)=\operatorname{tr}(A^{2})=0\)</span>）。</p>
+</li>
+<li>
+<p><strong>交换矩阵（中心化子）</strong>：</p>
+</li>
+<li>与单个 Jordan 块 <span class="arithmatex">\(J_{n}(0)\)</span> 可交换的矩阵，恰为 <span class="arithmatex">\(J_{n}(0)\)</span> 的多项式，即上三角 Toeplitz 矩阵（每条对角线元素相同）；</li>
+<li>与对角元互不相同的对角矩阵可交换的矩阵，恰为对角矩阵；</li>
+<li>与所有 n 阶矩阵都可交换的矩阵，恰为数量矩阵 <span class="arithmatex">\(cE\)</span>；</li>
+<li>若 <span class="arithmatex">\(A\)</span> 有 n 个互不相同的特征值，则与 <span class="arithmatex">\(A\)</span> 可交换的矩阵都是 <span class="arithmatex">\(A\)</span> 的多项式（若已学特征值）。</li>
+</ul>
+<h3>2.5 初等变换、行等价与标准形</h3>
+<ul>
+<li>
+<p><strong>行变换不改变</strong>：行空间、<span class="arithmatex">\(Ax=0\)</span> 的解空间、行秩；<strong>列变换不改变</strong>：列空间、列秩。行列变换都不改变秩，但列变换一般会改变 <span class="arithmatex">\(Ax=0\)</span> 的解集，不能用来解方程。</p>
+</li>
+<li>
+<p><strong>行交换可由倍加实现</strong>：依次做<br />
+<span class="arithmatex">\(R_{i}\leftarrow R_{i}+R_{j}\)</span>，<span class="arithmatex">\(R_{j}\leftarrow R_{i}-R_{j}\)</span>，<span class="arithmatex">\(R_{i}\leftarrow R_{i}-R_{j}\)</span>，<br />
+  就把第 i 行与第 j 行交换。因此若允许“倍加 + 倍乘”，交换变换并不是本质上新的运算（习题 1.6、1.7）。</p>
+</li>
+<li>
+<p><strong>行最简形</strong>：每个非零行首个非零元为 1，且该元所在列其余元素为 0；行最简形唯一。秩 = 非零行数 = 主元个数。</p>
+</li>
+<li>
+<p><strong>相抵标准形</strong>：任意 <span class="arithmatex">\(m\times n\)</span> 矩阵 <span class="arithmatex">\(A\)</span> 都可通过初等行、列变换化为<br />
+<span class="arithmatex">\(\begin{bmatrix}E_{r} &amp; O \\ O &amp; O\end{bmatrix}\)</span>，其中 <span class="arithmatex">\(r=\operatorname{r}(A)\)</span>。这个标准形由秩唯一确定。</p>
+</li>
+<li>
+<p><strong>相抵与秩</strong>：同尺寸矩阵 <span class="arithmatex">\(A,B\)</span> 相抵 ⇔ <span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(B)\)</span> ⇔ 存在可逆 <span class="arithmatex">\(P,Q\)</span> 使 <span class="arithmatex">\(PAQ=B\)</span>。</p>
+</li>
+<li>
+<p><strong>行等价与列等价</strong>：</p>
+</li>
+<li>行等价：<span class="arithmatex">\(B=PA\)</span>（<span class="arithmatex">\(P\)</span> 可逆）；行空间相同，<span class="arithmatex">\(Ax=0\)</span> 与 <span class="arithmatex">\(Bx=0\)</span> 同解；</li>
+<li>
+<p>列等价：<span class="arithmatex">\(B=AQ\)</span>（<span class="arithmatex">\(Q\)</span> 可逆）；列空间相同，秩相同，但 <span class="arithmatex">\(Ax=0\)</span> 与 <span class="arithmatex">\(Bx=0\)</span> 一般不同解。</p>
+</li>
+<li>
+<p><strong>同零空间</strong>：对列数相同的 <span class="arithmatex">\(A,B\)</span>，<span class="arithmatex">\(Ax=0\)</span> 与 <span class="arithmatex">\(Bx=0\)</span> 同解 ⇔ <span class="arithmatex">\(A,B\)</span> 的行空间相同 ⇔ <span class="arithmatex">\(A,B\)</span> 行等价。因此同零空间必同秩；但同秩不一定同零空间。</p>
+</li>
+<li>
+<p><strong>单侧逆</strong>：</p>
+</li>
+<li><span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>，若 <span class="arithmatex">\(\operatorname{r}(A)=m\)</span>（行满秩），则存在 <span class="arithmatex">\(n\times m\)</span> 矩阵 <span class="arithmatex">\(B\)</span> 使 <span class="arithmatex">\(AB=E_{m}\)</span>；</li>
+<li>若 <span class="arithmatex">\(\operatorname{r}(A)=n\)</span>（列满秩），则存在 <span class="arithmatex">\(m\times n\)</span> 矩阵 <span class="arithmatex">\(C\)</span> 使 <span class="arithmatex">\(CA=E_{n}\)</span>；</li>
+<li>若 <span class="arithmatex">\(AB=E_{m}\)</span>，则 <span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(B)=m\)</span>，<span class="arithmatex">\(A\)</span> 行满秩、<span class="arithmatex">\(B\)</span> 列满秩。注意此时 <span class="arithmatex">\(BA\)</span> 不一定等于 <span class="arithmatex">\(E_{n}\)</span>。</li>
+</ul>
+<hr />
+<h2>3. 分块矩阵</h2>
+<h3>3.1 定义、乘法与转置</h3>
+<ul>
+<li><strong>分块矩阵的合法性</strong>：对 <span class="arithmatex">\(A=(A_{ij})_{s\times t}\)</span>，</li>
+<li>同一块行中的各子块必须有相同的行数；</li>
+<li>同一块列中的各子块必须有相同的列数；</li>
+<li>
+<p>不同块行之间、不同块列之间不要求行数、列数一致。<br />
+  这是习题 1.4 的结论；满足这两条，分块矩阵才有意义。</p>
+</li>
+<li>
+<p><strong>拼接时的尺寸匹配</strong>：若 <span class="arithmatex">\(A11\)</span> 是 <span class="arithmatex">\(p\times q\)</span>，则 <span class="arithmatex">\(A12\)</span> 必须是 <span class="arithmatex">\(p\times r\)</span>，<span class="arithmatex">\(A21\)</span> 必须是 <span class="arithmatex">\(s\times q\)</span>，<span class="arithmatex">\(A22\)</span> 必须是 <span class="arithmatex">\(s\times r\)</span>。做习题 1.5 这类“已知一个子块，从候选矩阵中选其余子块”的题，先写这四个尺寸，再逐个比对。</p>
+</li>
+<li>
+<p><strong>分块乘法</strong>：若 <span class="arithmatex">\(A\)</span> 的列分法与 <span class="arithmatex">\(B\)</span> 的行分法一致，则<br />
+<span class="arithmatex">\((AB)_{ij}=\sum _{k} A_{ik}B_{kj}\)</span>。分块乘法与普通乘法规则相同，只是每个元素换成子块。</p>
+</li>
+<li>
+<p><strong>分块转置</strong>：<span class="arithmatex">\(\begin{bmatrix}A &amp; B \\ C &amp; D\end{bmatrix}^{T}=\begin{bmatrix}A^{T} &amp; C^{T} \\ B^{T} &amp; D^{T}\end{bmatrix}\)</span>。注意不仅子块转置，子块的位置也转置。</p>
+</li>
+<li>
+<p><strong>分块对角</strong>：<span class="arithmatex">\(\operatorname{diag}(A_{1},\dots ,A_{s})\)</span> 的行列式为 <span class="arithmatex">\(\prod \det(A_{i})\)</span>，秩为 <span class="arithmatex">\(\sum \operatorname{r}(A_{i})\)</span>，逆为 <span class="arithmatex">\(\operatorname{diag}(A_{1}^{-1},\dots ,A_{s}^{-1})\)</span>，幂为 <span class="arithmatex">\(\operatorname{diag}(A_{1}^{k},\dots ,A_{s}^{k})\)</span>（各块可逆或幂有意义时）。</p>
+</li>
+</ul>
+<h3>3.2 分块行列式</h3>
+<ul>
+<li>
+<p><strong>分块三角</strong>：<br />
+<span class="arithmatex">\(\det\begin{vmatrix}A &amp; B \\ O &amp; C\end{vmatrix}=\det(A)\det(C)\)</span>；<br />
+<span class="arithmatex">\(\det\begin{vmatrix}A &amp; O \\ B &amp; C\end{vmatrix}=\det(A)\det(C)\)</span>。<br />
+  不要求 <span class="arithmatex">\(B\)</span> 为零，只要另一块为零即可。</p>
+</li>
+<li>
+<p><strong>分块反角</strong>：若 <span class="arithmatex">\(A\)</span> 为 m 阶、<span class="arithmatex">\(B\)</span> 为 n 阶，则<br />
+<span class="arithmatex">\(\det\begin{vmatrix}O &amp; A \\ B &amp; O\end{vmatrix}=(-1)^{mn}\det(A)\det(B)\)</span>。</p>
+</li>
+<li>
+<p><strong>Schur 补（分块行列式）</strong>：若 <span class="arithmatex">\(A\)</span> 可逆，则<br />
+<span class="arithmatex">\(\det\begin{vmatrix}A &amp; B \\ C &amp; D\end{vmatrix}=\det(A)\cdot \det(D-CA^{-1}B)\)</span>；<br />
+  若 <span class="arithmatex">\(D\)</span> 可逆，则<br />
+<span class="arithmatex">\(\det\begin{vmatrix}A &amp; B \\ C &amp; D\end{vmatrix}=\det(D)\cdot \det(A-BD^{-1}C)\)</span>。<br />
+  其中 <span class="arithmatex">\(D-CA^{-1}B\)</span>、<span class="arithmatex">\(A-BD^{-1}C\)</span> 称为 Schur 补。</p>
+</li>
+<li>
+<p><strong>两个特殊分块行列式</strong>：<br />
+<span class="arithmatex">\(\det\begin{vmatrix}A &amp; B \\ B &amp; A\end{vmatrix}=\det(A+B)\det(A-B)\)</span>（<span class="arithmatex">\(\operatorname{char}\ne 2\)</span>）；<br />
+  若 <span class="arithmatex">\(A\)</span> 可逆且 <span class="arithmatex">\(AC=CA\)</span>，则<br />
+<span class="arithmatex">\(\det\begin{vmatrix}A &amp; B \\ C &amp; D\end{vmatrix}=\det(AD-CB)\)</span>。</p>
+</li>
+<li>
+<p><strong>与 Sylvester 恒等式配合</strong>：遇到 <span class="arithmatex">\(\det(E-AB)\)</span>、<span class="arithmatex">\(\det(\lambda E-AB)\)</span> 时，先想<br />
+<span class="arithmatex">\(\det(E_{m}-AB)=\det(E_{n}-BA)\)</span>，把大块化成小块。</p>
+</li>
+</ul>
+<h3>3.3 分块逆矩阵</h3>
+<ul>
+<li>
+<p><strong>分块对角</strong>：<span class="arithmatex">\(\begin{bmatrix}A &amp; O \\ O &amp; B\end{bmatrix}^{-1}=\begin{bmatrix}A^{-1} &amp; O \\ O &amp; B^{-1}\end{bmatrix}\)</span>（<span class="arithmatex">\(A,B\)</span> 可逆）。</p>
+</li>
+<li>
+<p><strong>分块反角</strong>：<span class="arithmatex">\(\begin{bmatrix}O &amp; A \\ B &amp; O\end{bmatrix}^{-1}=\begin{bmatrix}O &amp; B^{-1} \\ A^{-1} &amp; O\end{bmatrix}\)</span>（<span class="arithmatex">\(A,B\)</span> 可逆）。</p>
+</li>
+<li>
+<p><strong>分块反角的伴随</strong>：若 <span class="arithmatex">\(M=\begin{bmatrix}O &amp; A \\ B &amp; O\end{bmatrix}\)</span>，<span class="arithmatex">\(A,B\)</span> 为 n 阶可逆矩阵，则<br />
+<span class="arithmatex">\(M^{*}=\begin{bmatrix}O &amp; (-1)^{n}\det(A)B^{*} \\ (-1)^{n}\det(B)A^{*} &amp; O\end{bmatrix}\)</span>。<br />
+  2 阶块（n=2）时符号为正，可用于习题 3.43。</p>
+</li>
+<li>
+<p><strong>分块上三角</strong>：<br />
+<span class="arithmatex">\(\begin{bmatrix}A &amp; B \\ O &amp; C\end{bmatrix}^{-1}=\begin{bmatrix}A^{-1} &amp; -A^{-1}BC^{-1} \\ O &amp; C^{-1}\end{bmatrix}\)</span>（<span class="arithmatex">\(A,C\)</span> 可逆）。</p>
+</li>
+<li>
+<p><strong>分块下三角</strong>：<br />
+<span class="arithmatex">\(\begin{bmatrix}A &amp; O \\ C &amp; D\end{bmatrix}^{-1}=\begin{bmatrix}A^{-1} &amp; O \\ -D^{-1}CA^{-1} &amp; D^{-1}\end{bmatrix}\)</span>（<span class="arithmatex">\(A,D\)</span> 可逆）。</p>
+</li>
+<li>
+<p><strong>一般 2×2 分块逆（Schur 补形式）</strong>：若 <span class="arithmatex">\(A\)</span> 可逆，且 <span class="arithmatex">\(S=D-CA^{-1}B\)</span> 可逆，则<br />
+<span class="arithmatex">\(\begin{bmatrix}A &amp; B \\ C &amp; D\end{bmatrix}^{-1}=\begin{bmatrix}A^{-1}+A^{-1}BS^{-1}CA^{-1} &amp; -A^{-1}BS^{-1} \\ -S^{-1}CA^{-1} &amp; S^{-1}\end{bmatrix}\)</span>。<br />
+  若 <span class="arithmatex">\(D\)</span> 可逆，令 <span class="arithmatex">\(T=A-BD^{-1}C\)</span>，也有对称的公式。记不住时，用“分块高斯消元”现场推。</p>
+</li>
+</ul>
+<h3>3.4 分块矩阵的秩</h3>
+<ul>
+<li>
+<p><strong>分块对角</strong>：<span class="arithmatex">\(\operatorname{r}(\begin{bmatrix}A &amp; O \\ O &amp; B\end{bmatrix})=\operatorname{r}(A)+\operatorname{r}(B)\)</span>。</p>
+</li>
+<li>
+<p><strong>分块三角</strong>：<br />
+<span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(B) \le  \operatorname{r}(\begin{bmatrix}A &amp; C \\ O &amp; B\end{bmatrix}) \le  \operatorname{r}(A)+\operatorname{r}(B)+\operatorname{r}(C)\)</span>。<br />
+  当 <span class="arithmatex">\(C=O\)</span> 时取等号；<span class="arithmatex">\(C\)</span> 可能使秩增大，但最多增大 <span class="arithmatex">\(\operatorname{r}(C)\)</span>。</p>
+</li>
+<li>
+<p><strong>横向、纵向拼接</strong>：<br />
+<span class="arithmatex">\(\max(\operatorname{r}(A),\operatorname{r}(B)) \le  \operatorname{r}\left(\begin{bmatrix}A &amp; B\end{bmatrix}\right) \le  \operatorname{r}(A)+\operatorname{r}(B)\)</span>；<br />
+<span class="arithmatex">\(\max(\operatorname{r}(A),\operatorname{r}(B)) \le  \operatorname{r}(\begin{bmatrix}A \\ B\end{bmatrix}) \le  \operatorname{r}(A)+\operatorname{r}(B)\)</span>。<br />
+  这是习题 2.19 的结论。</p>
+</li>
+<li>
+<p><strong>Schur 补的秩</strong>：若 <span class="arithmatex">\(A\)</span> 可逆，则<br />
+<span class="arithmatex">\(\operatorname{r}(\begin{bmatrix}A &amp; B \\ C &amp; D\end{bmatrix})=\operatorname{r}(A)+\operatorname{r}(D-CA^{-1}B)\)</span>。<br />
+  这是分块矩阵求秩最常用的公式之一。</p>
+</li>
+<li>
+<p><strong>分块对称合同</strong>（补充题 3.5）：若 <span class="arithmatex">\(M=\begin{bmatrix}A &amp; B \\ C &amp; D\end{bmatrix}\)</span> 对称、<span class="arithmatex">\(A\)</span> 可逆，则存在可逆 <span class="arithmatex">\(P\)</span> 使<br />
+<span class="arithmatex">\(P^{T} M P=\begin{bmatrix}A &amp; O \\ O &amp; D-CA^{-1}B\end{bmatrix}\)</span>。<br />
+  因此分块对称矩阵在合同意义下可化为分块对角，<span class="arithmatex">\(D-CA^{-1}B\)</span> 是核心。</p>
+</li>
+</ul>
+<hr />
+<h2>4. 秩</h2>
+<h3>4.1 基本定理与求法</h3>
+<ul>
+<li>
+<p><strong>行秩 = 列秩</strong>：矩阵的行秩等于列秩，统称为秩 <span class="arithmatex">\(\operatorname{r}(A)\)</span>；也等于行空间维数、列空间维数。</p>
+</li>
+<li>
+<p><strong>秩与主元</strong>：把矩阵化为阶梯形，秩 = 非零行数 = 主元个数。行最简形唯一，因此主元位置唯一。</p>
+</li>
+<li>
+<p><strong>秩与子式</strong>：<span class="arithmatex">\(\operatorname{r}(A)\ge k\)</span> ⇔ 存在一个 k 阶子式不为 0；<span class="arithmatex">\(\operatorname{r}(A)\le k\)</span> ⇔ 所有 k+1 阶子式都为 0。特别地，<span class="arithmatex">\(\operatorname{r}(A)=n\)</span> ⇔ <span class="arithmatex">\(\det(A)\ne 0\)</span>。</p>
+</li>
+<li>
+<p><strong>秩与零空间</strong>：<span class="arithmatex">\(\operatorname{r}(A)+dim \ker A=n\)</span>（A 有 n 列）。这是秩–零度定理，也是解方程组自由度的来源。</p>
+</li>
+<li>
+<p><strong>秩与相抵标准形</strong>：<span class="arithmatex">\(A\)</span> 相抵于 <span class="arithmatex">\(\begin{bmatrix}E_{r} &amp; O \\ O &amp; O\end{bmatrix}\)</span>，<span class="arithmatex">\(r=\operatorname{r}(A)\)</span>；同尺寸矩阵同秩 ⇔ 相抵。</p>
+</li>
+<li>
+<p><strong>转置</strong>：<span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(A^{T})\)</span>。因此行秩与列秩相等。</p>
+</li>
+<li>
+<p><strong>实矩阵的 <span class="arithmatex">\(A^{T}A\)</span></strong>：<span class="arithmatex">\(\operatorname{r}(A^{T}A)=\operatorname{r}(AA^{T})=\operatorname{r}(A)\)</span>；<span class="arithmatex">\(A^{T}A\)</span> 可逆 ⇔ <span class="arithmatex">\(A\)</span> 列满秩。注意这条依赖实数域（或复矩阵用共轭转置），一般数域上不总成立。</p>
+</li>
+<li>
+<p><strong>满秩</strong>：<span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>，<span class="arithmatex">\(\operatorname{r}(A)=m\)</span> 称行满秩，<span class="arithmatex">\(\operatorname{r}(A)=n\)</span> 称列满秩；方阵满秩即可逆。</p>
+</li>
+</ul>
+<h3>4.2 秩的不等式</h3>
+<ul>
+<li>
+<p><strong>和、差</strong>：<br />
+<span class="arithmatex">\(\operatorname{r}(A+B)\le \operatorname{r}(A)+\operatorname{r}(B)\)</span>；<br />
+<span class="arithmatex">\(\operatorname{r}(A-B)\ge \lvert \operatorname{r}(A)-\operatorname{r}(B)\rvert\)</span>；<br />
+<span class="arithmatex">\(\operatorname{r}(A+B)\ge \operatorname{r}(A)-\operatorname{r}(B)\)</span>。<br />
+  因此“两个矩阵相加，秩不会超过秩之和”；“相减，秩不会小于秩之差”。</p>
+</li>
+<li>
+<p><strong>乘积</strong>：<span class="arithmatex">\(\operatorname{r}(AB)\le \min(\operatorname{r}(A),\operatorname{r}(B))\)</span>。乘积的秩不会超过任一因子。</p>
+</li>
+<li>
+<p><strong>Sylvester 不等式</strong>：若 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>、<span class="arithmatex">\(B\)</span> 为 <span class="arithmatex">\(n\times p\)</span>，则<br />
+<span class="arithmatex">\(\operatorname{r}(AB)\ge \operatorname{r}(A)+\operatorname{r}(B)-n\)</span>。<br />
+  等价写法：<span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(B)\le n+\operatorname{r}(AB)\)</span>。</p>
+</li>
+<li>
+<p><strong>Frobenius 不等式</strong>：<br />
+<span class="arithmatex">\(\operatorname{r}(AB)+\operatorname{r}(BC)\le \operatorname{r}(B)+\operatorname{r}(ABC)\)</span>；<br />
+  等价地 <span class="arithmatex">\(\operatorname{r}(ABC)\ge \operatorname{r}(AB)+\operatorname{r}(BC)-\operatorname{r}(B)\)</span>。</p>
+</li>
+<li>
+<p><strong><span class="arithmatex">\(AB=0\)</span></strong>：若 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>、<span class="arithmatex">\(B\)</span> 为 <span class="arithmatex">\(n\times p\)</span>，则<br />
+<span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(B)\le n\)</span>。<br />
+  直观：<span class="arithmatex">\(B\)</span> 的列全在 <span class="arithmatex">\(\ker A\)</span> 中，所以 <span class="arithmatex">\(\operatorname{r}(B)\le dim \ker A=n-\operatorname{r}(A)\)</span>。</p>
+</li>
+<li>
+<p><strong><span class="arithmatex">\(ABC=0\)</span></strong>：若 <span class="arithmatex">\(A,B,C\)</span> 均为 n 阶方阵且 <span class="arithmatex">\(ABC=0\)</span>，则<br />
+<span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(B)+\operatorname{r}(C)\le 2n\)</span>（习题 3.63）。</p>
+</li>
+<li>
+<p><strong>分块</strong>：<br />
+<span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(B)\le \operatorname{r}(\begin{bmatrix}A &amp; C \\ O &amp; B\end{bmatrix})\le \operatorname{r}(A)+\operatorname{r}(B)+\operatorname{r}(C)\)</span>；<br />
+<span class="arithmatex">\(\max(\operatorname{r}(A),\operatorname{r}(B))\le \operatorname{r}\left(\begin{bmatrix}A &amp; B\end{bmatrix}\right)\le \operatorname{r}(A)+\operatorname{r}(B)\)</span>；<br />
+<span class="arithmatex">\(\max(\operatorname{r}(A),\operatorname{r}(B))\le \operatorname{r}(\begin{bmatrix}A \\ B\end{bmatrix})\le \operatorname{r}(A)+\operatorname{r}(B)\)</span>。</p>
+</li>
+<li>
+<p><strong>幂的秩</strong>：<span class="arithmatex">\(\operatorname{r}(A)\ge \operatorname{r}(A^{2})\ge \operatorname{r}(A^{3})\ge \dots\)</span>。并且<br />
+<span class="arithmatex">\(\operatorname{r}(A^{k+2})+\operatorname{r}(A^{k})\ge 2\operatorname{r}(A^{k+1})\)</span>，即秩序列的“下降速度”不会越来越快。<br />
+  特例：<span class="arithmatex">\(\operatorname{r}(A^{3})+\operatorname{r}(A)\ge 2\operatorname{r}(A^{2})\)</span>（习题 3.64）。</p>
+</li>
+<li>
+<p><strong>幂的稳定</strong>：<span class="arithmatex">\(\operatorname{r}(A^{n})=\operatorname{r}(A^{n+1})=\operatorname{r}(A^{n+2})=\dots\)</span>。n 阶矩阵的幂秩最多在 n 次后稳定（习题补充 3.10）。更一般地，若某一步 <span class="arithmatex">\(\operatorname{r}(A^{k})=\operatorname{r}(A^{k+1})\)</span>，则以后都相等。</p>
+</li>
+<li>
+<p><strong>秩一更新</strong>：<span class="arithmatex">\(\operatorname{r}(A+\alpha \beta ^{T})\ge \operatorname{r}(A)-1\)</span>。因为秩一矩阵的秩至多为 1，而 <span class="arithmatex">\(\operatorname{r}(A+B)\ge \operatorname{r}(A)-\operatorname{r}(B)\)</span>。若 <span class="arithmatex">\(A\)</span> 可逆，则 <span class="arithmatex">\(\operatorname{r}(A+\alpha \beta ^{T})\ge n-1\)</span>（补充题 3.12）。</p>
+</li>
+<li>
+<p><strong>满秩因子的消去</strong>：</p>
+</li>
+<li>若 <span class="arithmatex">\(A\)</span> 列满秩，则 <span class="arithmatex">\(\operatorname{r}(AB)=\operatorname{r}(B)\)</span>；</li>
+<li>若 <span class="arithmatex">\(B\)</span> 行满秩，则 <span class="arithmatex">\(\operatorname{r}(AB)=\operatorname{r}(A)\)</span>；</li>
+<li>
+<p>若 <span class="arithmatex">\(A\)</span> 或 <span class="arithmatex">\(B\)</span> 可逆，则 <span class="arithmatex">\(\operatorname{r}(AB)=\operatorname{r}(B)\)</span> 或 <span class="arithmatex">\(\operatorname{r}(A)\)</span>。</p>
+</li>
+<li>
+<p><strong>列（行）空间的吸收</strong>：<br />
+<span class="arithmatex">\(\operatorname{r}\left(\begin{bmatrix}A &amp; AB\end{bmatrix}\right)=\operatorname{r}(A)\)</span>，<span class="arithmatex">\(\operatorname{r}(\begin{bmatrix}A \\ BA\end{bmatrix})=\operatorname{r}(A)\)</span>。<br />
+  因为 <span class="arithmatex">\(AB\)</span> 的列是 <span class="arithmatex">\(A\)</span> 的列的线性组合，<span class="arithmatex">\(BA\)</span> 的行是 <span class="arithmatex">\(A\)</span> 的行的线性组合；添上这些列（行）不会扩大列（行）空间。</p>
+</li>
+</ul>
+<h3>4.3 秩的等式与特殊秩</h3>
+<ul>
+<li>
+<p><strong>伴随的秩</strong>：<span class="arithmatex">\(\operatorname{r}(A^{*})=n\)</span>（<span class="arithmatex">\(\operatorname{r}(A)=n\)</span>），<span class="arithmatex">\(1\)</span>（<span class="arithmatex">\(\operatorname{r}(A)=n-1\)</span>），<span class="arithmatex">\(0\)</span>（<span class="arithmatex">\(\operatorname{r}(A)\le n-2\)</span>），<span class="arithmatex">\(n\ge 2\)</span>。</p>
+</li>
+<li>
+<p><strong>幂等</strong>：<span class="arithmatex">\(A^{2}=A\)</span> ⇒ <span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(E-A)=n\)</span>，且 <span class="arithmatex">\(\operatorname{r}(A)=\operatorname{tr}(A)\)</span>。</p>
+</li>
+<li>
+<p><strong>对合</strong>：<span class="arithmatex">\(A^{2}=E\)</span> ⇒ <span class="arithmatex">\(\operatorname{r}(E-A)+\operatorname{r}(E+A)=n\)</span>（<span class="arithmatex">\(\operatorname{char}\ne 2\)</span>）。</p>
+</li>
+<li>
+<p><strong>单侧逆</strong>：<span class="arithmatex">\(AB=E_{m}\)</span> ⇒ <span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(B)=m\)</span>；<span class="arithmatex">\(A\)</span> 行满秩，<span class="arithmatex">\(B\)</span> 列满秩。</p>
+</li>
+<li>
+<p><strong>秩一矩阵的刻画</strong>：<span class="arithmatex">\(\operatorname{r}(A)=1\)</span> ⇔ 存在非零列向量 <span class="arithmatex">\(\alpha ,\beta\)</span> 使 <span class="arithmatex">\(A=\alpha \beta ^{T}\)</span> ⇔ 所有行成比例（或所有列成比例）⇔ 所有 2 阶子式为 0 且 <span class="arithmatex">\(A\ne O\)</span>。</p>
+</li>
+<li>
+<p><strong>秩分解</strong>：若 <span class="arithmatex">\(\operatorname{r}(A)=r\)</span>，则存在 <span class="arithmatex">\(m\times r\)</span> 的列满秩矩阵 <span class="arithmatex">\(B\)</span> 和 <span class="arithmatex">\(r\times n\)</span> 的行满秩矩阵 <span class="arithmatex">\(C\)</span>，使 <span class="arithmatex">\(A=BC\)</span>。这是“把矩阵写成 r 个秩一矩阵之和”的矩阵形式：<br />
+<span class="arithmatex">\(A=\sum _{k=1}^{r} \alpha _{k}\beta _{k}^{T}\)</span>（补充题 3.8）。</p>
+</li>
+<li>
+<p><strong>可逆矩阵 × 幂等矩阵</strong>：任意 n 阶矩阵都可写成“一个可逆矩阵与一个幂等矩阵的乘积”（补充题 3.9）。可由相抵标准形 <span class="arithmatex">\(A=P\begin{bmatrix}E_{r} &amp; O \\ O &amp; O\end{bmatrix}Q\)</span> 吸收得到。</p>
+</li>
+<li>
+<p><strong>Sylvester 秩恒等式</strong>：若 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>、<span class="arithmatex">\(B\)</span> 为 <span class="arithmatex">\(n\times m\)</span>，则<br />
+<span class="arithmatex">\(\operatorname{r}(E_{m}-AB)+n=\operatorname{r}(E_{n}-BA)+m\)</span>（补充题 3.11）。<br />
+  它与 <span class="arithmatex">\(\det(E_{m}-AB)=\det(E_{n}-BA)\)</span> 是同一类“换顺序”结论的秩版本。</p>
+</li>
+<li>
+<p><strong><span class="arithmatex">\(\operatorname{r}(A)=n-1\)</span> 的零空间</strong>：<span class="arithmatex">\(A^{*}\)</span> 的任一非零列都是 <span class="arithmatex">\(Ax=0\)</span> 的基础解系。这是求“伴随矩阵的列”与“齐次方程解”之间关系的捷径。</p>
+</li>
+<li>
+<p><strong><span class="arithmatex">\(J_{n}\)</span> 的秩</strong>：<span class="arithmatex">\(\operatorname{r}(J_{n})=1\)</span>（<span class="arithmatex">\(n\ge 2\)</span>）；<span class="arithmatex">\(\operatorname{r}(aE+bJ_{n})=n\)</span>（<span class="arithmatex">\(a\ne 0\)</span> 且 <span class="arithmatex">\(a+nb\ne 0\)</span>），<span class="arithmatex">\(n-1\)</span>（<span class="arithmatex">\(a\ne 0\)</span> 且 <span class="arithmatex">\(a+nb=0\)</span>），<span class="arithmatex">\(1\)</span>（<span class="arithmatex">\(a=0,b\ne 0\)</span>），<span class="arithmatex">\(0\)</span>（<span class="arithmatex">\(a=b=0\)</span>）。</p>
+</li>
+<li>
+<p><strong>对角矩阵的秩</strong>：等于非零对角元的个数。</p>
+</li>
+<li>
+<p><strong>Jordan 块的秩</strong>：n 阶 Jordan 块 <span class="arithmatex">\(J_{n}(\lambda )\)</span> 的秩为 <span class="arithmatex">\(n\)</span>（<span class="arithmatex">\(\lambda \ne 0\)</span>）或 <span class="arithmatex">\(n-1\)</span>（<span class="arithmatex">\(\lambda =0\)</span>）。</p>
+</li>
+</ul>
+<h3>4.4 秩与线性方程组</h3>
+<ul>
+<li>
+<p><strong>Rouché–Capelli</strong>：<span class="arithmatex">\(Ax=b\)</span> 有解 ⇔ <span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(A\mid b)\)</span>。</p>
+</li>
+<li>
+<p><strong>加边矩阵的充分条件</strong>（习题 3.20）：若<br />
+<span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(\begin{bmatrix}A &amp; b \\ b^{T} &amp; 0\end{bmatrix})\)</span>，<br />
+  则 <span class="arithmatex">\(Ax=b\)</span> 有解。注意这是充分条件，不是必要条件；例如 <span class="arithmatex">\(A=E\)</span> 时，加边矩阵的秩为 <span class="arithmatex">\(n+1\)</span>，但 <span class="arithmatex">\(Ex=b\)</span> 显然有解。</p>
+</li>
+<li>
+<p><strong>解数</strong>：若 <span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(A\mid b)=r\)</span>，则</p>
+</li>
+<li><span class="arithmatex">\(r=n\)</span>：唯一解；</li>
+<li><span class="arithmatex">\(r&lt;n\)</span>：无穷多解，自由度为 <span class="arithmatex">\(n-r\)</span>；</li>
+<li>
+<p><span class="arithmatex">\(\operatorname{r}(A)&lt;\operatorname{r}(A\mid b)\)</span>：无解。</p>
+</li>
+<li>
+<p><strong>齐次</strong>：<span class="arithmatex">\(Ax=0\)</span> 必有零解；有非零解 ⇔ <span class="arithmatex">\(\operatorname{r}(A)&lt;n\)</span>；解空间维数为 <span class="arithmatex">\(n-\operatorname{r}(A)\)</span>。</p>
+</li>
+<li>
+<p><strong>方阵</strong>：<span class="arithmatex">\(A\)</span> 为 n 阶方阵时，<span class="arithmatex">\(Ax=b\)</span> 有唯一解 ⇔ <span class="arithmatex">\(\det(A)\ne 0\)</span>；<span class="arithmatex">\(Ax=0\)</span> 有非零解 ⇔ <span class="arithmatex">\(\det(A)=0\)</span>。</p>
+</li>
+<li>
+<p><strong>行满秩与列满秩</strong>：</p>
+</li>
+<li><span class="arithmatex">\(A\)</span> 行满秩（<span class="arithmatex">\(\operatorname{r}(A)=m\)</span>）⇒ 对任意 <span class="arithmatex">\(b\)</span>，<span class="arithmatex">\(Ax=b\)</span> 都有解；</li>
+<li><span class="arithmatex">\(A\)</span> 列满秩（<span class="arithmatex">\(\operatorname{r}(A)=n\)</span>）⇒ <span class="arithmatex">\(Ax=b\)</span> 至多一个解；</li>
+<li><span class="arithmatex">\(m&lt;n\)</span> 且 <span class="arithmatex">\(Ax=b\)</span> 有解 ⇒ 必有无穷多解；</li>
+<li>
+<p><span class="arithmatex">\(m&lt;n\)</span> 时齐次 <span class="arithmatex">\(Ax=0\)</span> 必有非零解；但非齐次 <span class="arithmatex">\(Ax=b\)</span> 不一定有解。</p>
+</li>
+<li>
+<p><strong>两个不同解</strong>：若 <span class="arithmatex">\(Ax=b\)</span> 有两个不同的解，则必有无穷多解。因为两解之差是非零的齐次解，沿这个方向可以产生一整条解。</p>
+</li>
+<li>
+<p><strong>公共解</strong>：<span class="arithmatex">\(Ax=0\)</span> 与 <span class="arithmatex">\(Bx=0\)</span> 的公共解就是 <span class="arithmatex">\(\begin{bmatrix}A \\ B\end{bmatrix}x=0\)</span> 的解；<span class="arithmatex">\(Ax=b\)</span> 与 <span class="arithmatex">\(Cx=d\)</span> 的公共解就是 <span class="arithmatex">\(\begin{bmatrix}A &amp; b \\ C &amp; d\end{bmatrix}\)</span> 的增广方程组的解。</p>
+</li>
+<li>
+<p><strong>同解与行空间</strong>：列数相同的 <span class="arithmatex">\(A,B\)</span>，<span class="arithmatex">\(Ax=0\)</span> 与 <span class="arithmatex">\(Bx=0\)</span> 同解 ⇔ <span class="arithmatex">\(A,B\)</span> 行等价 ⇔ 行空间相同。注意：<span class="arithmatex">\(A,B\)</span> 行等价只能保证齐次方程同解；非齐次方程即使系数矩阵行等价，<span class="arithmatex">\(Ax=b\)</span> 与 <span class="arithmatex">\(Bx=b\)</span> 也未必同解。保证非齐次同解的一个充分条件是增广矩阵 <span class="arithmatex">\(\begin{bmatrix}A &amp; b\end{bmatrix}\)</span> 与 <span class="arithmatex">\(\begin{bmatrix}B &amp; b\end{bmatrix}\)</span> 行等价。</p>
+</li>
+</ul>
+<h3>4.5 求秩的优先顺序</h3>
+<ol>
+<li><strong>行变换化阶梯形</strong>：最通用，适合具体数字矩阵。</li>
+<li><strong>看子式</strong>：阶数低、结构特殊时，找非零子式定下界，再用行（列）关系定上界。</li>
+<li><strong>用分块与 Schur 补</strong>：出现大块零、单位块、对角块时优先。</li>
+<li><strong>用不等式夹</strong>：先由 <span class="arithmatex">\(AB=0\)</span>、<span class="arithmatex">\(\operatorname{r}(AB)\le \min\)</span>、Sylvester 等夹出范围，再构造例子。</li>
+<li><strong>用特殊结构</strong>：秩一、<span class="arithmatex">\(J_{n}\)</span>、对角、Jordan 块、<span class="arithmatex">\(aI+bJ\)</span> 直接写秩。</li>
+<li><strong>用标准形</strong>：证明存在性、分类、相抵等价时，化到 <span class="arithmatex">\(\begin{bmatrix}E_{r} &amp; O \\ O &amp; O\end{bmatrix}\)</span>。</li>
+</ol>
+<hr />
+<h2>5. 线性方程组</h2>
+<h3>5.1 判定与解的结构</h3>
+<ul>
+<li>
+<p><strong>判定顺序</strong>：先算 <span class="arithmatex">\(\operatorname{r}(A)\)</span> 和 <span class="arithmatex">\(\operatorname{r}(A\mid b)\)</span>；若不等，无解；若相等，再看是否等于未知量个数 n。</p>
+</li>
+<li>
+<p><strong>解的结构</strong>：若 <span class="arithmatex">\(Ax=b\)</span> 有解 <span class="arithmatex">\(x_{p}\)</span>，则全部解为<br />
+<span class="arithmatex">\(x=x_{p}+x_{h}\)</span>，其中 <span class="arithmatex">\(x_{h}\)</span> 取遍 <span class="arithmatex">\(Ax=0\)</span> 的解空间。自由度为 <span class="arithmatex">\(n-\operatorname{r}(A)\)</span>。</p>
+</li>
+<li>
+<p><strong>两个解的差</strong>：若 <span class="arithmatex">\(x_{1},x_{2}\)</span> 都是 <span class="arithmatex">\(Ax=b\)</span> 的解，则 <span class="arithmatex">\(x_{1}-x_{2}\)</span> 是 <span class="arithmatex">\(Ax=0\)</span> 的解；反之，一个特解加一个齐次解仍是解。</p>
+</li>
+<li>
+<p><strong>唯一性</strong>：<span class="arithmatex">\(Ax=b\)</span> 有唯一解 ⇔ <span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(A\mid b)=n\)</span>；对 n 阶方阵，等价于 <span class="arithmatex">\(\det(A)\ne 0\)</span>。</p>
+</li>
+<li>
+<p><strong>无解</strong>：<span class="arithmatex">\(\operatorname{r}(A)&lt;\operatorname{r}(A\mid b)\)</span>；对 n 阶方阵，若 <span class="arithmatex">\(\det(A)=0\)</span> 且某个 Cramer 行列式 <span class="arithmatex">\(\det(A_{i})\ne 0\)</span>，必无解。</p>
+</li>
+<li>
+<p><strong>齐次</strong>：<span class="arithmatex">\(Ax=0\)</span> 的解空间是 <span class="arithmatex">\(\ker A\)</span>，维数 <span class="arithmatex">\(n-\operatorname{r}(A)\)</span>；基础解系含 <span class="arithmatex">\(n-\operatorname{r}(A)\)</span> 个向量。</p>
+</li>
+</ul>
+<h3>5.2 典型系统</h3>
+<ul>
+<li>
+<p><strong>循环差分系统</strong>（习题 1.12、补充题 1.2）：<br />
+<span class="arithmatex">\(x_{1}-x_{2}=a_{1}, x_{2}-x_{3}=a_{2}, \dots , x_{n}-x_{1}=a_{n}\)</span>。<br />
+  有解的充要条件是 <span class="arithmatex">\(a_{1}+\dots +a_{n}=0\)</span>。有解时令 <span class="arithmatex">\(x_{1}=t\)</span>，则<br />
+<span class="arithmatex">\(x_{2}=t-a_{1}, x_{3}=t-a_{1}-a_{2}, \dots , x_{n}=t-a_{1}-\dots -a_{n-1}\)</span>，<br />
+  最后一个方程自动满足；解含一个自由参数 <span class="arithmatex">\(t\)</span>。</p>
+</li>
+<li>
+<p><strong>每个方程缺一个变量</strong>（补充题 1.3）：<br />
+  方程组 <span class="arithmatex">\(x_{2}+\dots +x_{n}=0, x_{1}+x_{3}+\dots +x_{n}=0, \dots , x_{1}+\dots +x_{n-1}=0\)</span> 的系数矩阵为 <span class="arithmatex">\(J_{n}-E\)</span>。<br />
+  因为 <span class="arithmatex">\(J_{n}-E\)</span> 的特征值为 <span class="arithmatex">\(n-1\)</span> 和 <span class="arithmatex">\(-1\)</span>（n-1 重），<span class="arithmatex">\(n&gt;1\)</span> 时可逆，所以只有零解。</p>
+</li>
+<li>
+<p><strong>配对变量系统</strong>（补充题 2.5）：<br />
+<span class="arithmatex">\(ax_{i}+bx_{2n+1-i}=1\)</span>（<span class="arithmatex">\(i=1,\dots ,n\)</span>）。当 <span class="arithmatex">\(a\ne \pm b\)</span> 时，每一对变量独立成二阶系统<br />
+<span class="arithmatex">\(\begin{bmatrix}a &amp; b \\ b &amp; a\end{bmatrix}\begin{bmatrix}x_{i} \\ y\end{bmatrix}=\begin{bmatrix}1 \\ 1\end{bmatrix}\)</span>，行列式 <span class="arithmatex">\(a^{2}-b^{2}\ne 0\)</span>，故唯一解，且由相减得 <span class="arithmatex">\(x_{i}=y\)</span>，再由相加得<br />
+<span class="arithmatex">\(x_{i}=1/(a+b)\)</span>。</p>
+</li>
+<li>
+<p><strong>三次单位根系统</strong>（习题 2.15(2)）：系数矩阵为<br />
+<span class="arithmatex">\(\begin{bmatrix}1 &amp; 1 &amp; 1 \\ 1 &amp; \varepsilon &amp; \varepsilon ^{2} \\ 1 &amp; \varepsilon ^{2} &amp; \varepsilon\end{bmatrix}\)</span>，它是范德蒙德矩阵的变体；<span class="arithmatex">\(\varepsilon \ne 1\)</span> 且 <span class="arithmatex">\(\varepsilon ^{3}=1\)</span> 时行列式非零，方程组有唯一解。利用 <span class="arithmatex">\(1+\varepsilon +\varepsilon ^{2}=0\)</span> 可快速求解。</p>
+</li>
+<li>
+<p><strong>三对角系统</strong>（习题 3.7）：系数矩阵为对角 <span class="arithmatex">\(2a\)</span>、上副对角 <span class="arithmatex">\(1\)</span>、下副对角 <span class="arithmatex">\(a^{2}\)</span> 的 n 阶三对角矩阵，行列式为 <span class="arithmatex">\((n+1)a^{n}\)</span>。因此 <span class="arithmatex">\(a\ne 0\)</span> 时唯一解；<span class="arithmatex">\(a=0\)</span> 时需单独讨论秩与增广矩阵。</p>
+</li>
+</ul>
+<h3>5.3 参数讨论套路</h3>
+<ul>
+<li><strong>方阵先算行列式</strong>：把 <span class="arithmatex">\(\det(A(\lambda ))\)</span> 因式分解，得到临界参数值；在临界值处再比较 <span class="arithmatex">\(\operatorname{r}(A)\)</span> 与 <span class="arithmatex">\(\operatorname{r}(A\mid b)\)</span>。</li>
+<li><strong>非方阵先化阶梯形</strong>：不要盲目算行列式；直接对增广矩阵做行变换，观察主元与矛盾行。</li>
+<li><strong>两个不同解</strong>：若题目说“存在两个不同的解”，立即得到“无穷多解”，且 <span class="arithmatex">\(\operatorname{r}(A)&lt;n\)</span>；可用两解之差构造齐次解。</li>
+<li><strong>公共解</strong>：把两个方程组合并成一个大方程组，比较秩；或先解一个，再代入另一个。</li>
+<li><strong>参数在常数项</strong>：先看系数矩阵的秩，再判断 <span class="arithmatex">\(b\)</span> 是否落在列空间；不要只算 <span class="arithmatex">\(\det(A)\)</span>。</li>
+<li><strong>参数在系数矩阵</strong>：临界值处可能出现“无解”或“无穷多解”，必须看增广矩阵的秩，不能只看 <span class="arithmatex">\(\det(A)=0\)</span>。</li>
+</ul>
+<h3>5.4 几何应用</h3>
+<ul>
+<li>
+<p><strong>三平面交会</strong>（习题 2.25）：<br />
+<span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(A\mid d)=3\)</span>：唯一公共点；<br />
+<span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(A\mid d)=2\)</span>：公共解为一条直线；<br />
+<span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(A\mid d)=1\)</span>：公共解为一个平面；<br />
+<span class="arithmatex">\(\operatorname{r}(A)&lt;\operatorname{r}(A\mid d)\)</span>：无公共点。<br />
+  若三平面两两相交，但三条交线互相平行，则 <span class="arithmatex">\(\operatorname{r}(A)=2\)</span>、<span class="arithmatex">\(\operatorname{r}(A\mid d)=3\)</span>。</p>
+</li>
+<li>
+<p><strong>三线共点</strong>（补充题 2.9）：三条直线 <span class="arithmatex">\(a_{i}x+b_{i}y+c_{i}=0\)</span> 有公共点 ⇒ 存在非零 <span class="arithmatex">\((x,y,1)\)</span> 满足齐次方程组 ⇒<br />
+<span class="arithmatex">\(\det\begin{vmatrix}a_{1} &amp; b_{1} &amp; c_{1} \\ a_{2} &amp; b_{2} &amp; c_{2} \\ a_{3} &amp; b_{3} &amp; c_{3}\end{vmatrix}=0\)</span>。<br />
+  反过来，<span class="arithmatex">\(\det=0\)</span> 只保证有非零解 <span class="arithmatex">\((x,y,z)\)</span>；若 <span class="arithmatex">\(z\ne 0\)</span>，才有有限公共点；若 <span class="arithmatex">\(z=0\)</span>，三条直线平行（或重合），没有有限公共点。<br />
+  对循环系数 <span class="arithmatex">\((a,b,c),(b,c,a),(c,a,b)\)</span>，该行列式为<br />
+<span class="arithmatex">\(a^{3}+b^{3}+c^{3}-3abc=(a+b+c)(a^{2}+b^{2}+c^{2}-ab-bc-ca)\)</span>；<br />
+  在实数范围内，当 <span class="arithmatex">\(a,b,c\)</span> 互异且非零时，后一因子不为 0，故 <span class="arithmatex">\(\det=0\)</span> ⇔ <span class="arithmatex">\(a+b+c=0\)</span>，且此时公共点为 <span class="arithmatex">\((1,1)\)</span>。</p>
+</li>
+<li>
+<p><strong>四点共圆</strong>（补充题 2.8）：在无三点共线的通常位置下，四点 <span class="arithmatex">\((x_{i},y_{i})\)</span>（<span class="arithmatex">\(i=1,\dots ,4\)</span>）共圆 ⇔<br />
+<span class="arithmatex">\(\det[x_{i}^{2}+y_{i}^{2}, x_{i}, y_{i}, 1]_{4\times 4}=0\)</span>。<br />
+  把圆方程写成 <span class="arithmatex">\(x_{i}^{2}+y_{i}^{2}+Dx_{i}+Ey_{i}+F=0\)</span>，这是关于 <span class="arithmatex">\(D,E,F\)</span> 的 4 个方程、3 个未知量的线性方程组；无三点共线时系数矩阵秩为 3，方程组有解 ⇔ 增广矩阵的 4×4 行列式为 0。若有三点共线，该行列式也可能为 0，但四点不一定共圆；严格写题时要加“无三点共线”或另行排除退化情形。</p>
+</li>
+<li>
+<p><strong>五点二次曲线</strong>（补充题 2.7）：一般二次曲线<br />
+<span class="arithmatex">\(Ax^{2}+Bxy+Cy^{2}+Dx+Ey+F=0\)</span> 有 6 个系数，5 个点给出 5 个齐次方程，未知数多于方程，必有非零解；所以过任意 5 点总有非零二次曲线（可能退化）。若这 5 个方程秩为 5，则解在相差一个非零常数的意义下唯一。</p>
+</li>
+<li>
+<p><strong>多项式插值</strong>：过 n 个互异点的次数不超过 n-1 的多项式唯一，系数由范德蒙德矩阵决定；非零的 n 次多项式最多有 n 个互异根（补充题 2.6）。若 n+1 个互异点都使多项式为 0，则多项式恒为 0。</p>
+</li>
+<li>
+<p><strong>面积与体积</strong>：<span class="arithmatex">\(\lvert\det\rvert\)</span> 给出平行四边形面积、平行六面体体积；<span class="arithmatex">\(\det=0\)</span> 表示降维。Cramer 法则可理解为“在基下的坐标”。</p>
+</li>
+</ul>
+<hr />
+<h2>6. 易错点与反例</h2>
+<ul>
+<li><strong><span class="arithmatex">\(\det(A)=0\)</span> 不等于“某两行成比例”</strong>：n≥3 时，<span class="arithmatex">\(\det=0\)</span> 只能说明存在线性相关关系，可能是三行之间的复杂关系。</li>
+<li><strong>Cramer 法则只适用于 <span class="arithmatex">\(\det(A)\ne 0\)</span></strong>：<span class="arithmatex">\(\det=0\)</span> 时不能写 <span class="arithmatex">\(x_{i}=D_{i}/D\)</span>；所有 <span class="arithmatex">\(D_{i}=0\)</span> 也不代表一定有解。</li>
+<li><strong><span class="arithmatex">\(AB=0\)</span> 不能推出 <span class="arithmatex">\(A=0\)</span> 或 <span class="arithmatex">\(B=0\)</span></strong>：例如 <span class="arithmatex">\(A=\begin{bmatrix}1 &amp; 0 \\ 0 &amp; 0\end{bmatrix}\)</span>，<span class="arithmatex">\(B=\begin{bmatrix}0 &amp; 0 \\ 1 &amp; 0\end{bmatrix}\)</span>。</li>
+<li><strong>消去律需要可逆</strong>：<span class="arithmatex">\(AB=AC\)</span> 且 <span class="arithmatex">\(A\ne O\)</span> 不能推出 <span class="arithmatex">\(B=C\)</span>；必须 <span class="arithmatex">\(A\)</span> 可逆。</li>
+<li><strong><span class="arithmatex">\((A+B)^{2}\)</span> 不能随便展开</strong>：只有 <span class="arithmatex">\(AB=BA\)</span> 时才有 <span class="arithmatex">\(A^{2}+2AB+B^{2}\)</span>。</li>
+<li><strong><span class="arithmatex">\(A^{2}=0\)</span> 不代表 <span class="arithmatex">\(A=0\)</span></strong>：幂零矩阵就是反例；<span class="arithmatex">\(A^{2}=A\)</span> 也不代表 <span class="arithmatex">\(A=0\)</span> 或 <span class="arithmatex">\(E\)</span>，投影矩阵很多。</li>
+<li><strong><span class="arithmatex">\(\det(A+B)\)</span> 没有简单公式</strong>：不要拆成 <span class="arithmatex">\(\det(A)+\det(B)\)</span>；也不要以为 <span class="arithmatex">\(\det(A-B)=\det(A)-\det(B)\)</span>。</li>
+<li><strong><span class="arithmatex">\(\operatorname{r}(A+B)\)</span> 不能简单相加</strong>：<span class="arithmatex">\(A\)</span> 与 <span class="arithmatex">\(-A\)</span> 的和秩为 0，但各自秩可能很大。</li>
+<li><strong><span class="arithmatex">\(AB=E_{m}\)</span> 只是单侧逆</strong>：<span class="arithmatex">\(BA\)</span> 不一定等于 <span class="arithmatex">\(E_{n}\)</span>；只有当 <span class="arithmatex">\(m=n\)</span> 且 <span class="arithmatex">\(A,B\)</span> 方阵时才自动成立。</li>
+<li><strong>同秩不等于同矩阵、同特征值、同零空间</strong>：同秩只保证相抵；同零空间还要求行空间相同。</li>
+<li><strong>行变换与列变换不同</strong>：行变换保持 <span class="arithmatex">\(Ax=0\)</span> 的解，列变换一般不保持；解方程只能用行变换。</li>
+<li><strong><span class="arithmatex">\(\operatorname{r}(A^{T}A)=\operatorname{r}(A)\)</span> 需要实数域（或共轭转置）</strong>：一般数域上不一定成立。</li>
+<li><strong><span class="arithmatex">\(A^{2}=E\)</span> 的秩和公式需要 <span class="arithmatex">\(\operatorname{char}\ne 2\)</span></strong>：在实数、复数上没问题；有限域上要小心。</li>
+<li><strong>奇数阶反对称矩阵行列式为 0</strong>：在 <span class="arithmatex">\(\operatorname{char}\ne 2\)</span> 的域上成立；不要与“奇数阶对称矩阵”混淆。</li>
+<li><strong>分块矩阵先检查尺寸</strong>：同一块行行数相同、同一块列列数相同；否则乘法、行列式公式都不能用。</li>
+<li><strong>分块行列式公式有条件</strong>：Schur 补公式要求 <span class="arithmatex">\(A\)</span> 或 <span class="arithmatex">\(D\)</span> 可逆；不满足时不能直接套。</li>
+<li><strong><span class="arithmatex">\(\operatorname{r}(A)=1\)</span> 的矩阵不一定是对称的</strong>：<span class="arithmatex">\(\alpha \beta ^{T}\)</span> 一般不是对称矩阵；<span class="arithmatex">\(A^{2}=\operatorname{tr}(A)A\)</span> 对任意秩一矩阵成立。</li>
+</ul>
+<hr />
+<h2>7. 公式速查</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>行列式转置</td>
+<td><span class="arithmatex">\(\det(A^{T})=\det(A)\)</span></td>
+</tr>
+<tr>
+<td>行列式乘积</td>
+<td><span class="arithmatex">\(\det(AB)=\det(A)\det(B)\)</span></td>
+</tr>
+<tr>
+<td>数乘行列式</td>
+<td><span class="arithmatex">\(\det(cA)=c^{n} \det(A)\)</span></td>
+</tr>
+<tr>
+<td>逆的行列式</td>
+<td><span class="arithmatex">\(\det(A^{-1})=1/\det(A)\)</span></td>
+</tr>
+<tr>
+<td>伴随行列式</td>
+<td><span class="arithmatex">\(\det(A^{*})=\det(A)^{n-1}\)</span></td>
+</tr>
+<tr>
+<td>秩一更新行列式</td>
+<td><span class="arithmatex">\(\det(A+\alpha \beta ^{T})=\det(A)(1+\beta ^{T} A^{-1}\alpha )\)</span></td>
+</tr>
+<tr>
+<td>单位阵加秩一</td>
+<td><span class="arithmatex">\(\det(E+xx^{T})=1+x^{T}x\)</span></td>
+</tr>
+<tr>
+<td>Sylvester 行列式</td>
+<td><span class="arithmatex">\(\det(E_{m}-AB)=\det(E_{n}-BA)\)</span></td>
+</tr>
+<tr>
+<td>分块三角</td>
+<td><span class="arithmatex">\(\det\begin{vmatrix}A &amp; B \\ O &amp; C\end{vmatrix}=\det(A)\det(C)\)</span></td>
+</tr>
+<tr>
+<td>分块反角</td>
+<td><span class="arithmatex">\(\det\begin{vmatrix}O &amp; A \\ B &amp; O\end{vmatrix}=(-1)^{mn}\det(A)\det(B)\)</span></td>
+</tr>
+<tr>
+<td>Schur 补</td>
+<td><span class="arithmatex">\(\det\begin{vmatrix}A &amp; B \\ C &amp; D\end{vmatrix}=\det(A)\det(D-CA^{-1}B)\)</span></td>
+</tr>
+<tr>
+<td>特殊分块</td>
+<td><span class="arithmatex">\(\det\begin{vmatrix}A &amp; B \\ B &amp; A\end{vmatrix}=\det(A+B)\det(A-B)\)</span></td>
+</tr>
+<tr>
+<td>范德蒙德</td>
+<td><span class="arithmatex">\(\det[1 x_{i} \dots  x_{i}^{n-1}]=\prod (x_{j}-x_{i})\)</span></td>
+</tr>
+<tr>
+<td>全 1 矩阵</td>
+<td><span class="arithmatex">\(\det(aE+bJ_{n})=a^{n-1}(a+nb)\)</span></td>
+</tr>
+<tr>
+<td>对角加非对角</td>
+<td><span class="arithmatex">\(\det(aE+b(J_{n}-E))=(a-b)^{n-1}(a+(n-1)b)\)</span></td>
+</tr>
+<tr>
+<td>三对角递推</td>
+<td><span class="arithmatex">\(D_{n}=aD_{n-1}-bcD_{n-2}\)</span></td>
+</tr>
+<tr>
+<td>逆矩阵</td>
+<td><span class="arithmatex">\(A^{-1}=A^{*}/\det(A)\)</span></td>
+</tr>
+<tr>
+<td>伴随恒等式</td>
+<td><span class="arithmatex">\(AA^{*}=A^{*}A=\det(A)E\)</span></td>
+</tr>
+<tr>
+<td>伴随的伴随</td>
+<td><span class="arithmatex">\((A^{*})^{*}=\det(A)^{n-2}A\)</span></td>
+</tr>
+<tr>
+<td>伴随的秩</td>
+<td><span class="arithmatex">\(\operatorname{r}(A^{*})=n,1,0\)</span> 对应 <span class="arithmatex">\(\operatorname{r}(A)=n,n-1,\le n-2\)</span>（<span class="arithmatex">\(n\ge 2\)</span>）</td>
+</tr>
+<tr>
+<td>乘积的秩</td>
+<td><span class="arithmatex">\(\operatorname{r}(AB)\le \min(\operatorname{r}(A),\operatorname{r}(B))\)</span></td>
+</tr>
+<tr>
+<td>Sylvester 秩</td>
+<td><span class="arithmatex">\(\operatorname{r}(AB)\ge \operatorname{r}(A)+\operatorname{r}(B)-n\)</span></td>
+</tr>
+<tr>
+<td>零乘积的秩</td>
+<td><span class="arithmatex">\(AB=0 \Rightarrow  \operatorname{r}(A)+\operatorname{r}(B)\le n\)</span></td>
+</tr>
+<tr>
+<td>分块三角的秩</td>
+<td><span class="arithmatex">\(\operatorname{r}(A)+\operatorname{r}(B)\le \operatorname{r}(\begin{bmatrix}A &amp; C \\ O &amp; B\end{bmatrix})\le \operatorname{r}(A)+\operatorname{r}(B)+\operatorname{r}(C)\)</span></td>
+</tr>
+<tr>
+<td>幂等秩</td>
+<td><span class="arithmatex">\(A^{2}=A \Rightarrow  \operatorname{r}(A)+\operatorname{r}(E-A)=n\)</span></td>
+</tr>
+<tr>
+<td>对合秩</td>
+<td><span class="arithmatex">\(A^{2}=E \Rightarrow  \operatorname{r}(E-A)+\operatorname{r}(E+A)=n\)</span></td>
+</tr>
+<tr>
+<td>幂零逆</td>
+<td><span class="arithmatex">\(A^{k}=0 \Rightarrow  (E-A)^{-1}=E+A+\dots +A^{k-1}\)</span></td>
+</tr>
+<tr>
+<td>两个逆的和</td>
+<td><span class="arithmatex">\((A^{-1}+B^{-1})^{-1}=A(A+B)^{-1}B\)</span></td>
+</tr>
+<tr>
+<td>全 1 矩阵逆</td>
+<td><span class="arithmatex">\((E-J_{n})^{-1}=E-J_{n}/(n-1)\)</span></td>
+</tr>
+<tr>
+<td>Sherman–Morrison</td>
+<td><span class="arithmatex">\((A+\alpha \beta ^{T})^{-1}=A^{-1}-A^{-1}\alpha \beta ^{T}A^{-1}/(1+\beta ^{T}A^{-1}\alpha )\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>8. 选读：用特征值快速验算</h2>
+<blockquote>
+<p>如果已经学过特征值，可用下面的视角快速检查行列式、秩和幂；没学过可跳过，不影响前面的结论。</p>
+</blockquote>
+<ul>
+<li><span class="arithmatex">\(\det(A)=\prod \lambda _{i}\)</span>，<span class="arithmatex">\(\operatorname{tr}(A)=\sum \lambda _{i}\)</span>。</li>
+<li><span class="arithmatex">\(A^{2}=A\)</span>：特征值只能是 0 或 1；<span class="arithmatex">\(\operatorname{r}(A)=\operatorname{tr}(A)\)</span> 等于 1 的个数。</li>
+<li><span class="arithmatex">\(A^{2}=E\)</span>：特征值只能是 <span class="arithmatex">\(\pm 1\)</span>；若负特征值有 <span class="arithmatex">\(m_{-}\)</span> 个，则 <span class="arithmatex">\(\det(A)=(-1)^{m_{-}}\)</span>。</li>
+<li><span class="arithmatex">\(A^{k}=0\)</span>：所有特征值为 0，<span class="arithmatex">\(\det(A)=0\)</span>。</li>
+<li>秩一矩阵 <span class="arithmatex">\(\alpha \beta ^{T}\)</span>：特征值为 <span class="arithmatex">\(\beta ^{T}\alpha ,0,\dots ,0\)</span>。</li>
+<li><span class="arithmatex">\(aE+bJ_{n}\)</span>：特征值为 <span class="arithmatex">\(a+nb\)</span>（全 1 向量）和 <span class="arithmatex">\(a\)</span>（n-1 重）。</li>
+<li>分块三角 <span class="arithmatex">\(\begin{bmatrix}A &amp; B \\ O &amp; C\end{bmatrix}\)</span>：特征值是 <span class="arithmatex">\(A\)</span> 与 <span class="arithmatex">\(C\)</span> 的特征值之并。</li>
+<li>相似矩阵：行列式、迹、秩、特征值都相同；但同秩、同行列式不一定是相似。</li>
+</ul>
+<hr />
+<h2>9. 来源索引</h2>
+<table>
+<thead>
+<tr>
+<th>习题范围</th>
+<th>主要对应的结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>习题 1.1—1.13、补充题 1.1—1.3</td>
+<td>第 5 节方程组判定、循环差分、公共解、参数讨论；第 3.1 节分块定义</td>
+</tr>
+<tr>
+<td>习题 2.1—2.16、补充题 2.1—2.3</td>
+<td>第 1 节行列式定义、性质、展开、Cramer、特殊行列式</td>
+</tr>
+<tr>
+<td>习题 2.17—2.31、补充题 2.3—2.9</td>
+<td>第 4 节秩、第 5.4 节几何应用、第 1.3 节特殊行列式</td>
+</tr>
+<tr>
+<td>习题 3.1—3.64、补充题 3.1—3.12</td>
+<td>第 2 节矩阵运算、第 3 节分块矩阵、第 4 节秩、第 5 节方程组</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>10. 一句话总结</h2>
+<ul>
+<li><strong>行列式</strong>：先看能否化三角、提公因式、用范德蒙德或分块；<span class="arithmatex">\(\det=0\)</span> 的本质是线性相关。</li>
+<li><strong>矩阵</strong>：乘法想“列组合/外积”，求逆想“伴随/分块/Schur”，高次幂想“对角化/Jordan/秩一/幂等/幂零”。</li>
+<li><strong>分块</strong>：先看尺寸，再想“三角、反角、Schur 补”；行列式、逆、秩三条线是平行的。</li>
+<li><strong>秩</strong>：先夹不等式，再找构造；<span class="arithmatex">\(AB=0\)</span>、<span class="arithmatex">\(A^{2}=A\)</span>、<span class="arithmatex">\(A^{2}=E\)</span>、伴随矩阵是四个高频结构。</li>
+<li><strong>方程组</strong>：先比秩，再谈解；<span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(A\mid b)\)</span> 是总开关，<span class="arithmatex">\(n-\operatorname{r}(A)\)</span> 是自由度。</li>
+</ul>
+<h1>推导篇：</h1>
+<blockquote>
+<p>取舍标准：只写三类结论的推导——<strong>不太显然的</strong>、<strong>容易记不住、需要推导辅助记忆的</strong>、<strong>推导中有重要方法价值的</strong>。余子式定义、<span class="arithmatex">\(\det(A^T)=\det(A)\)</span>、行列式基本性质、Cramer 法则、Rouché–Capelli 定理等基础内容不再重复。</p>
+<p>记号：<span class="arithmatex">\(E\)</span> 为单位矩阵，<span class="arithmatex">\(O\)</span> 为零矩阵，<span class="arithmatex">\(\operatorname{r}(A)\)</span> 为秩，<span class="arithmatex">\(\det(A)\)</span> 或 <span class="arithmatex">\(\lvert A\rvert\)</span> 为行列式，<span class="arithmatex">\(A^*\)</span> 为伴随矩阵，<span class="arithmatex">\(\operatorname{tr}(A)\)</span> 为迹。</p>
+</blockquote>
+<p><strong>目录</strong></p>
+<ul>
+<li>
+<ol start="0">
+<li>推导路线图</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>行列式：分块消元、因子定理、单位根</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>矩阵：幂、逆、伴随与分块</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>秩：线性映射与维数</li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>方程组与几何：加边、循环差分、共点共圆</li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li>方法总结</li>
+</ol>
+</li>
+</ul>
+<hr />
+<h2>0. 推导路线图</h2>
+<table>
+<thead>
+<tr>
+<th>结论</th>
+<th>核心方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Schur 补行列式、分块逆、分块秩</td>
+<td>分块消元“打洞”</td>
+</tr>
+<tr>
+<td>Sylvester 行列式恒等式、行列式引理</td>
+<td>同一个分块矩阵算两次</td>
+</tr>
+<tr>
+<td>范德蒙德、缺幂范德蒙德</td>
+<td>归纳；交代多项式与因子定理</td>
+</tr>
+<tr>
+<td>循环矩阵、<span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(n\)</span> 循环行列式</td>
+<td>单位根与离散 Fourier</td>
+</tr>
+<tr>
+<td>余弦行列式</td>
+<td>切比雪夫多项式换基</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\pm2\)</span> 矩阵的整除性</td>
+<td>整数矩阵行变换、提因子</td>
+</tr>
+<tr>
+<td>幂等、对合、幂零矩阵</td>
+<td>秩不等式；选取“适配基”； telescoping</td>
+</tr>
+<tr>
+<td>伴随矩阵的秩、<span class="arithmatex">\((A^*)^*\)</span></td>
+<td>零空间维数；先可逆再密度</td>
+</tr>
+<tr>
+<td>Sylvester 秩不等式、<span class="arithmatex">\(ABC=0\)</span></td>
+<td>线性映射与维数公式</td>
+</tr>
+<tr>
+<td>Sylvester 秩恒等式</td>
+<td>两个零空间之间的显式双射</td>
+</tr>
+<tr>
+<td>加边矩阵判定 <span class="arithmatex">\(Ax=b\)</span></td>
+<td>相抵标准形 + 分块秩</td>
+</tr>
+<tr>
+<td>三线共点、四点共圆、五点二次曲线</td>
+<td>齐次/非齐次线性方程组 + 行列式</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. 行列式：分块消元、因子定理、单位根</h2>
+<h3>1.1 Schur 补行列式：分块“打洞”</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A\)</span> 可逆，则<br />
+$$<br />
+\det\begin{bmatrix}A&amp;B\C&amp;D\end{bmatrix}<br />
+=\det(A)\det(D-CA^{-1}B).<br />
+$$</p>
+<p><strong>推导</strong> 直接做分块消元：<br />
+$$<br />
+\begin{bmatrix}A&amp;B\C&amp;D\end{bmatrix}<br />
+=<br />
+\begin{bmatrix}I&amp;0\CA^{-1}&amp;I\end{bmatrix}<br />
+\begin{bmatrix}A&amp;0\0&amp;D-CA^{-1}B\end{bmatrix}<br />
+\begin{bmatrix}I&amp;A^{-1}B\0&amp;I\end{bmatrix}.<br />
+$$<br />
+右边第一个、第三个因子都是对角块为 <span class="arithmatex">\(I\)</span> 的分块三角矩阵，行列式为 <span class="arithmatex">\(1\)</span>；中间因子的行列式为<br />
+$$<br />
+\det(A)\det(D-CA^{-1}B).<br />
+$$<br />
+乘积的行列式等于行列式的乘积，于是结论成立。</p>
+<p><strong>顺带得到秩公式</strong>：两侧的消元因子都可逆，乘以可逆矩阵不改变秩，所以<br />
+$$<br />
+\operatorname{r}\begin{bmatrix}A&amp;B\C&amp;D\end{bmatrix}<br />
+=\operatorname{r}(A)+\operatorname{r}(D-CA^{-1}B).<br />
+$$<br />
+这就是主文件里“分块矩阵求秩最常用公式”的来源。</p>
+<p><strong>方法</strong> 分块消元的核心是：用可逆的块三角矩阵把 <span class="arithmatex">\(C\)</span> 消成 <span class="arithmatex">\(O\)</span>，剩下的 <span class="arithmatex">\(D-CA^{-1}B\)</span> 就是全部“新信息”。行列式、逆、秩三条线可以共用同一个分解。</p>
+<hr />
+<h3>1.2 Sylvester 行列式恒等式：同一个分块矩阵算两次</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>，<span class="arithmatex">\(B\)</span> 为 <span class="arithmatex">\(n\times m\)</span>，则<br />
+$$<br />
+\det(I_m-AB)=\det(I_n-BA).<br />
+$$</p>
+<p><strong>推导</strong> 考虑<br />
+$$<br />
+M=\begin{bmatrix}I_m&amp;A\B&amp;I_n\end{bmatrix}.<br />
+$$<br />
+一方面，把 <span class="arithmatex">\(M\)</span> 按前 <span class="arithmatex">\(m\)</span> 行做 Schur 补（左上块 <span class="arithmatex">\(I_m\)</span> 可逆）：<br />
+$$<br />
+\det M=\det(I_m)\det(I_n-BI_m^{-1}A)=\det(I_n-BA).<br />
+$$<br />
+另一方面，按后 <span class="arithmatex">\(n\)</span> 行做 Schur 补（右下块 <span class="arithmatex">\(I_n\)</span> 可逆）：<br />
+$$<br />
+\det M=\det(I_n)\det(I_m-AI_n^{-1}B)=\det(I_m-AB).<br />
+$$<br />
+两种算法是同一个 <span class="arithmatex">\(\det M\)</span>，故相等。</p>
+<p><strong>方法</strong> “同一个矩阵用两种分块方式算行列式”是证明行列式恒等式的常用套路；它把两个不同大小的行列式塞进同一个 <span class="arithmatex">\((m+n)\times(m+n)\)</span> 矩阵里。</p>
+<hr />
+<h3>1.3 行列式引理与全 1 矩阵公式</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A\)</span> 可逆，<span class="arithmatex">\(u,v\)</span> 为同维列向量，则<br />
+$$<br />
+\det(A+uv^T)=\det(A)\left(1+v^TA^{-1}u\right).<br />
+$$</p>
+<p><strong>推导</strong> 先提 <span class="arithmatex">\(A\)</span>：<br />
+$$<br />
+A+uv^T=A\left(I+A^{-1}uv^T\right).<br />
+$$<br />
+对 <span class="arithmatex">\(I+A^{-1}uv^T\)</span> 用 Sylvester 恒等式，取 <span class="arithmatex">\(U=A^{-1}u\)</span>（<span class="arithmatex">\(m\times1\)</span>）、<span class="arithmatex">\(V=v^T\)</span>（<span class="arithmatex">\(1\times m\)</span>）：<br />
+$$<br />
+\det(I_m+UV^T)=\det(I_1+V^TU)<br />
+=1+v^TA^{-1}u.<br />
+$$<br />
+于是<br />
+$$<br />
+\det(A+uv^T)=\det(A)\left(1+v^TA^{-1}u\right).<br />
+$$</p>
+<p><strong>全 1 矩阵公式</strong>：取 <span class="arithmatex">\(A=aI\)</span>、<span class="arithmatex">\(u=b\mathbf 1\)</span>、<span class="arithmatex">\(v=\mathbf 1\)</span>，其中 <span class="arithmatex">\(\mathbf 1\)</span> 为全 1 列向量。则<br />
+$$<br />
+\det(aI+bJ_n)<br />
+=a^n\left(1+\mathbf 1^T(aI)^{-1}b\mathbf 1\right)<br />
+=a^n\left(1+\frac{nb}{a}\right)<br />
+=a^{n-1}(a+nb).<br />
+$$<br />
+当 <span class="arithmatex">\(a=0\)</span> 时，两边都是关于 <span class="arithmatex">\(a,b\)</span> 的多项式，由恒等定理（或连续性）公式仍成立。</p>
+<p><strong>对角加非对角</strong>：若对角为 <span class="arithmatex">\(a\)</span>、非对角为 <span class="arithmatex">\(b\)</span>，矩阵是<br />
+$$<br />
+aI+b(J_n-I)=(a-b)I+bJ_n,<br />
+$$<br />
+把上式中的 <span class="arithmatex">\(a\)</span> 换成 <span class="arithmatex">\(a-b\)</span>，得<br />
+$$<br />
+\det=(a-b)^{n-1}\bigl((a-b)+nb\bigr)<br />
+=(a-b)^{n-1}\bigl(a+(n-1)b\bigr).<br />
+$$</p>
+<p><strong>方法</strong> 遇到“可逆矩阵 + 秩一矩阵”，先提可逆矩阵，再用 Sylvester 恒等式把 <span class="arithmatex">\(m\)</span> 维行列式换成 1 维行列式。</p>
+<hr />
+<h3>1.4 Vandermonde 行列式：列变换 + 归纳</h3>
+<p><strong>结论</strong><br />
+$$<br />
+V_n(x_1,\dots,x_n)<br />
+=\det\begin{bmatrix}<br />
+1&amp;x_1&amp;\cdots&amp;x_1^{n-1}\<br />
+1&amp;x_2&amp;\cdots&amp;x_2^{n-1}\<br />
+\vdots&amp;\vdots&amp;&amp;\vdots\<br />
+1&amp;x_n&amp;\cdots&amp;x_n^{n-1}<br />
+\end{bmatrix}<br />
+=\prod_{1\le i&lt;j\le n}(x_j-x_i).<br />
+$$</p>
+<p><strong>推导</strong> 对 <span class="arithmatex">\(n\)</span> 归纳。<span class="arithmatex">\(n=1\)</span> 显然。设 <span class="arithmatex">\(n\ge2\)</span>，从最后一列开始，依次做列变换<br />
+$$<br />
+C_k\leftarrow C_k-x_1C_{k-1}\qquad(k=n,n-1,\dots,2).<br />
+$$<br />
+第一行变成 <span class="arithmatex">\((1,0,\dots,0)\)</span>。按第一行展开，剩下的 <span class="arithmatex">\((n-1)\times(n-1)\)</span> 矩阵第 <span class="arithmatex">\(i\)</span> 行（<span class="arithmatex">\(i=2,\dots,n\)</span>）为<br />
+$$<br />
+\bigl(x_i-x_1, x_i(x_i-x_1), \dots, x_i^{n-2}(x_i-x_1)\bigr).<br />
+$$<br />
+从第 <span class="arithmatex">\(i\)</span> 行提出因子 <span class="arithmatex">\(x_i-x_1\)</span>，得到<br />
+$$<br />
+V_n=\left(\prod_{i=2}^n(x_i-x_1)\right)V_{n-1}(x_2,\dots,x_n).<br />
+$$<br />
+由归纳假设<br />
+$$<br />
+V_{n-1}(x_2,\dots,x_n)=\prod_{2\le i&lt;j\le n}(x_j-x_i),<br />
+$$<br />
+合并即得<br />
+$$<br />
+V_n=\prod_{1\le i&lt;j\le n}(x_j-x_i).<br />
+$$</p>
+<p><strong>方法</strong> 范德蒙德行列式的证明是“列变换制造零 + 提因子 + 归纳”的标准模板；之后遇到“每行是 <span class="arithmatex">\(1,x,x^2,\dots\)</span>”的结构，都可以通过列变换化到它。</p>
+<hr />
+<h3>1.5 缺一个幂次的范德蒙德：因子定理与次数</h3>
+<p><strong>结论</strong><br />
+$$<br />
+D=\det\begin{bmatrix}<br />
+1&amp;x_1&amp;\cdots&amp;x_1^{n-2}&amp;x_1^n\<br />
+1&amp;x_2&amp;\cdots&amp;x_2^{n-2}&amp;x_2^n\<br />
+\vdots&amp;\vdots&amp;&amp;\vdots&amp;\vdots\<br />
+1&amp;x_n&amp;\cdots&amp;x_n^{n-2}&amp;x_n^n<br />
+\end{bmatrix}<br />
+=\left(\prod_{1\le i&lt;j\le n}(x_j-x_i)\right)(x_1+\cdots+x_n).<br />
+$$</p>
+<p><strong>推导</strong> 把 <span class="arithmatex">\(D\)</span> 看成 <span class="arithmatex">\(x_1,\dots,x_n\)</span> 的多项式。</p>
+<ol>
+<li><strong>交代性</strong>：交换任意两行，行列式变号，所以 <span class="arithmatex">\(D\)</span> 是交代多项式。令 <span class="arithmatex">\(x_i=x_j\)</span>，两行相同，<span class="arithmatex">\(D=0\)</span>。因此每个线性因子 <span class="arithmatex">\(x_j-x_i\)</span> 都整除 <span class="arithmatex">\(D\)</span>；这些因子两两互素，所以<br />
+   $$<br />
+   V=\prod_{i&lt;j}(x_j-x_i)\mid D.<br />
+   $$</li>
+<li><strong>次数</strong>：<span class="arithmatex">\(D\)</span> 的各列次数为 <span class="arithmatex">\(0,1,\dots,n-2,n\)</span>，总次数为<br />
+   $$<br />
+   0+1+\cdots+(n-2)+n=\frac{n(n-1)}2+1.<br />
+   $$<br />
+   而 <span class="arithmatex">\(\deg V=\frac{n(n-1)}2\)</span>，所以商 <span class="arithmatex">\(Q=D/V\)</span> 是次数 1 的多项式。</li>
+<li><strong>对称性</strong>：<span class="arithmatex">\(D\)</span> 与 <span class="arithmatex">\(V\)</span> 都是交代多项式，商 <span class="arithmatex">\(Q\)</span> 在交换任意两个变量时不变，因此 <span class="arithmatex">\(Q\)</span> 是对称多项式。次数 1 的对称多项式只能是<br />
+   $$<br />
+   Q=c(x_1+\cdots+x_n).<br />
+   $$</li>
+<li><strong>定系数</strong>：比较 <span class="arithmatex">\(x_n^n\)</span> 的系数。把 <span class="arithmatex">\(D\)</span> 按最后一列展开，含 <span class="arithmatex">\(x_n^n\)</span> 的项为<br />
+   $$<br />
+   x_n^n\cdot V_{n-1}(x_1,\dots,x_{n-1}),<br />
+   $$<br />
+   所以 <span class="arithmatex">\(D\)</span> 中 <span class="arithmatex">\(x_n^n\)</span> 的系数是 <span class="arithmatex">\(V_{n-1}\)</span>。另一方面，<span class="arithmatex">\(V\)</span> 中含 <span class="arithmatex">\(x_n\)</span> 的因子为<br />
+   $$<br />
+   \prod_{i=1}^{n-1}(x_n-x_i),<br />
+   $$<br />
+   它的最高次项是 <span class="arithmatex">\(x_n^{n-1}\)</span>；乘以 <span class="arithmatex">\(Q=c(x_1+\cdots+x_n)\)</span> 中的 <span class="arithmatex">\(cx_n\)</span>，得到 <span class="arithmatex">\(x_n^n\)</span> 的系数 <span class="arithmatex">\(c\)</span>。因此 <span class="arithmatex">\(c=1\)</span>。</li>
+</ol>
+<p><strong>方法</strong> 行列式作为多项式时，先看“交代性/对称性”，再用因子定理和次数夹出商，最后比较一个最高次项定系数。这比硬展开优雅得多。</p>
+<hr />
+<h3>1.6 分块矩阵 <span class="arithmatex">\(\begin{bmatrix}A&amp;B\\B&amp;A\end{bmatrix}\)</span> 的行列式</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A,B\)</span> 为同阶方阵，则<br />
+$$<br />
+\det\begin{bmatrix}A&amp;B\B&amp;A\end{bmatrix}<br />
+=\det(A+B)\det(A-B).<br />
+$$</p>
+<p><strong>推导</strong> 取<br />
+$$<br />
+P=\begin{bmatrix}I&amp;I\I&amp;-I\end{bmatrix},<br />
+\qquad<br />
+P^{-1}=\frac12P.<br />
+$$<br />
+直接计算<br />
+$$<br />
+P\begin{bmatrix}A+B&amp;0\0&amp;A-B\end{bmatrix}P^{-1}<br />
+=\begin{bmatrix}A&amp;B\B&amp;A\end{bmatrix}.<br />
+$$<br />
+两边取行列式：<br />
+$$<br />
+\det(P)\det(A+B)\det(A-B)\det(P^{-1})<br />
+=\det(A+B)\det(A-B).<br />
+$$<br />
+左边 <span class="arithmatex">\(\det(P)\det(P^{-1})=1\)</span>，所以结论成立。</p>
+<p><strong>方法</strong> 把“交叉块相同”的矩阵用 <span class="arithmatex">\(\begin{bmatrix}I&amp;I\\I&amp;-I\end{bmatrix}\)</span> 合同/相似变换成块对角。这个矩阵本质上是在做“和与差”的变量替换。</p>
+<hr />
+<h3>1.7 循环矩阵与 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(n\)</span> 的循环行列式</h3>
+<p><strong>结论</strong> 设 <span class="arithmatex">\(C=\operatorname{circ}(a_0,a_1,\dots,a_{n-1})\)</span>，即第一行为 <span class="arithmatex">\((a_0,\dots,a_{n-1})\)</span>，每行向右循环移一位。令<br />
+$$<br />
+\omega_j=e^{2\pi ij/n}\quad(j=0,1,\dots,n-1).<br />
+$$<br />
+则<br />
+$$<br />
+\det C=\prod_{j=0}^{n-1}<br />
+\left(a_0+a_1\omega_j+\cdots+a_{n-1}\omega_j^{n-1}\right).<br />
+$$</p>
+<p><strong>推导</strong> 取<br />
+$$<br />
+v_j=(1,\omega_j,\omega_j^2,\dots,\omega_j^{n-1})^T.<br />
+$$<br />
+直接计算 <span class="arithmatex">\(Cv_j\)</span> 的第一个分量：<br />
+$$<br />
+(Cv_j)<em n-1>1=a_0+a_1\omega_j+\cdots+a</em>=:\lambda_j.}\omega_j^{n-1<br />
+$$<br />
+第二个分量利用 <span class="arithmatex">\(\omega_j^n=1\)</span>：<br />
+$$<br />
+(Cv_j)<em n-1>2=a</em>}+a_0\omega_j+\cdots+a_{n-2}\omega_j^{n-1<br />
+=\omega_j\lambda_j.<br />
+$$<br />
+同理第 <span class="arithmatex">\(k\)</span> 个分量为 <span class="arithmatex">\(\omega_j^{k-1}\lambda_j\)</span>，所以<br />
+$$<br />
+Cv_j=\lambda_jv_j.<br />
+$$<br />
+矩阵 <span class="arithmatex">\((v_0,v_1,\dots,v_{n-1})\)</span> 是节点为 <span class="arithmatex">\(\omega_0,\dots,\omega_{n-1}\)</span> 的范德蒙德矩阵，节点互异，故可逆。于是 <span class="arithmatex">\(C\)</span> 有 <span class="arithmatex">\(n\)</span> 个线性无关的特征向量，特征值为 <span class="arithmatex">\(\lambda_0,\dots,\lambda_{n-1}\)</span>，从而<br />
+$$<br />
+\det C=\prod_{j=0}^{n-1}\lambda_j.<br />
+$$</p>
+<p><strong>特例：第一行为 <span class="arithmatex">\(1,2,\dots,n\)</span>（右移循环矩阵）</strong>。此时 <span class="arithmatex">\(a_k=k+1\)</span>（<span class="arithmatex">\(k=0,\dots,n-1\)</span>），<br />
+$$<br />
+\lambda_j=\sum_{k=0}^{n-1}(k+1)\omega_j^k<br />
+=\sum_{k=1}^{n}k\omega_j^{k-1}.<br />
+$$<br />
+当 <span class="arithmatex">\(j=0\)</span> 时，<span class="arithmatex">\(\omega_0=1\)</span>，故<br />
+$$<br />
+\lambda_0=1+2+\cdots+n=\frac{n(n+1)}2.<br />
+$$<br />
+当 <span class="arithmatex">\(\omega\ne1\)</span> 时，利用<br />
+$$<br />
+\sum_{k=1}^{n}kx^{k-1}<br />
+=\left.\frac{d}{dx}\left(\frac{x^n-1}{x-1}\right)\right|<em k="1">{x=\omega}+n\omega^{n-1}.<br />
+$$<br />
+第一项在 <span class="arithmatex">\(x=\omega\)</span> 处为<br />
+$$<br />
+\frac{n\omega^{n-1}(\omega-1)-(\omega^n-1)}{(\omega-1)^2}<br />
+=\frac{n\omega^{n-1}}{\omega-1},<br />
+$$<br />
+所以<br />
+$$<br />
+\sum</em>}^{n}k\omega^{k-1<br />
+=\frac{n\omega^{n-1}}{\omega-1}+n\omega^{n-1}<br />
+=\frac{n}{\omega-1}.<br />
+$$<br />
+于是<br />
+$$<br />
+\det C<br />
+=\frac{n(n+1)}2\prod_{j=1}^{n-1}\frac{n}{\omega_j-1}<br />
+=\frac{n(n+1)}2\cdot n^{n-1}\cdot<br />
+\frac{1}{\prod_{j=1}^{n-1}(\omega_j-1)}.<br />
+$$<br />
+而<br />
+$$<br />
+\prod_{j=1}^{n-1}(1-\omega_j)=n<br />
+$$<br />
+（这是 <span class="arithmatex">\(x^n-1=\prod_{j=0}^{n-1}(x-\omega_j)\)</span> 在 <span class="arithmatex">\(x=1\)</span> 处求导得到的），故<br />
+$$<br />
+\prod_{j=1}^{n-1}(\omega_j-1)=(-1)^{n-1}n.<br />
+$$<br />
+代入得<br />
+$$<br />
+\det C=(-1)^{n-1}\frac{n^{n-1}(n+1)}2.<br />
+$$</p>
+<p><strong>注意：习题 2.12(7) 的矩阵是“左移”循环矩阵</strong>。设 <span class="arithmatex">\(L\)</span> 的第一行为 <span class="arithmatex">\(1,2,\dots,n\)</span>，每行向左循环移一位。把 <span class="arithmatex">\(L\)</span> 的行倒序（左乘行反转置换 <span class="arithmatex">\(P\)</span>，其符号为 <span class="arithmatex">\((-1)^{n(n-1)/2}\)</span>），可化成右移循环矩阵 <span class="arithmatex">\(R(b)\)</span>，其中<br />
+$$<br />
+b=(n,1,2,\dots,n-1).<br />
+$$<br />
+而 <span class="arithmatex">\(R(b)\)</span> 与 <span class="arithmatex">\(R(a)\)</span>（<span class="arithmatex">\(a=(1,2,\dots,n)\)</span>）的第一行相差一个 <span class="arithmatex">\(n\)</span>-循环置换，行列式相差 <span class="arithmatex">\((-1)^{n-1}\)</span>。因此<br />
+$$<br />
+\det L<br />
+=\det P\,\det R(b)<br />
+=(-1)^{n(n-1)/2}(-1)^{n-1}\det R(a)<br />
+=(-1)^{n(n-1)/2}\frac{n^{n-1}(n+1)}2.<br />
+$$<br />
+所以左移情形比右移情形多一个符号 <span class="arithmatex">\((-1)^{n(n-1)/2-(n-1)}\)</span>，不能混用。</p>
+<p><strong>方法</strong> 循环矩阵的对角化就是离散 Fourier 变换；单位根 <span class="arithmatex">\(\omega_j\)</span> 是它的“频率”。看到循环移位，先想单位根特征向量。</p>
+<hr />
+<h3>1.8 余弦行列式：切比雪夫多项式换基</h3>
+<p><strong>结论</strong><br />
+$$<br />
+\det\bigl[\cos((i-1)\alpha_j)\bigr]<em 1_le i_j_le n>{i,j=1}^n<br />
+=2^{\frac{(n-1)(n-2)}2}<br />
+\prod</em>(\cos\alpha_j-\cos\alpha_i).<br />
+$$</p>
+<p><strong>推导</strong> 令 <span class="arithmatex">\(x_j=\cos\alpha_j\)</span>。切比雪夫多项式 <span class="arithmatex">\(T_m\)</span> 满足<br />
+$$<br />
+T_m(\cos\alpha)=\cos(m\alpha),<br />
+$$<br />
+且 <span class="arithmatex">\(T_0=1\)</span>，当 <span class="arithmatex">\(m\ge1\)</span> 时 <span class="arithmatex">\(T_m\)</span> 是 <span class="arithmatex">\(m\)</span> 次多项式，首项系数为 <span class="arithmatex">\(2^{m-1}\)</span>。于是原矩阵为<br />
+$$<br />
+\bigl[T_{i-1}(x_j)\bigr]<em i-1>{i,j=1}^n.<br />
+$$<br />
+对行做初等变换：第 1 行保持 <span class="arithmatex">\(1\)</span>；对 <span class="arithmatex">\(m\ge1\)</span>，用前面的行消去 <span class="arithmatex">\(T_m\)</span> 中的低次项，把第 <span class="arithmatex">\(m+1\)</span> 行化为 <span class="arithmatex">\(2^{m-1}x^m\)</span>。倍加行变换不改变行列式，因此<br />
+$$<br />
+\det\bigl[T</em>(x_j)\bigr]<br />
+=2^{0+1+\cdots+(n-2)}\det\bigl[x_j^{i-1}\bigr].<br />
+$$<br />
+指数和为<br />
+$$<br />
+0+1+\cdots+(n-2)=\frac{(n-1)(n-2)}2.<br />
+$$<br />
+后面是范德蒙德行列式，等于 <span class="arithmatex">\(\prod_{i&lt;j}(x_j-x_i)\)</span>。把 <span class="arithmatex">\(x_j=\cos\alpha_j\)</span> 代回即得。</p>
+<p><strong>方法</strong> 如果矩阵的每一行都是某个多项式在 <span class="arithmatex">\(x_j\)</span> 处的值，先做“多项式基变换”，把问题化到范德蒙德。切比雪夫、勒让德等正交多项式都常用这一招。</p>
+<hr />
+<h3>1.9 三对角行列式：按第一行展开找递推</h3>
+<p><strong>结论</strong> 设<br />
+$$<br />
+D_n=\det\begin{bmatrix}<br />
+a&amp;b&amp;0&amp;\cdots&amp;0\<br />
+c&amp;a&amp;b&amp;\cdots&amp;0\<br />
+0&amp;c&amp;a&amp;\ddots&amp;\vdots\<br />
+\vdots&amp;&amp;\ddots&amp;\ddots&amp;b\<br />
+0&amp;\cdots&amp;&amp;c&amp;a<br />
+\end{bmatrix}<em n-1>n,<br />
+$$<br />
+则<br />
+$$<br />
+D_n=aD</em>,\qquad D_0=1, D_1=a.}-bcD_{n-2<br />
+$$</p>
+<p><strong>推导</strong> 按第一行展开：<br />
+$$<br />
+D_n=aD_{n-1}-b\det M_{12},<br />
+$$<br />
+其中 <span class="arithmatex">\(M_{12}\)</span> 是划去第 1 行、第 2 列后的 <span class="arithmatex">\((n-1)\times(n-1)\)</span> 矩阵。它的第一列为 <span class="arithmatex">\((c,0,\dots,0)^T\)</span>，按第一列展开，剩下的 <span class="arithmatex">\((n-2)\times(n-2)\)</span> 块正好是同一个三对角矩阵 <span class="arithmatex">\(D_{n-2}\)</span>，所以<br />
+$$<br />
+\det M_{12}=cD_{n-2}.<br />
+$$<br />
+因此<br />
+$$<br />
+D_n=aD_{n-1}-bcD_{n-2}.<br />
+$$<br />
+初值 <span class="arithmatex">\(D_0=1\)</span>（空矩阵行列式约定为 1），<span class="arithmatex">\(D_1=a\)</span>。</p>
+<p><strong>方法</strong> 三对角、箭头、循环等“带状”行列式，先按第一行/第一列展开，把 <span class="arithmatex">\(D_n\)</span> 与 <span class="arithmatex">\(D_{n-1},D_{n-2}\)</span> 联系起来；再解递推或算前几项猜公式。</p>
+<hr />
+<h3>1.10 元素全为 <span class="arithmatex">\(\pm2\)</span> 的矩阵：整除性</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(n\)</span> 阶矩阵 <span class="arithmatex">\(A\)</span> 的每个元素都是 <span class="arithmatex">\(2\)</span> 或 <span class="arithmatex">\(-2\)</span>，则<br />
+$$<br />
+2^{2n-1}\mid \det(A).<br />
+$$</p>
+<p><strong>推导</strong> 设 <span class="arithmatex">\(A=2B\)</span>，其中 <span class="arithmatex">\(B\)</span> 的元素为 <span class="arithmatex">\(\pm1\)</span>。则<br />
+$$<br />
+\det(A)=2^n\det(B).<br />
+$$<br />
+下面证明 <span class="arithmatex">\(2^{n-1}\mid\det(B)\)</span>。对 <span class="arithmatex">\(B\)</span> 做行变换：第 <span class="arithmatex">\(2,3,\dots,n\)</span> 行都减去第 1 行。这样第 <span class="arithmatex">\(2,\dots,n\)</span> 行的每个元素都是 <span class="arithmatex">\(0\)</span> 或 <span class="arithmatex">\(\pm2\)</span>，即为偶数。从这 <span class="arithmatex">\(n-1\)</span> 行每行提出因子 <span class="arithmatex">\(2\)</span>，得<br />
+$$<br />
+\det(B)=2^{n-1}\det(C),<br />
+$$<br />
+其中 <span class="arithmatex">\(C\)</span> 是整数矩阵。因此 <span class="arithmatex">\(2^{n-1}\mid\det(B)\)</span>，进而<br />
+$$<br />
+2^n\cdot 2^{n-1}=2^{2n-1}\mid\det(A).<br />
+$$</p>
+<p><strong>方法</strong> 整数矩阵的整除性问题，常用“行变换 + 提因子”，把问题化为“剩下的矩阵还是整数矩阵”。不要一上来就算行列式。</p>
+<hr />
+<h3>1.11 边框矩阵 <span class="arithmatex">\(\begin{bmatrix}1&amp;\mathbf 1^T\\\mathbf 1&amp;E\end{bmatrix}\)</span> 的行列式</h3>
+<p><strong>结论</strong><br />
+$$<br />
+\det\begin{bmatrix}1&amp;\mathbf 1^T\\mathbf 1&amp;E_{n-1}\end{bmatrix}=2-n<br />
+\qquad(n\ge2).<br />
+$$</p>
+<p><strong>推导</strong> 用 Schur 补，取左上角 <span class="arithmatex">\(1\times1\)</span> 块 <span class="arithmatex">\(A=1\)</span>：<br />
+$$<br />
+\det=\det(1)\cdot<br />
+\det\left(E_{n-1}-\mathbf 1\cdot1^{-1}\cdot\mathbf 1^T\right)<br />
+=\det(E_{n-1}-J_{n-1}).<br />
+$$<br />
+而 <span class="arithmatex">\(E_{n-1}-J_{n-1}\)</span> 的特征值为 <span class="arithmatex">\(1-(n-1)=2-n\)</span>（全 1 向量）和 <span class="arithmatex">\(1\)</span>（<span class="arithmatex">\(n-2\)</span> 重），故行列式为 <span class="arithmatex">\(2-n\)</span>。</p>
+<p><strong>方法</strong> 这是“边框矩阵/加边矩阵”的标准处理：把边框看成秩一更新，用 Schur 补降阶。</p>
+<hr />
+<h3>1.12 超定系统无解：行列式与线性相关</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A\)</span> 是 <span class="arithmatex">\(n\)</span> 阶可逆矩阵，则“用前 <span class="arithmatex">\(n-1\)</span> 列线性表示最后一列”的 <span class="arithmatex">\(n\)</span> 个方程、<span class="arithmatex">\(n-1\)</span> 个未知量的方程组无解。</p>
+<p><strong>推导</strong> 设方程组有解 <span class="arithmatex">\(x=(x_1,\dots,x_{n-1})^T\)</span>，即<br />
+$$<br />
+a_n=x_1a_1+\cdots+x_{n-1}a_{n-1},<br />
+$$<br />
+其中 <span class="arithmatex">\(a_j\)</span> 是 <span class="arithmatex">\(A\)</span> 的第 <span class="arithmatex">\(j\)</span> 列。这说明 <span class="arithmatex">\(A\)</span> 的 <span class="arithmatex">\(n\)</span> 列线性相关，故 <span class="arithmatex">\(\det(A)=0\)</span>，与 <span class="arithmatex">\(A\)</span> 可逆矛盾。因此无解。</p>
+<p><strong>方法</strong> “方程个数多于未知量”本身不保证无解；这里的关键是<strong>系数矩阵可逆</strong>，最后一列不可能落在前 <span class="arithmatex">\(n-1\)</span> 列的张成空间里。</p>
+<hr />
+<h2>2. 矩阵：幂、逆、伴随与分块</h2>
+<h3>2.1 秩一矩阵的幂</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A=uv^T\)</span>（<span class="arithmatex">\(u,v\)</span> 为非零列向量），则<br />
+$$<br />
+A^2=(v^Tu)A,\qquad A^k=(v^Tu)^{k-1}A\quad(k\ge1).<br />
+$$</p>
+<p><strong>推导</strong> 直接算：<br />
+$$<br />
+A^2=(uv^T)(uv^T)=u(v^Tu)v^T=(v^Tu)uv^T=(v^Tu)A.<br />
+$$<br />
+归纳：若 <span class="arithmatex">\(A^k=(v^Tu)^{k-1}A\)</span>，则<br />
+$$<br />
+A^{k+1}=A^kA=(v^Tu)^{k-1}A^2<br />
+=(v^Tu)^{k-1}(v^Tu)A=(v^Tu)^kA.<br />
+$$<br />
+所以结论成立。顺带 <span class="arithmatex">\(\operatorname{tr}(A)=v^Tu\)</span>，因为 <span class="arithmatex">\(\operatorname{tr}(uv^T)=v^Tu\)</span>。</p>
+<p><strong>方法</strong> 秩一矩阵的乘法可以“先算标量 <span class="arithmatex">\(v^Tu\)</span>”；这是秩一矩阵所有幂、迹、特征值结论的源头。</p>
+<hr />
+<h3>2.2 幂等矩阵：秩和与迹</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A^2=A\)</span>，则<br />
+$$<br />
+\operatorname{r}(A)+\operatorname{r}(E-A)=n,\qquad<br />
+\operatorname{r}(A)=\operatorname{tr}(A).<br />
+$$</p>
+<p><strong>推导（秩和）</strong> 由<br />
+$$<br />
+A(E-A)=0<br />
+$$<br />
+得<br />
+$$<br />
+\operatorname{r}(A)+\operatorname{r}(E-A)\le n.<br />
+$$<br />
+又<br />
+$$<br />
+A+(E-A)=E,<br />
+$$<br />
+所以<br />
+$$<br />
+n=\operatorname{r}(E)\le\operatorname{r}(A)+\operatorname{r}(E-A).<br />
+$$<br />
+两式夹逼，得<br />
+$$<br />
+\operatorname{r}(A)+\operatorname{r}(E-A)=n.<br />
+$$</p>
+<p><strong>推导（迹）</strong> 设 <span class="arithmatex">\(r=\operatorname{r}(A)\)</span>。取 <span class="arithmatex">\(\operatorname{Im}A\)</span> 的一组基 <span class="arithmatex">\(e_1,\dots,e_r\)</span>，并扩充为全空间的一组基。对 <span class="arithmatex">\(i\le r\)</span>，因为 <span class="arithmatex">\(e_i=Ay_i\)</span>，所以<br />
+$$<br />
+Ae_i=A^2y_i=Ay_i=e_i.<br />
+$$<br />
+对 <span class="arithmatex">\(j&gt;r\)</span>，<span class="arithmatex">\(Ae_j\in\operatorname{Im}A\)</span>，它在扩充出来的那 <span class="arithmatex">\(n-r\)</span> 个基向量上的坐标为 0。于是 <span class="arithmatex">\(A\)</span> 在这组基下的矩阵形如<br />
+$$<br />
+\begin{bmatrix}I_r&amp;*\0&amp;0\end{bmatrix},<br />
+$$<br />
+迹为 <span class="arithmatex">\(r\)</span>。迹与基无关，所以<br />
+$$<br />
+\operatorname{tr}(A)=r=\operatorname{r}(A).<br />
+$$</p>
+<p><strong>顺带</strong>：若 <span class="arithmatex">\(A\)</span> 可逆且 <span class="arithmatex">\(A^2=A\)</span>，两边左乘 <span class="arithmatex">\(A^{-1}\)</span> 得 <span class="arithmatex">\(A=E\)</span>；若 <span class="arithmatex">\(A\)</span> 不可逆，则 <span class="arithmatex">\(\det(A)=0\)</span>。所以幂等矩阵的行列式只能是 <span class="arithmatex">\(0\)</span> 或 <span class="arithmatex">\(1\)</span>。</p>
+<p><strong>方法</strong> 秩和用“零乘积 + 和等于 <span class="arithmatex">\(E\)</span>”夹逼；迹用“选取适配 <span class="arithmatex">\(\operatorname{Im}A\)</span> 的基”，让矩阵变成 <span class="arithmatex">\(\begin{bmatrix}I_r&amp;*\\0&amp;0\end{bmatrix}\)</span>。</p>
+<hr />
+<h3>2.3 对合矩阵：秩和</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A^2=E\)</span>，则（在 <span class="arithmatex">\(\operatorname{char}\ne2\)</span> 时）<br />
+$$<br />
+\operatorname{r}(E-A)+\operatorname{r}(E+A)=n.<br />
+$$</p>
+<p><strong>推导</strong> 由<br />
+$$<br />
+(E-A)(E+A)=E-A^2=0<br />
+$$<br />
+得<br />
+$$<br />
+\operatorname{r}(E-A)+\operatorname{r}(E+A)\le n.<br />
+$$<br />
+又<br />
+$$<br />
+(E-A)+(E+A)=2E,<br />
+$$<br />
+所以<br />
+$$<br />
+n=\operatorname{r}(2E)\le\operatorname{r}(E-A)+\operatorname{r}(E+A)<br />
+$$<br />
+（这里用到 <span class="arithmatex">\(2\ne0\)</span>）。两式夹逼，得等号。</p>
+<p><strong>方法</strong> 与幂等矩阵完全同构：先由“乘积为零”得上界，再由“和等于非零数量矩阵”得下界。</p>
+<hr />
+<h3>2.4 幂零矩阵：<span class="arithmatex">\(E-A\)</span> 的逆</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A^k=0\)</span>，则<br />
+$$<br />
+(E-A)^{-1}=E+A+A^2+\cdots+A^{k-1}.<br />
+$$</p>
+<p><strong>推导</strong> 直接做乘法：<br />
+$$<br />
+(E-A)(E+A+\cdots+A^{k-1})<br />
+=E-A^k=E.<br />
+$$<br />
+同理<br />
+$$<br />
+(E+A)(E-A+A^2-\cdots+(-1)^{k-1}A^{k-1})=E.<br />
+$$<br />
+所以两个逆公式都成立。</p>
+<p><strong>方法</strong> 这是有限等比级数；幂零性保证级数在 <span class="arithmatex">\(A^k=0\)</span> 处截断。看到“<span class="arithmatex">\(E\)</span> 减去幂零矩阵”，先想 telescoping。</p>
+<hr />
+<h3>2.5 多项式零点给出的逆</h3>
+<p><strong>结论</strong> 若<br />
+$$<br />
+f(x)=a_mx^m+\cdots+a_1x+a_0,\qquad a_0\ne0,<br />
+$$<br />
+且 <span class="arithmatex">\(f(A)=0\)</span>，则 <span class="arithmatex">\(A\)</span> 可逆，且<br />
+$$<br />
+A^{-1}=-\frac1{a_0}\left(a_mA^{m-1}+\cdots+a_1E\right).<br />
+$$</p>
+<p><strong>推导</strong> 由 <span class="arithmatex">\(f(A)=0\)</span> 得<br />
+$$<br />
+a_mA^m+\cdots+a_1A=-a_0E.<br />
+$$<br />
+左边提取 <span class="arithmatex">\(A\)</span>：<br />
+$$<br />
+A\left(a_mA^{m-1}+\cdots+a_1E\right)=-a_0E.<br />
+$$<br />
+因为 <span class="arithmatex">\(a_0\ne0\)</span>，两边除以 <span class="arithmatex">\(-a_0\)</span>，得<br />
+$$<br />
+A\left[-\frac1{a_0}\left(a_mA^{m-1}+\cdots+a_1E\right)\right]=E.<br />
+$$<br />
+所以 <span class="arithmatex">\(A\)</span> 可逆，且逆就是方括号中的矩阵。</p>
+<p><strong>方法</strong> 把常数项移到右边，再提取 <span class="arithmatex">\(A\)</span>。这也是“矩阵多项式”里求逆的标准动作。</p>
+<hr />
+<h3>2.6 两个逆的和</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A,B,A+B\)</span> 都可逆，则<br />
+$$<br />
+(A^{-1}+B^{-1})^{-1}=B(A+B)^{-1}A=A(A+B)^{-1}B.<br />
+$$</p>
+<p><strong>推导</strong> 先因式分解：<br />
+$$<br />
+A^{-1}+B^{-1}=A^{-1}(A+B)B^{-1}.<br />
+$$<br />
+两边求逆：<br />
+$$<br />
+(A^{-1}+B^{-1})^{-1}<br />
+=B(A+B)^{-1}A.<br />
+$$<br />
+再证两个表达式相等。令 <span class="arithmatex">\(S=A+B\)</span>，则<br />
+$$<br />
+B S^{-1}A=(S-A)S^{-1}A=A-A S^{-1}A,<br />
+$$<br />
+$$<br />
+A S^{-1}B=A S^{-1}(S-A)=A-A S^{-1}A,<br />
+$$<br />
+所以<br />
+$$<br />
+B(A+B)^{-1}A=A(A+B)^{-1}B.<br />
+$$</p>
+<p><strong>方法</strong> 先把“逆的和”写成“三个因子的乘积”，再整体求逆；顺序反过来是关键。</p>
+<hr />
+<h3>2.7 Sherman–Morrison 公式</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A\)</span> 可逆，且 <span class="arithmatex">\(1+v^TA^{-1}u\ne0\)</span>，则<br />
+$$<br />
+(A+uv^T)^{-1}<br />
+=A^{-1}-\frac{A^{-1}uv^TA^{-1}}{1+v^TA^{-1}u}.<br />
+$$</p>
+<p><strong>推导</strong> 记 <span class="arithmatex">\(\sigma=v^TA^{-1}u\)</span>。直接乘：<br />
+$$<br />
+(A+uv^T)\left(A^{-1}-\frac{A^{-1}uv^TA^{-1}}{1+\sigma}\right)<br />
+=(I+uv^TA^{-1})-\frac{(I+uv^TA^{-1})uv^TA^{-1}}{1+\sigma}.<br />
+$$<br />
+而<br />
+$$<br />
+(I+uv^TA^{-1})uv^TA^{-1}<br />
+=uv^TA^{-1}+u(v^TA^{-1}u)v^TA^{-1}<br />
+=(1+\sigma)uv^TA^{-1}.<br />
+$$<br />
+所以第二项等于 <span class="arithmatex">\(uv^TA^{-1}\)</span>，整个乘积为<br />
+$$<br />
+I+uv^TA^{-1}-uv^TA^{-1}=I.<br />
+$$<br />
+故公式成立。</p>
+<p><strong>方法</strong> 直接验证逆的定义，比“猜公式”更可靠；注意 <span class="arithmatex">\(\sigma=v^TA^{-1}u\)</span> 是标量，可以随意移项。</p>
+<hr />
+<h3>2.8 伴随矩阵的秩</h3>
+<p><strong>结论</strong> 对 <span class="arithmatex">\(n\ge2\)</span>，<br />
+$$<br />
+\operatorname{r}(A^*)=<br />
+\begin{cases}<br />
+n,&amp; \operatorname{r}(A)=n,\<br />
+1,&amp; \operatorname{r}(A)=n-1,\<br />
+0,&amp; \operatorname{r}(A)\le n-2.<br />
+\end{cases}<br />
+$$</p>
+<p><strong>推导</strong> 分三种情况。</p>
+<ol>
+<li><span class="arithmatex">\(\operatorname{r}(A)=n\)</span>：<span class="arithmatex">\(A\)</span> 可逆，<span class="arithmatex">\(A^*=\det(A)A^{-1}\)</span> 也可逆，故 <span class="arithmatex">\(\operatorname{r}(A^*)=n\)</span>。</li>
+<li><span class="arithmatex">\(\operatorname{r}(A)=n-1\)</span>：此时至少有一个 <span class="arithmatex">\((n-1)\)</span> 阶子式不为 0，所以 <span class="arithmatex">\(A^*\ne O\)</span>。又<br />
+   $$<br />
+   AA^*=\det(A)E=O,<br />
+   $$<br />
+   所以 <span class="arithmatex">\(A^*\)</span> 的每一列都属于 <span class="arithmatex">\(\ker A\)</span>。由秩–零度定理，<br />
+   $$<br />
+   \dim\ker A=n-\operatorname{r}(A)=1.<br />
+   $$<br />
+   因此 <span class="arithmatex">\(A^*\)</span> 的列空间维数至多为 1；又 <span class="arithmatex">\(A^*\ne O\)</span>，故 <span class="arithmatex">\(\operatorname{r}(A^*)=1\)</span>。</li>
+<li><span class="arithmatex">\(\operatorname{r}(A)\le n-2\)</span>：所有 <span class="arithmatex">\((n-1)\)</span> 阶子式都为 0，而 <span class="arithmatex">\(A^*\)</span> 的元素正是这些子式（差符号），所以 <span class="arithmatex">\(A^*=O\)</span>，秩为 0。</li>
+</ol>
+<p><strong>方法</strong> 伴随矩阵的秩是“零空间维数”的典型应用：<span class="arithmatex">\(AA^*=0\)</span> 把 <span class="arithmatex">\(A^*\)</span> 的列塞进 <span class="arithmatex">\(\ker A\)</span>，再用 <span class="arithmatex">\(\dim\ker A=n-\operatorname{r}(A)\)</span> 卡住。</p>
+<hr />
+<h3>2.9 <span class="arithmatex">\((A^*)^*\)</span> 与 <span class="arithmatex">\(\det(A^*)\)</span>：先可逆，再密度</h3>
+<p><strong>结论</strong> 对 <span class="arithmatex">\(n\ge2\)</span>，<br />
+$$<br />
+\det(A^<em>)=\det(A)^{n-1},\qquad<br />
+(A^</em>)^*=\det(A)^{n-2}A.<br />
+$$</p>
+<p><strong>推导</strong> 先假设 <span class="arithmatex">\(A\)</span> 可逆。此时<br />
+$$<br />
+A^<em>=\det(A)A^{-1}.<br />
+$$<br />
+于是<br />
+$$<br />
+\det(A^</em>)=\det\bigl(\det(A)A^{-1}\bigr)<br />
+=\det(A)^n\det(A^{-1})<br />
+=\det(A)^{n-1}.<br />
+$$<br />
+又<br />
+$$<br />
+(A^<em>)^</em><br />
+=\det(A^<em>)(A^</em>)^{-1}<br />
+=\det(A)^{n-1}\bigl(\det(A)A^{-1}\bigr)^{-1}<br />
+=\det(A)^{n-1}\cdot\frac1{\det(A)}A<br />
+=\det(A)^{n-2}A.<br />
+$$<br />
+对一般的奇异矩阵，等式两边都是矩阵元素的多项式，而可逆矩阵在 <span class="arithmatex">\(\mathbb R^{n\times n}\)</span> 或 <span class="arithmatex">\(\mathbb C^{n\times n}\)</span> 中稠密；一个多项式在稠密开集上为 0，则恒为 0。因此等式对奇异矩阵也成立。</p>
+<p><strong>方法</strong> 伴随矩阵的很多恒等式都可以“先在可逆情形证明，再用密度/多项式恒等推广”。这比直接对奇异矩阵分类讨论省力。</p>
+<hr />
+<h3>2.10 分块三角逆与一般分块逆</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A,C\)</span> 可逆，则<br />
+$$<br />
+\begin{bmatrix}A&amp;B\O&amp;C\end{bmatrix}^{-1}<br />
+=<br />
+\begin{bmatrix}<br />
+A^{-1}&amp;-A^{-1}BC^{-1}\<br />
+O&amp;C^{-1}<br />
+\end{bmatrix}.<br />
+$$</p>
+<p><strong>推导</strong> 设逆为<br />
+$$<br />
+X=\begin{bmatrix}X_{11}&amp;X_{12}\X_{21}&amp;X_{22}\end{bmatrix}.<br />
+$$<br />
+由<br />
+$$<br />
+\begin{bmatrix}A&amp;B\O&amp;C\end{bmatrix}<br />
+\begin{bmatrix}X_{11}&amp;X_{12}\X_{21}&amp;X_{22}\end{bmatrix}<br />
+=<br />
+\begin{bmatrix}I&amp;O\O&amp;I\end{bmatrix}<br />
+$$<br />
+比较四个块：<br />
+$$<br />
+AX_{11}+BX_{21}=I,\quad AX_{12}+BX_{22}=O,\quad<br />
+CX_{21}=O,\quad CX_{22}=I.<br />
+$$<br />
+由 <span class="arithmatex">\(C\)</span> 可逆得 <span class="arithmatex">\(X_{21}=O\)</span>、<span class="arithmatex">\(X_{22}=C^{-1}\)</span>；再由 <span class="arithmatex">\(A\)</span> 可逆得 <span class="arithmatex">\(X_{11}=A^{-1}\)</span>、<span class="arithmatex">\(X_{12}=-A^{-1}BC^{-1}\)</span>。</p>
+<p><strong>一般 <span class="arithmatex">\(2\times2\)</span> 分块逆</strong>：若 <span class="arithmatex">\(A\)</span> 可逆，令 <span class="arithmatex">\(S=D-CA^{-1}B\)</span>，且 <span class="arithmatex">\(S\)</span> 可逆。做分块消元：<br />
+$$<br />
+\begin{bmatrix}I&amp;O\-CA^{-1}&amp;I\end{bmatrix}<br />
+\begin{bmatrix}A&amp;B\C&amp;D\end{bmatrix}<br />
+=<br />
+\begin{bmatrix}A&amp;B\O&amp;S\end{bmatrix}.<br />
+$$<br />
+于是<br />
+$$<br />
+\begin{bmatrix}A&amp;B\C&amp;D\end{bmatrix}^{-1}<br />
+=<br />
+\begin{bmatrix}A&amp;B\O&amp;S\end{bmatrix}^{-1}<br />
+\begin{bmatrix}I&amp;O\-CA^{-1}&amp;I\end{bmatrix}.<br />
+$$<br />
+用上面的分块上三角逆公式乘开，即得<br />
+$$<br />
+\begin{bmatrix}A&amp;B\C&amp;D\end{bmatrix}^{-1}<br />
+=<br />
+\begin{bmatrix}<br />
+A^{-1}+A^{-1}BS^{-1}CA^{-1}&amp;-A^{-1}BS^{-1}\<br />
+-S^{-1}CA^{-1}&amp;S^{-1}<br />
+\end{bmatrix}.<br />
+$$</p>
+<p><strong>方法</strong> 分块逆不要死记；先做分块消元，把矩阵化成“上三角”，再用上三角逆公式。所有分块逆公式都是这一条路。</p>
+<hr />
+<h3>2.11 <span class="arithmatex">\((E-J_n)^{-1}\)</span></h3>
+<p><strong>结论</strong> 当 <span class="arithmatex">\(n&gt;1\)</span> 时，<br />
+$$<br />
+(E-J_n)^{-1}=E-\frac1{n-1}J_n.<br />
+$$</p>
+<p><strong>推导</strong> 利用<br />
+$$<br />
+J_n^2=nJ_n.<br />
+$$<br />
+设逆为 <span class="arithmatex">\(E+\alpha J_n\)</span>，则<br />
+$$<br />
+(E-J_n)(E+\alpha J_n)<br />
+=E+(\alpha-1)J_n-\alpha J_n^2<br />
+=E+\bigl(\alpha-1-\alpha n\bigr)J_n.<br />
+$$<br />
+令 <span class="arithmatex">\(J_n\)</span> 的系数为 0：<br />
+$$<br />
+\alpha-1-\alpha n=0<br />
+\iff \alpha(1-n)=1<br />
+\iff \alpha=-\frac1{n-1}.<br />
+$$<br />
+所以<br />
+$$<br />
+(E-J_n)^{-1}=E-\frac1{n-1}J_n.<br />
+$$</p>
+<p><strong>方法</strong> 看到 <span class="arithmatex">\(J_n\)</span>，先记 <span class="arithmatex">\(J_n^2=nJ_n\)</span>，然后设“<span class="arithmatex">\(E+\alpha J_n\)</span>”待定系数。这是最省力的做法。</p>
+<hr />
+<h3>2.12 二阶 Cayley–Hamilton 与两个分类</h3>
+<p><strong>结论</strong> 对二阶矩阵 <span class="arithmatex">\(A\)</span>，<br />
+$$<br />
+A^2-\operatorname{tr}(A)A+\det(A)E=0.<br />
+$$</p>
+<p><strong>推导</strong> 设 <span class="arithmatex">\(A=\begin{bmatrix}a&amp;b\\c&amp;d\end{bmatrix}\)</span>，直接计算<br />
+$$<br />
+A^2=\begin{bmatrix}a^2+bc&amp;ab+bd\ac+cd&amp;bc+d^2\end{bmatrix}.<br />
+$$<br />
+而<br />
+$$<br />
+\operatorname{tr}(A)A-\det(A)E<br />
+=(a+d)\begin{bmatrix}a&amp;b\c&amp;d\end{bmatrix}-(ad-bc)\begin{bmatrix}1&amp;0\0&amp;1\end{bmatrix}.<br />
+$$<br />
+逐项比较，正好等于上面的 <span class="arithmatex">\(A^2\)</span>。所以<br />
+$$<br />
+A^2-\operatorname{tr}(A)A+\det(A)E=0.<br />
+$$</p>
+<p><strong>分类一：<span class="arithmatex">\(A^2=0\)</span></strong>。代入 Cayley–Hamilton：<br />
+$$<br />
+-\operatorname{tr}(A)A+\det(A)E=0.<br />
+$$<br />
+若 <span class="arithmatex">\(A\ne O\)</span> 且 <span class="arithmatex">\(\operatorname{tr}(A)\ne0\)</span>，则 <span class="arithmatex">\(A\)</span> 是数量矩阵，而数量矩阵满足 <span class="arithmatex">\(A^2=0\)</span> 只能 <span class="arithmatex">\(A=O\)</span>，矛盾。因此 <span class="arithmatex">\(\operatorname{tr}(A)=0\)</span>；再代回得 <span class="arithmatex">\(\det(A)=0\)</span>。反过来，若 <span class="arithmatex">\(\operatorname{tr}(A)=\det(A)=0\)</span>，Cayley–Hamilton 给出 <span class="arithmatex">\(A^2=0\)</span>。</p>
+<p><strong>分类二：<span class="arithmatex">\(A^2=E\)</span></strong>。代入：<br />
+$$<br />
+E-\operatorname{tr}(A)A+\det(A)E=0<br />
+\iff<br />
+\operatorname{tr}(A)A=(1+\det(A))E.<br />
+$$<br />
+若 <span class="arithmatex">\(\operatorname{tr}(A)\ne0\)</span>，则 <span class="arithmatex">\(A\)</span> 是数量矩阵，进而 <span class="arithmatex">\(A=\pm E\)</span>。若 <span class="arithmatex">\(\operatorname{tr}(A)=0\)</span>，则 <span class="arithmatex">\(1+\det(A)=0\)</span>，即 <span class="arithmatex">\(\det(A)=-1\)</span>。反过来，<span class="arithmatex">\(\operatorname{tr}(A)=0,\det(A)=-1\)</span> 时 Cayley–Hamilton 给出 <span class="arithmatex">\(A^2=E\)</span>。</p>
+<p><strong>方法</strong> 二阶矩阵的很多“分类”题，都可以用 Cayley–Hamilton 把 <span class="arithmatex">\(A^2\)</span> 降成 <span class="arithmatex">\(A\)</span> 与 <span class="arithmatex">\(E\)</span> 的组合，再比较系数。</p>
+<hr />
+<h3>2.13 严格对角占优矩阵可逆：反证 + 最大分量</h3>
+<p><strong>结论</strong> 若对每个 <span class="arithmatex">\(i\)</span> 都有<br />
+$$<br />
+\lvert a_{ii}\rvert&gt;\sum_{j\ne i}\lvert a_{ij}\rvert,<br />
+$$<br />
+则 <span class="arithmatex">\(A\)</span> 可逆。</p>
+<p><strong>推导</strong> 反设 <span class="arithmatex">\(A\)</span> 不可逆，则存在非零向量 <span class="arithmatex">\(x\)</span> 使 <span class="arithmatex">\(Ax=0\)</span>。取 <span class="arithmatex">\(k\)</span> 使<br />
+$$<br />
+\lvert x_k\rvert=\max_i\lvert x_i\rvert&gt;0.<br />
+$$<br />
+看第 <span class="arithmatex">\(k\)</span> 个方程：<br />
+$$<br />
+a_{kk}x_k=-\sum_{j\ne k}a_{kj}x_j.<br />
+$$<br />
+两边取绝对值，并用 <span class="arithmatex">\(\lvert x_j\rvert\le\lvert x_k\rvert\)</span>：<br />
+$$<br />
+\lvert a_{kk}\rvert\lvert x_k\rvert<br />
+\le\sum_{j\ne k}\lvert a_{kj}\rvert\lvert x_j\rvert<br />
+\le\left(\sum_{j\ne k}\lvert a_{kj}\rvert\right)\lvert x_k\rvert<br />
+&lt;\lvert a_{kk}\rvert\lvert x_k\rvert.<br />
+$$<br />
+矛盾。因此 <span class="arithmatex">\(Ax=0\)</span> 只有零解，<span class="arithmatex">\(A\)</span> 可逆。</p>
+<p><strong>方法</strong> 证明“某类矩阵可逆”，常用反证：假设 <span class="arithmatex">\(Ax=0\)</span> 有非零解，取绝对值最大的分量，利用对角占优推出矛盾。这个“最大分量法”在数值线性代数里也很常见。</p>
+<hr />
+<h2>3. 秩：线性映射与维数</h2>
+<h3>3.1 Sylvester 秩不等式</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>，<span class="arithmatex">\(B\)</span> 为 <span class="arithmatex">\(n\times p\)</span>，则<br />
+$$<br />
+\operatorname{r}(AB)\ge\operatorname{r}(A)+\operatorname{r}(B)-n.<br />
+$$</p>
+<p><strong>推导</strong> 把 <span class="arithmatex">\(B\)</span> 看成线性映射 <span class="arithmatex">\(\mathbb F^p\to\mathbb F^n\)</span>，把 <span class="arithmatex">\(A\)</span> 看成 <span class="arithmatex">\(\mathbb F^n\to\mathbb F^m\)</span>。则<br />
+$$<br />
+\operatorname{r}(AB)=\dim A(\operatorname{Im}B)<br />
+=\dim\operatorname{Im}B-\dim(\operatorname{Im}B\cap\ker A).<br />
+$$<br />
+其中 <span class="arithmatex">\(\operatorname{Im}B\subseteq\mathbb F^n\)</span>，而 <span class="arithmatex">\(\ker A\subseteq\mathbb F^n\)</span>，所以<br />
+$$<br />
+\dim(\operatorname{Im}B\cap\ker A)\le\dim\ker A=n-\operatorname{r}(A).<br />
+$$<br />
+于是<br />
+$$<br />
+\operatorname{r}(AB)\ge\operatorname{r}(B)-\bigl(n-\operatorname{r}(A)\bigr)<br />
+=\operatorname{r}(A)+\operatorname{r}(B)-n.<br />
+$$</p>
+<p><strong>方法</strong> 秩不等式的标准证法：把秩写成“像空间维数”，再用<br />
+$$<br />
+\dim(U+W)=\dim U+\dim W-\dim(U\cap W)<br />
+$$<br />
+或“限制映射的核”来估计。Sylvester 不等式的本质是：<span class="arithmatex">\(B\)</span> 的像里最多有 <span class="arithmatex">\(n-\operatorname{r}(A)\)</span> 维被 <span class="arithmatex">\(A\)</span> 的核吃掉。</p>
+<hr />
+<h3>3.2 <span class="arithmatex">\(ABC=0\)</span> 的三秩不等式</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A,B,C\)</span> 均为 <span class="arithmatex">\(n\)</span> 阶方阵，且 <span class="arithmatex">\(ABC=0\)</span>，则<br />
+$$<br />
+\operatorname{r}(A)+\operatorname{r}(B)+\operatorname{r}(C)\le2n.<br />
+$$</p>
+<p><strong>推导</strong> 由 <span class="arithmatex">\(ABC=0\)</span>：</p>
+<ul>
+<li>把 <span class="arithmatex">\(AB\)</span> 看成一个矩阵，<span class="arithmatex">\(AB\cdot C=0\)</span>，所以 <span class="arithmatex">\(\operatorname{Im}C\subseteq\ker(AB)\)</span>，从而<br />
+  $$<br />
+  \operatorname{r}(AB)+\operatorname{r}(C)\le n. \qquad(1)<br />
+  $$</li>
+<li>把 <span class="arithmatex">\(BC\)</span> 看成一个矩阵，<span class="arithmatex">\(A\cdot BC=0\)</span>，所以 <span class="arithmatex">\(\operatorname{Im}(BC)\subseteq\ker A\)</span>，从而<br />
+  $$<br />
+  \operatorname{r}(A)+\operatorname{r}(BC)\le n. \qquad(2)<br />
+  $$</li>
+</ul>
+<p>(1)+(2)：<br />
+$$<br />
+\operatorname{r}(AB)+\operatorname{r}(BC)+\operatorname{r}(A)+\operatorname{r}(C)\le2n. \qquad(3)<br />
+$$<br />
+另一方面，对 <span class="arithmatex">\(AB\)</span> 和 <span class="arithmatex">\(BC\)</span> 分别用 Sylvester 不等式：<br />
+$$<br />
+\operatorname{r}(AB)\ge\operatorname{r}(A)+\operatorname{r}(B)-n,<br />
+$$<br />
+$$<br />
+\operatorname{r}(BC)\ge\operatorname{r}(B)+\operatorname{r}(C)-n.<br />
+$$<br />
+相加：<br />
+$$<br />
+\operatorname{r}(AB)+\operatorname{r}(BC)<br />
+\ge\operatorname{r}(A)+\operatorname{r}(C)+2\operatorname{r}(B)-2n. \qquad(4)<br />
+$$<br />
+把 (4) 代入 (3)：<br />
+$$<br />
+\bigl[\operatorname{r}(A)+\operatorname{r}(C)+2\operatorname{r}(B)-2n\bigr]<br />
++\operatorname{r}(A)+\operatorname{r}(C)\le2n.<br />
+$$<br />
+整理得<br />
+$$<br />
+2\bigl(\operatorname{r}(A)+\operatorname{r}(B)+\operatorname{r}(C)\bigr)\le4n,<br />
+$$<br />
+即<br />
+$$<br />
+\operatorname{r}(A)+\operatorname{r}(B)+\operatorname{r}(C)\le2n.<br />
+$$</p>
+<p><strong>方法</strong> 这是“零乘积给上界，Sylvester 给下界，两者夹逼”的组合拳。看到 <span class="arithmatex">\(ABC=0\)</span>，要分别把 <span class="arithmatex">\(AB\)</span> 和 <span class="arithmatex">\(BC\)</span> 当成一个整体。</p>
+<hr />
+<h3>3.3 Sylvester 秩恒等式：两个零空间之间的双射</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(m\times n\)</span>，<span class="arithmatex">\(B\)</span> 为 <span class="arithmatex">\(n\times m\)</span>，则<br />
+$$<br />
+\operatorname{r}(I_m-AB)+n=\operatorname{r}(I_n-BA)+m.<br />
+$$</p>
+<p><strong>推导</strong> 定义映射<br />
+$$<br />
+\Phi:\ker(I_m-AB)\to\ker(I_n-BA),\qquad \Phi(x)=Bx.<br />
+$$<br />
+先说明 <span class="arithmatex">\(\Phi\)</span> 确实落在目标空间。若 <span class="arithmatex">\((I_m-AB)x=0\)</span>，则 <span class="arithmatex">\(x=ABx\)</span>。令 <span class="arithmatex">\(y=Bx\)</span>，则<br />
+$$<br />
+(I_n-BA)y=Bx-BABx=B(I_m-AB)x=0,<br />
+$$<br />
+所以 <span class="arithmatex">\(y\in\ker(I_n-BA)\)</span>。</p>
+<p><strong>单射</strong>：若 <span class="arithmatex">\(Bx=0\)</span>，则 <span class="arithmatex">\(x=ABx=0\)</span>。</p>
+<p><strong>满射</strong>：任取 <span class="arithmatex">\(y\in\ker(I_n-BA)\)</span>，令 <span class="arithmatex">\(x=Ay\)</span>。则<br />
+$$<br />
+(I_m-AB)x=Ay-ABAy=A(I_n-BA)y=0,<br />
+$$<br />
+且<br />
+$$<br />
+\Phi(x)=Bx=BAy=y.<br />
+$$<br />
+所以 <span class="arithmatex">\(\Phi\)</span> 是双射，两个零空间维数相等：<br />
+$$<br />
+m-\operatorname{r}(I_m-AB)=n-\operatorname{r}(I_n-BA).<br />
+$$<br />
+移项即得结论。</p>
+<p><strong>方法</strong> 证明两个零空间同维，最漂亮的做法是构造显式双射。注意这里的方向：<span class="arithmatex">\(x\mapsto Bx\)</span>，逆映射是 <span class="arithmatex">\(y\mapsto Ay\)</span>。</p>
+<hr />
+<h3>3.4 秩分解 <span class="arithmatex">\(A=BC\)</span></h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(\operatorname{r}(A)=r\)</span>，则存在 <span class="arithmatex">\(m\times r\)</span> 的列满秩矩阵 <span class="arithmatex">\(B\)</span> 和 <span class="arithmatex">\(r\times n\)</span> 的行满秩矩阵 <span class="arithmatex">\(C\)</span>，使<br />
+$$<br />
+A=BC.<br />
+$$</p>
+<p><strong>推导</strong> 取 <span class="arithmatex">\(A\)</span> 的 <span class="arithmatex">\(r\)</span> 个线性无关的列，组成 <span class="arithmatex">\(m\times r\)</span> 矩阵 <span class="arithmatex">\(B\)</span>。因为 <span class="arithmatex">\(A\)</span> 的每一列都是这 <span class="arithmatex">\(r\)</span> 列的唯一线性组合，所以存在 <span class="arithmatex">\(r\times n\)</span> 矩阵 <span class="arithmatex">\(C\)</span>，使<br />
+$$<br />
+A=BC.<br />
+$$<br />
+又<br />
+$$<br />
+r=\operatorname{r}(A)=\operatorname{r}(BC)\le\operatorname{r}(C)\le r,<br />
+$$<br />
+所以 <span class="arithmatex">\(\operatorname{r}(C)=r\)</span>，即 <span class="arithmatex">\(C\)</span> 行满秩；<span class="arithmatex">\(B\)</span> 按构造列满秩。</p>
+<p><strong>方法</strong> 秩分解把“任意秩 <span class="arithmatex">\(r\)</span> 矩阵”化成“列满秩 <span class="arithmatex">\(\times\)</span> 行满秩”。很多证明（如幂等矩阵的迹）都可以先做秩分解，再把问题变成 <span class="arithmatex">\(r\times r\)</span> 的可逆矩阵。</p>
+<hr />
+<h3>3.5 Schur 补的秩</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A\)</span> 可逆，则<br />
+$$<br />
+\operatorname{r}\begin{bmatrix}A&amp;B\C&amp;D\end{bmatrix}<br />
+=\operatorname{r}(A)+\operatorname{r}(D-CA^{-1}B).<br />
+$$</p>
+<p><strong>推导</strong> 由 1.1 的分块分解<br />
+$$<br />
+\begin{bmatrix}A&amp;B\C&amp;D\end{bmatrix}<br />
+=<br />
+\begin{bmatrix}I&amp;0\CA^{-1}&amp;I\end{bmatrix}<br />
+\begin{bmatrix}A&amp;0\0&amp;D-CA^{-1}B\end{bmatrix}<br />
+\begin{bmatrix}I&amp;A^{-1}B\0&amp;I\end{bmatrix}.<br />
+$$<br />
+左右两个因子都可逆，乘以可逆矩阵不改变秩，所以原矩阵的秩等于中间分块对角矩阵的秩：<br />
+$$<br />
+\operatorname{r}\begin{bmatrix}A&amp;0\0&amp;D-CA^{-1}B\end{bmatrix}<br />
+=\operatorname{r}(A)+\operatorname{r}(D-CA^{-1}B).<br />
+$$<br />
+结论成立。</p>
+<p><strong>方法</strong> 同一个分块分解，既可以算行列式，也可以算秩；这是“分块消元”最划算的地方。</p>
+<hr />
+<h3>3.6 秩一更新的秩下界</h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(n\)</span> 阶方阵，则<br />
+$$<br />
+\operatorname{r}(A+uv^T)\ge\operatorname{r}(A)-1.<br />
+$$<br />
+特别地，若 <span class="arithmatex">\(A\)</span> 可逆，则 <span class="arithmatex">\(\operatorname{r}(A+uv^T)\ge n-1\)</span>。</p>
+<p><strong>推导</strong> 用秩的不等式<br />
+$$<br />
+\operatorname{r}(X+Y)\ge\operatorname{r}(X)-\operatorname{r}(Y).<br />
+$$<br />
+取 <span class="arithmatex">\(X=A\)</span>、<span class="arithmatex">\(Y=uv^T\)</span>，则<br />
+$$<br />
+\operatorname{r}(A+uv^T)\ge\operatorname{r}(A)-\operatorname{r}(uv^T)\ge\operatorname{r}(A)-1.<br />
+$$<br />
+若 <span class="arithmatex">\(A\)</span> 可逆，<span class="arithmatex">\(\operatorname{r}(A)=n\)</span>，所以 <span class="arithmatex">\(\ge n-1\)</span>。</p>
+<p><strong>方法</strong> 秩一更新最多把秩降 1；这是“秩一扰动”的基本直觉，也是数值线性代数里 rank-one update 的起点。</p>
+<hr />
+<h3>3.7 实矩阵的 <span class="arithmatex">\(\operatorname{r}(A^TA)=\operatorname{r}(A)\)</span></h3>
+<p><strong>结论</strong> 若 <span class="arithmatex">\(A\)</span> 为实矩阵，则<br />
+$$<br />
+\operatorname{r}(A^TA)=\operatorname{r}(AA^T)=\operatorname{r}(A).<br />
+$$</p>
+<p><strong>推导</strong> 只需证 <span class="arithmatex">\(\ker(A^TA)=\ker A\)</span>。</p>
+<ul>
+<li>若 <span class="arithmatex">\(Ax=0\)</span>，则 <span class="arithmatex">\(A^TAx=0\)</span>。</li>
+<li>若 <span class="arithmatex">\(A^TAx=0\)</span>，两边左乘 <span class="arithmatex">\(x^T\)</span>：<br />
+  $$<br />
+  x^TA^TAx=(Ax)^T(Ax)=\lVert Ax\rVert^2=0,<br />
+  $$<br />
+  所以 <span class="arithmatex">\(Ax=0\)</span>。</li>
+</ul>
+<p>因此两个零空间相同，维数相同；由秩–零度定理，<br />
+$$<br />
+\operatorname{r}(A^TA)=\operatorname{r}(A).<br />
+$$<br />
+对 <span class="arithmatex">\(AA^T\)</span> 用同样论证（或对 <span class="arithmatex">\(A^T\)</span> 用上述结论）即可。</p>
+<p><strong>方法</strong> 实矩阵的“<span class="arithmatex">\(A^TA\)</span>”问题，先证零空间相等；关键是用 <span class="arithmatex">\(x^TA^TAx=\lVert Ax\rVert^2\)</span>。这条在复数域要改成共轭转置。</p>
+<hr />
+<h2>4. 方程组与几何：加边、循环差分、共点共圆</h2>
+<h3>4.1 加边矩阵判定 <span class="arithmatex">\(Ax=b\)</span> 有解</h3>
+<p><strong>结论</strong> 设 <span class="arithmatex">\(A\)</span> 为 <span class="arithmatex">\(n\)</span> 阶方阵，<span class="arithmatex">\(b\in\mathbb F^n\)</span>。若<br />
+$$<br />
+\operatorname{r}(A)=\operatorname{r}\begin{bmatrix}A&amp;b\b^T&amp;0\end{bmatrix},<br />
+$$<br />
+则 <span class="arithmatex">\(Ax=b\)</span> 有解。</p>
+<p><strong>推导</strong> 记 <span class="arithmatex">\(r=\operatorname{r}(A)\)</span>，反设 <span class="arithmatex">\(Ax=b\)</span> 无解。取可逆矩阵 <span class="arithmatex">\(P,Q\)</span> 使<br />
+$$<br />
+PAQ=\begin{bmatrix}I_r&amp;0\0&amp;0\end{bmatrix}.<br />
+$$<br />
+把 <span class="arithmatex">\(Pb\)</span> 分块为<br />
+$$<br />
+Pb=\begin{bmatrix}b_1\b_2\end{bmatrix},\qquad b_1\in\mathbb F^r.<br />
+$$<br />
+因为 <span class="arithmatex">\(Ax=b\)</span> 无解，<span class="arithmatex">\(b\notin\operatorname{Col}(A)\)</span>，所以 <span class="arithmatex">\(b_2\ne0\)</span>。</p>
+<p>对加边矩阵做相抵变换（左乘 <span class="arithmatex">\(\begin{bmatrix}P&amp;0\\0&amp;1\end{bmatrix}\)</span>，右乘 <span class="arithmatex">\(\begin{bmatrix}Q&amp;0\\0&amp;1\end{bmatrix}\)</span>），秩不变，得到<br />
+$$<br />
+B'=\begin{bmatrix}<br />
+I_r&amp;0&amp;b_1\<br />
+0&amp;0&amp;b_2\<br />
+c_1^T&amp;c_2^T&amp;0<br />
+\end{bmatrix},<br />
+$$<br />
+其中 <span class="arithmatex">\(c^T=b^TQ\)</span> 按前 <span class="arithmatex">\(r\)</span> 列、后 <span class="arithmatex">\(n-r\)</span> 列分块为 <span class="arithmatex">\((c_1^T,c_2^T)\)</span>。</p>
+<p>看 <span class="arithmatex">\(B'\)</span> 的前 <span class="arithmatex">\(r\)</span> 列和最后一列。前 <span class="arithmatex">\(r\)</span> 列由于顶部是 <span class="arithmatex">\(I_r\)</span>，线性无关；并且它们在第 <span class="arithmatex">\(r+1\)</span> 到 <span class="arithmatex">\(n\)</span> 行这一段全为 0。最后一列在这一段为 <span class="arithmatex">\(b_2\ne0\)</span>，所以最后一列不可能由前 <span class="arithmatex">\(r\)</span> 列线性表示。因此<br />
+$$<br />
+\operatorname{r}(B')\ge r+1,<br />
+$$<br />
+与 <span class="arithmatex">\(\operatorname{r}(B')=r\)</span> 矛盾。所以 <span class="arithmatex">\(Ax=b\)</span> 有解。</p>
+<p><strong>方法</strong> 这是“相抵标准形 + 分块秩”的典型证明。注意结论只是<strong>充分条件</strong>，不是必要条件：例如 <span class="arithmatex">\(A=E\)</span> 时，加边矩阵的秩为 <span class="arithmatex">\(n+1\)</span>，但 <span class="arithmatex">\(Ex=b\)</span> 显然有解。</p>
+<hr />
+<h3>4.2 循环差分方程组</h3>
+<p><strong>结论</strong> 方程组<br />
+$$<br />
+x_1-x_2=a_1,\quad x_2-x_3=a_2,\quad\dots,\quad x_n-x_1=a_n<br />
+$$<br />
+有解的充要条件是<br />
+$$<br />
+a_1+a_2+\cdots+a_n=0.<br />
+$$<br />
+有解时，解含一个自由参数。</p>
+<p><strong>推导</strong> 把所有方程相加，左边两两抵消，右边为 <span class="arithmatex">\(\sum a_i\)</span>，所以<br />
+$$<br />
+0=a_1+\cdots+a_n,<br />
+$$<br />
+必要性成立。</p>
+<p>若 <span class="arithmatex">\(\sum a_i=0\)</span>，令 <span class="arithmatex">\(x_1=t\)</span>，递推<br />
+$$<br />
+x_2=t-a_1,\quad x_3=t-a_1-a_2,\quad\dots,\quad<br />
+x_n=t-a_1-\cdots-a_{n-1}.<br />
+$$<br />
+则前 <span class="arithmatex">\(n-1\)</span> 个方程自动成立；最后一个方程左边为<br />
+$$<br />
+x_n-x_1=-a_1-\cdots-a_{n-1}=a_n,<br />
+$$<br />
+最后一步用了 <span class="arithmatex">\(\sum a_i=0\)</span>。所以对任意 <span class="arithmatex">\(t\)</span> 都得到解，解含一个自由参数。</p>
+<p><strong>方法</strong> 循环结构先“全部相加”找必要条件；再令一个变量为自由参数，沿链递推。系数矩阵的秩为 <span class="arithmatex">\(n-1\)</span>，所以自由度是 1。</p>
+<hr />
+<h3>4.3 三线共点与循环系数条件</h3>
+<p><strong>结论</strong> 三条直线<br />
+$$<br />
+a_ix+b_iy+c_i=0\qquad(i=1,2,3)<br />
+$$<br />
+有公共点，则<br />
+$$<br />
+\det\begin{bmatrix}a_1&amp;b_1&amp;c_1\a_2&amp;b_2&amp;c_2\a_3&amp;b_3&amp;c_3\end{bmatrix}=0.<br />
+$$<br />
+反过来，若行列式为 0 且对应的齐次方程组的非零解 <span class="arithmatex">\((x,y,z)\)</span> 满足 <span class="arithmatex">\(z\ne0\)</span>，则三条直线有有限公共点。</p>
+<p>对循环系数<br />
+$$<br />
+(a,b,c),\quad(b,c,a),\quad(c,a,b),<br />
+$$<br />
+系数矩阵为<br />
+$$<br />
+\begin{bmatrix}a&amp;b&amp;c\b&amp;c&amp;a\c&amp;a&amp;b\end{bmatrix}.<br />
+$$<br />
+按第一行展开（或直接计算）得<br />
+$$<br />
+\det\begin{bmatrix}a&amp;b&amp;c\b&amp;c&amp;a\c&amp;a&amp;b\end{bmatrix}<br />
+=-(a^3+b^3+c^3-3abc)<br />
+=-(a+b+c)(a^2+b^2+c^2-ab-bc-ca).<br />
+$$<br />
+在实数范围内，若 <span class="arithmatex">\(a,b,c\)</span> 互异且非零，则第二个因子不为 0，所以三线共点当且仅当<br />
+$$<br />
+a+b+c=0.<br />
+$$<br />
+此时 <span class="arithmatex">\((1,1)\)</span> 就是公共点。</p>
+<p><strong>推导</strong> 公共点 <span class="arithmatex">\((x,y)\)</span> 等价于齐次方程组<br />
+$$<br />
+\begin{bmatrix}a_1&amp;b_1&amp;c_1\a_2&amp;b_2&amp;c_2\a_3&amp;b_3&amp;c_3\end{bmatrix}<br />
+\begin{bmatrix}x\y\1\end{bmatrix}=0<br />
+$$<br />
+有非零解，所以系数行列式为 0。反过来，行列式为 0 只保证存在非零解 <span class="arithmatex">\((x,y,z)\)</span>；要得到有限公共点，需要 <span class="arithmatex">\(z\ne0\)</span>，再令 <span class="arithmatex">\((x/z,y/z)\)</span> 即可。若 <span class="arithmatex">\(z=0\)</span>，三条直线平行或重合，没有有限公共点。</p>
+<p>循环行列式按第一行展开：<br />
+$$<br />
+\det\begin{bmatrix}a&amp;b&amp;c\b&amp;c&amp;a\c&amp;a&amp;b\end{bmatrix}<br />
+=-(a^3+b^3+c^3-3abc).<br />
+$$<br />
+再分解：<br />
+$$<br />
+a^3+b^3+c^3-3abc<br />
+=(a+b+c)(a^2+b^2+c^2-ab-bc-ca).<br />
+$$<br />
+所以<br />
+$$<br />
+\det\begin{bmatrix}a&amp;b&amp;c\b&amp;c&amp;a\c&amp;a&amp;b\end{bmatrix}<br />
+=-(a+b+c)(a^2+b^2+c^2-ab-bc-ca).<br />
+$$<br />
+实数范围内<br />
+$$<br />
+a^2+b^2+c^2-ab-bc-ca<br />
+=\frac12\bigl[(a-b)^2+(b-c)^2+(c-a)^2\bigr],<br />
+$$<br />
+当 <span class="arithmatex">\(a,b,c\)</span> 互异时为正。因此共点当且仅当 <span class="arithmatex">\(a+b+c=0\)</span>。此时代入 <span class="arithmatex">\((1,1)\)</span>，三条直线左边都是 <span class="arithmatex">\(a+b+c=0\)</span>。</p>
+<p><strong>方法</strong> 几何的“共点/共线/共圆”问题，先翻译成线性方程组，再用行列式或秩判断；注意“行列式为 0”只是必要条件，还要排除平行/重合的退化情形。</p>
+<hr />
+<h3>4.4 四点共圆的行列式条件</h3>
+<p><strong>结论</strong> 在无三点共线的通常位置下，四点 <span class="arithmatex">\((x_i,y_i)\)</span>（<span class="arithmatex">\(i=1,2,3,4\)</span>）共圆当且仅当<br />
+$$<br />
+\det\begin{bmatrix}<br />
+x_1^2+y_1^2&amp;x_1&amp;y_1&amp;1\<br />
+x_2^2+y_2^2&amp;x_2&amp;y_2&amp;1\<br />
+x_3^2+y_3^2&amp;x_3&amp;y_3&amp;1\<br />
+x_4^2+y_4^2&amp;x_4&amp;y_4&amp;1<br />
+\end{bmatrix}=0.<br />
+$$</p>
+<p><strong>推导</strong> 圆的一般方程为<br />
+$$<br />
+x^2+y^2+Dx+Ey+F=0.<br />
+$$<br />
+四点都在圆上，等价于关于 <span class="arithmatex">\(D,E,F\)</span> 的线性方程组<br />
+$$<br />
+Dx_i+Ey_i+F=-(x_i^2+y_i^2)\qquad(i=1,2,3,4)<br />
+$$<br />
+有解。</p>
+<p>若没有三点共线，系数矩阵<br />
+$$<br />
+\begin{bmatrix}x_1&amp;y_1&amp;1\\vdots&amp;&amp;\vdots\x_4&amp;y_4&amp;1\end{bmatrix}<br />
+$$<br />
+的秩为 3（任取三个不共线的点，对应的 <span class="arithmatex">\(3\times3\)</span> 行列式不为 0）。这是一个 4 个方程、3 个未知量的方程组；系数矩阵秩为 3 时，有解当且仅当增广矩阵的秩也为 3，即增广矩阵的 <span class="arithmatex">\(4\times4\)</span> 行列式为 0。把增广矩阵的列重新排列，就是上面的行列式。</p>
+<p>若有三点共线，系数矩阵的秩可能小于 3，上面“行列式为 0”可能只是退化条件，不能保证四点共圆；所以严格写题时要加“无三点共线”或另行排除。</p>
+<p><strong>方法</strong> 这是“过定点的曲线族”问题的标准套路：把曲线方程写成带未知系数的形式，点代入得到线性方程组；方程个数多于未知数时，用增广矩阵的秩/行列式判一致。</p>
+<hr />
+<h3>4.5 五点确定二次曲线：维数计数</h3>
+<p><strong>结论</strong> 过平面上任意 5 个点，总存在一条非零二次曲线<br />
+$$<br />
+Ax^2+Bxy+Cy^2+Dx+Ey+F=0<br />
+$$<br />
+（可能退化）。若这 5 个点给出的 5 个方程秩为 5，则二次曲线在相差一个非零常数的意义下唯一。</p>
+<p><strong>推导</strong> 二次曲线有 6 个系数<br />
+$$<br />
+(A,B,C,D,E,F),<br />
+$$<br />
+每个点 <span class="arithmatex">\((x_i,y_i)\)</span> 给出一个齐次线性方程<br />
+$$<br />
+x_i^2A+x_iy_iB+y_i^2C+x_iD+y_iE+F=0.<br />
+$$<br />
+5 个点给出 5 个方程、6 个未知量。齐次方程组的未知量个数减方程个数为 <span class="arithmatex">\(6-5=1\)</span>，所以解空间维数至少为 1；也就是说，总存在非零解，即非零二次曲线。若这 5 个方程的系数矩阵秩为 5，则解空间维数正好为 <span class="arithmatex">\(6-5=1\)</span>，所以解在相差一个非零常数的意义下唯一。</p>
+<p><strong>方法</strong> 这是“未知数多于方程，必有非零解”的维度计数；也是代数几何里“过 <span class="arithmatex">\(d\)</span> 个点的一般型超曲面”的雏形。注意“存在”不要求曲线非退化；五点可能共线，二次曲线可能退化为两条直线。</p>
+<hr />
+<h2>5. 方法总结</h2>
+<table>
+<thead>
+<tr>
+<th>遇到的结构</th>
+<th>优先使用的方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分块矩阵、大块零、单位块</td>
+<td>分块消元/Schur 补；同一个分块矩阵算两次</td>
+</tr>
+<tr>
+<td>行列式有 <span class="arithmatex">\(1,x,x^2,\dots\)</span></td>
+<td>范德蒙德；多项式基变换</td>
+</tr>
+<tr>
+<td>行列式是某个多项式，且有两行相等</td>
+<td>因子定理 + 次数 + 对称性</td>
+</tr>
+<tr>
+<td>循环移位、循环矩阵</td>
+<td>单位根/离散 Fourier 特征向量</td>
+</tr>
+<tr>
+<td>三对角、带状</td>
+<td>按第一行/列展开，找递推</td>
+</tr>
+<tr>
+<td>整数矩阵的整除性</td>
+<td>行变换 + 提因子</td>
+</tr>
+<tr>
+<td>秩一矩阵</td>
+<td><span class="arithmatex">\(A^2=(v^Tu)A\)</span>；秩一更新</td>
+</tr>
+<tr>
+<td>幂等、对合、幂零</td>
+<td>秩夹逼；适配基；telescoping</td>
+</tr>
+<tr>
+<td>伴随矩阵</td>
+<td><span class="arithmatex">\(AA^*=\lvert A\rvert E\)</span>；零空间维数；先可逆再密度</td>
+</tr>
+<tr>
+<td>秩不等式</td>
+<td>线性映射 + 维数公式；零乘积给上界，Sylvester 给下界</td>
+</tr>
+<tr>
+<td>分块秩</td>
+<td>Schur 补；相抵标准形</td>
+</tr>
+<tr>
+<td>几何共点/共圆/二次曲线</td>
+<td>翻译成线性方程组；秩与行列式；维数计数</td>
+</tr>
+</tbody>
+</table>
+<p><strong>一句话</strong>：这份推导篇里最值得带走的三条思想是——</p>
+<ol>
+<li><strong>同一个对象用两种方式计算</strong>（Sylvester 行列式恒等式、Sylvester 秩恒等式）；</li>
+<li><strong>分块消元</strong>（Schur 补把行列式、逆、秩一网打尽）；</li>
+<li><strong>因子定理/维数计数</strong>（缺幂范德蒙德、五点二次曲线、伴随矩阵的秩）。</li>
+</ol>
+<hr />
+<h3>附：哪些结论没有写推导</h3>
+<p>以下结论在教材或主文件中已有标准证明，或推导非常直接，本文从略：</p>
+<ul>
+<li>余子式、代数余子式的定义与按行/列展开；</li>
+<li><span class="arithmatex">\(\det(A^T)=\det(A)\)</span>、行列式对行/列的线性性、交换两行变号；</li>
+<li>Cramer 法则；</li>
+<li>Rouché–Capelli 定理；</li>
+<li><span class="arithmatex">\(\operatorname{r}(A)=\operatorname{r}(A^T)\)</span>；</li>
+<li><span class="arithmatex">\(\operatorname{r}(AB)\le\min\{\operatorname{r}(A),\operatorname{r}(B)\}\)</span>；</li>
+<li>幂等矩阵可逆则 <span class="arithmatex">\(A=E\)</span>、对合矩阵 <span class="arithmatex">\(A^{-1}=A\)</span> 等直接推论；</li>
+<li><span class="arithmatex">\(J_n^2=nJ_n\)</span>、<span class="arithmatex">\(\operatorname{tr}(uv^T)=v^Tu\)</span> 等一行动手即可验证的恒等式。</li>
+</ul>

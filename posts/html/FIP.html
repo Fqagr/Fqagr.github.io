@@ -1,0 +1,1627 @@
+<h2>使用说明</h2>
+<p>这份讲义按周组织，每周包含：核心思想、知识点讲解、常见例题、完整代码骨架、常用函数和方法、易错点。复习时建议先看每章开头的问题，再对照代码手推一两个小例子。</p>
+<h2>W1 计算</h2>
+<p>核心问题：如何把一个实际问题拆成输入、处理、输出？</p>
+<h3>1. IPO</h3>
+<p>IPO 是 Input、Process、Output 的缩写。写题时先问三个问题：要读什么数据？要做什么计算？要输出什么格式？以温度转换为例：输入摄氏温度，处理公式 <code>F = C * 9 / 5 + 32</code>，输出华氏温度。以圆面积为例：输入半径，处理 <code>area = pi * r ** 2</code>，输出面积。</p>
+<h3>2. 输入与输出</h3>
+<p><code>print</code> 用来输出，<code>input</code> 用来读入一行。<code>input</code> 的返回值永远是字符串，即使你输入的是数字，所以算术前必须转换。</p>
+<pre><code class="language-python">print(&quot;Hello World!&quot;)
+print(1, 2, 3, sep=&quot;-&quot;)
+print(1, end=&quot; &quot;)
+print(2)
+
+a = input()
+print(type(a))  # &lt;class 'str'&gt;
+n = int(input())
+r = float(input())
+</code></pre>
+<p>一行读多个数用 <code>split</code> 和 <code>map</code>。</p>
+<pre><code class="language-python">hour, minute = map(int, input().split())
+</code></pre>
+<p><code>split</code> 默认按空白切，<code>map(int, ...)</code> 会把每个片段转成整数，最后解包给左边变量。如果输入只有两段，左边的变量也必须正好两个。</p>
+<h3>3. 变量与赋值</h3>
+<p>变量是给值起的名字。赋值语句先把右边表达式算出来，再绑定到左边名字。同一名字可以先后指向不同类型的值，这叫动态类型。</p>
+<pre><code class="language-python">x = 6
+x = &quot;hello&quot;
+total = 0
+total += x  # 等价 total = total + x
+</code></pre>
+<p>变量名必须以字母或下划线开头，后面可以用字母、数字、下划线。变量名区分大小写，不能用 Python 关键字，也不要覆盖内置函数名，例如 <code>max</code>、<code>sum</code>、<code>print</code>。</p>
+<h3>4. 运算符与表达式</h3>
+<p>常见算术运算符：<code>+</code>、<code>-</code>、<code>*</code>、<code>/</code>、<code>//</code>、<code>%</code>、<code>**</code>。</p>
+<pre><code class="language-python">print(10 / 3)   # 3.3333333333333335
+print(10 // 3)  # 3
+print(10 % 3)   # 1
+print(2 ** 10)  # 1024
+</code></pre>
+<p><code>/</code> 是浮点除法，<code>//</code> 是整数除法，<code>%</code> 是余数。温度转换这种需要小数结果的题必须用 <code>/</code>，不要误用 <code>//</code>。</p>
+<p>关系运算符返回布尔值：<code>==</code>、<code>!=</code>、<code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>&lt;=</code>。条件里判断相等要用 <code>==</code>，赋值用 <code>=</code>。</p>
+<h3>5. 单一 if</h3>
+<p>W1 只讲单分支 <code>if</code>。缩进决定哪些语句属于这个分支。</p>
+<pre><code class="language-python">n = int(input())
+if n % 7 == 0:
+    print(&quot;是 7 的倍数&quot;)
+</code></pre>
+<h3>6. while True 与 break</h3>
+<p><code>while True</code> 会一直循环，直到遇到 <code>break</code>。哨兵值通常不应计入结果，所以 <code>break</code> 要写在处理数据之前。</p>
+<pre><code class="language-python">total = 0
+count = 0
+while True:
+    x = int(input())
+    if x == -1:
+        break
+    total += x
+    count += 1
+if count &gt; 0:
+    print(total / count)
+</code></pre>
+<p>常用循环模式：累加、计数、找最值、分档统计。</p>
+<pre><code class="language-python">max_val = None
+while True:
+    x = int(input())
+    if x == 0:
+        break
+    if max_val is None or x &gt; max_val:
+        max_val = x
+print(max_val)
+</code></pre>
+<pre><code class="language-python">positive = negative = 0
+while True:
+    x = int(input())
+    if x == 0:
+        break
+    if x &gt; 0:
+        positive += 1
+    if x &lt; 0:
+        negative += 1
+print(positive, negative)
+</code></pre>
+<h3>7. 格式化输出</h3>
+<p><code>f-string</code> 用花括号嵌入变量或表达式。</p>
+<pre><code class="language-python">area = 2.56
+print(f&quot;面积是：{area:.2f}&quot;)
+</code></pre>
+<p><code>.2f</code> 表示浮点数保留两位小数，<code>.1f</code> 表示一位小数。OJ 通常要求输出和题面完全一致，所以不要多加提示文字。</p>
+<h3>8. 文件与终端</h3>
+<p>Python 源文件要用 <code>.py</code> 扩展名。在终端进入源文件所在目录后运行。</p>
+<pre><code class="language-text">cd w1_lab
+python hello.py
+</code></pre>
+<p>如果报 <code>FileNotFoundError</code>，先检查当前目录和文件位置是否一致。</p>
+<h3>9. W1 常见例题</h3>
+<p>矩形面积：</p>
+<pre><code class="language-python">length = int(input())
+width = int(input())
+print(length * width)
+</code></pre>
+<p>温度转换：</p>
+<pre><code class="language-python">celsius = float(input())
+fahrenheit = celsius * 9 / 5 + 32
+print(f&quot;{fahrenheit:.1f}&quot;)
+</code></pre>
+<p>判断 7 的倍数：</p>
+<pre><code class="language-python">n = int(input())
+if n % 7 == 0:
+    print(&quot;yes&quot;)
+</code></pre>
+<p>取个位数：</p>
+<pre><code class="language-python">n = int(input())
+print(n % 10)
+</code></pre>
+<h2>W2 枚举与减治</h2>
+<p>核心问题：候选解太多时，是逐个枚举，还是每一步缩小问题规模？</p>
+<h3>1. if-else 和布尔运算</h3>
+<p><code>else</code> 表示条件不成立时的另一条路径。多个条件可以用 <code>and</code>、<code>or</code>、<code>not</code> 组合。</p>
+<pre><code class="language-python">x = int(input())
+if x &gt;= 0:
+    print(&quot;non-negative&quot;)
+else:
+    print(&quot;negative&quot;)
+</code></pre>
+<p><code>and</code> 要求两个条件都真，<code>or</code> 只要有一个真，<code>not</code> 取反。Python 的布尔运算会短路：如果左边已经能决定结果，右边不会继续求值。</p>
+<h3>2. for 与 range</h3>
+<p><code>range</code> 表示整数等差序列，默认右端点不包含。</p>
+<pre><code class="language-python">print(list(range(5)))          # [0, 1, 2, 3, 4]
+print(list(range(2, 5)))       # [2, 3, 4]
+print(list(range(1, 10, 3)))   # [1, 4, 7]
+print(list(range(5, 0, -1)))   # [5, 4, 3, 2, 1]
+</code></pre>
+<p><code>for</code> 会依次取出每个元素。</p>
+<pre><code class="language-python">for k in range(2, 10):
+    print(k)
+</code></pre>
+<h3>3. 循环 else 和布尔标识</h3>
+<p>循环的 <code>else</code> 不是 <code>if</code> 的 <code>else</code>。只有循环没有被 <code>break</code> 打断时才会执行。</p>
+<pre><code class="language-python">x = int(input())
+is_prime = True
+for k in range(2, int(x ** 0.5) + 1):
+    if x % k == 0:
+        is_prime = False
+        break
+print(is_prime)
+</code></pre>
+<p>用循环 <code>else</code> 可以少写一个标识变量：</p>
+<pre><code class="language-python">for k in range(2, int(x ** 0.5) + 1):
+    if x % k == 0:
+        print(&quot;composite&quot;)
+        break
+else:
+    print(&quot;prime&quot;)
+</code></pre>
+<h3>4. 素数枚举</h3>
+<p>素数是大于 1 且只能被 1 和自身整除的整数。判断素数时不用枚举到 <code>x - 1</code>，只需枚举到 <code>sqrt(x)</code>。原因是如果 <code>x = a * b</code>，那么 <code>a</code> 和 <code>b</code> 中至少有一个不大于 <code>sqrt(x)</code>。</p>
+<pre><code class="language-python">def is_prime(x):
+    if x &lt; 2:
+        return False
+    for k in range(2, int(x ** 0.5) + 1):
+        if x % k == 0:
+            return False
+    return True
+</code></pre>
+<p>输出区间内的素数：</p>
+<pre><code class="language-python">a, b = map(int, input().split())
+for x in range(a, b + 1):
+    if is_prime(x):
+        print(x)
+</code></pre>
+<h3>5. 最大公约数</h3>
+<p>枚举法从小到大记录能同时整除 <code>a</code> 和 <code>b</code> 的最大数：</p>
+<pre><code class="language-python">best = 1
+for k in range(1, min(a, b) + 1):
+    if a % k == 0 and b % k == 0:
+        best = k
+print(best)
+</code></pre>
+<p>但更高效的是辗转相除法，也就是欧几里得算法。它每一步把 <code>(a, b)</code> 缩小成 <code>(b, a % b)</code>，直到 <code>b</code> 为 0。</p>
+<pre><code class="language-python">a, b = map(int, input().split())
+while b:
+    a, b = b, a % b
+print(a)
+</code></pre>
+<p>这里的 <code>a, b = b, a % b</code> 是同步赋值。右边先全部算完，再一次性赋给左边变量，因此不会先用新的 <code>a</code> 去算 <code>a % b</code>。</p>
+<h3>6. 条件 while</h3>
+<p><code>while</code> 可以直接写循环条件，而不一定要用 <code>while True</code> 加 <code>break</code>。</p>
+<pre><code class="language-python">n = int(input())
+while n &gt; 0:
+    print(n)
+    n -= 1
+</code></pre>
+<p>条件必须在循环体里有机会变假，否则会死循环。</p>
+<h3>7. 多重循环枚举：凑硬币</h3>
+<p>问题：给定金额 <code>x</code>，用 1 分、2 分、5 分硬币凑出所有组合。</p>
+<pre><code class="language-python">x = int(input())
+for one in range(x + 1):
+    for two in range(x // 2 + 1):
+        for five in range(x // 5 + 1):
+            if one + 2 * two + 5 * five == x:
+                print(one, two, five)
+</code></pre>
+<p>注意上界。2 分硬币最多 <code>x // 2</code> 个，5 分硬币最多 <code>x // 5</code> 个。<code>range</code> 右端点不包含，所以要 <code>+ 1</code>。</p>
+<h3>8. <em>分解质因数</em>（值得看）</h3>
+<p>外层 <code>for</code> 枚举候选因子，内层 <code>while</code> 反复除尽当前因子。</p>
+<pre><code class="language-python">x = int(input())
+print(f&quot;{x} = 1&quot;, end=&quot;&quot;)
+n = x
+for k in range(2, n + 1):
+    while n % k == 0:
+        print(f&quot; × {k}&quot;, end=&quot;&quot;)
+        n //= k
+print()
+</code></pre>
+<p>这里不需要先判断 <code>k</code> 是否素数，因为合数因子会在更小的因子阶段被除尽。</p>
+<h3>9. 数字谜枚举</h3>
+<p>题目形如 <code>3?7 + ?5? = 892</code>，其中问号代表不同非零数字。可以枚举三个问号，验证等式。</p>
+<pre><code class="language-python">for a in range(1, 10):
+    for b in range(1, 10):
+        for c in range(1, 10):
+            if 307 + a * 10 + b * 100 + c * 10 + 5 == 892:
+                print(a, b, c)
+</code></pre>
+<p>实际题目要把数位对准，这里重点是枚举思想。</p>
+<h3>10. 二分求根</h3>
+<p>若函数在区间 <code>[a, b]</code> 连续，且 <code>f(a)</code> 与 <code>f(b)</code> 异号，则区间内至少有一个根。二分法每次取中点，根据中点函数值与端点符号关系保留有根的一半。</p>
+<pre><code class="language-python">import math
+
+a, b = 1.0, 2.0
+eps = 1e-6
+while True:
+    fa = a ** 3 - 3 * math.sin(a)
+    fb = b ** 3 - 3 * math.sin(b)
+    if fa * fb &gt; 0:
+        print(&quot;no root&quot;)
+        break
+    m = (a + b) / 2
+    fm = m ** 3 - 3 * math.sin(m)
+    if abs(fm) &lt; eps:
+        print(m)
+        break
+    if fm * fa &gt; 0:
+        a = m
+    else:
+        b = m
+</code></pre>
+<p>浮点数不要用 <code>f(m) == 0</code> 判断，要用 <code>abs(f(m)) &lt; eps</code>。</p>
+<h3>11. <em>牛顿法和弦截法</em>（公式会手推）</h3>
+<p>牛顿法用切线代替曲线，公式是 <code>x = x - f(x) / f'(x)</code>。求平方根等价于解 <code>x ** 2 - a = 0</code>。</p>
+<pre><code class="language-python">a = 3
+eps = 1e-3
+x = a / 2
+while True:
+    if abs(x ** 2 - a) &lt; eps:
+        break
+    x = (x + a / x) / 2
+print(x)
+</code></pre>
+<p>弦截法不需要导数，用最近两点连线近似切线。</p>
+<pre><code class="language-python">eps = 1e-3
+xp, xc = 1.0, 2.0
+while True:
+    fp = xp ** 2 - 2  # f_prev and f_curr 必须在循环里求值
+    fc = xc ** 2 - 2
+    if abs(fc) &lt; eps:
+        print(xc)
+        break
+    xp, xc = xc, xc - fc * (xc - xp) / (fc - fp)
+</code></pre>
+<p>注意分母 <code>fc - fp</code> 可能接近 0，工程上应判断或换初值。</p>
+<h2>W3 迭代与模拟</h2>
+<p>核心问题：精确解不可得或不必要时，如何得到足够好的结果？</p>
+<h3>1. if-elif-else</h3>
+<p>多个互斥分支用 <code>elif</code>。从上到下匹配，第一个成立的分支执行后，后面的不再检查。</p>
+<pre><code class="language-python">score = float(input())
+if score &gt;= 90:
+    grade = &quot;A&quot;
+elif score &gt;= 80:
+    grade = &quot;B&quot;
+elif score &gt;= 70:
+    grade = &quot;C&quot;
+elif score &gt;= 60:
+    grade = &quot;D&quot;
+else:
+    grade = &quot;F&quot;
+print(grade)
+</code></pre>
+<p>条件顺序很重要。上例必须从大到小判断，否则 <code>score &gt;= 60</code> 放在前面会把高分也判成 D。</p>
+<h3>2. 条件表达式</h3>
+<p>条件表达式的形式是 <code>值1 if 条件 else 值2</code>。它是一个表达式，不是控制语句。</p>
+<pre><code class="language-python">digit = int(a[-i]) if i &lt;= len(a) else 0
+</code></pre>
+<p>只有选中的一侧会被求值，这在大数加法补 0 时很有用。</p>
+<h3>3. def 函数</h3>
+<p><code>def</code> 把一段计算封装成可重复使用的函数。</p>
+<pre><code class="language-python">def add(a, b):
+    return a + b
+
+print(add(3, 4))
+</code></pre>
+<p>位置参数按顺序对应，关键字参数按名字对应。有默认值的参数要写在后面。</p>
+<pre><code class="language-python">def greet(name, title=&quot;同学&quot;):
+    return title + name
+
+greet(&quot;李&quot;)
+greet(&quot;李&quot;, title=&quot;老师&quot;)
+</code></pre>
+<p><code>return</code> 会立刻结束函数并返回结果。没有 <code>return</code> 的函数返回 <code>None</code>。函数内部给名字赋值默认是局部变量。</p>
+<h3>4. 类型注解和 docstring</h3>
+<p>类型注解给人看，不强制运行时检查。</p>
+<pre><code class="language-python">def secant(f, x0: float, x1: float, eps: float) -&gt; float:
+    &quot;&quot;&quot;用弦截法求 f(x)=0 的近似根。f 必须可调用。&quot;&quot;&quot;
+    while abs(f(x1)) &gt;= eps:
+        x0, x1 = x1, x1 - f(x1) * (x1 - x0) / (f(x1) - f(x0))
+    return x1
+</code></pre>
+<h3>5. 高阶函数和 lambda</h3>
+<p>参数或返回值中出现函数，就是高阶函数。<code>secant(f, ...)</code> 接收函数 <code>f</code>，所以是高阶函数。</p>
+<pre><code class="language-python">def apply_twice(f, x):
+    return f(f(x))
+
+print(apply_twice(lambda x: x * x, 3))  # 81
+</code></pre>
+<p><code>lambda</code> 是匿名单表达式函数，适合短公式或 <code>key=</code>。</p>
+<pre><code class="language-python">root = secant(lambda x: x ** 2 - 2, 1.0, 2.0, 1e-3)
+</code></pre>
+<p><code>lambda</code> 里不能写语句块。</p>
+<h3>6. eval</h3>
+<p><code>eval</code> 可以把字符串当表达式求值，但不要用于用户输入或作业草稿。</p>
+<pre><code class="language-python">x = 1.5
+print(eval(&quot;x ** 2 - 2&quot;))
+</code></pre>
+<p>更安全的做法是把公式写成函数或 lambda。</p>
+<h3>7. random 模块</h3>
+<p>常用函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>random.seed(a)</code></td>
+<td>固定随机种子，便于复现</td>
+</tr>
+<tr>
+<td><code>random.random()</code></td>
+<td>返回 <code>[0, 1)</code> 的浮点数</td>
+</tr>
+<tr>
+<td><code>random.uniform(a, b)</code></td>
+<td>返回区间内的随机浮点数</td>
+</tr>
+<tr>
+<td><code>random.randint(a, b)</code></td>
+<td>返回 <code>[a, b]</code> 内随机整数，<strong>端点都含</strong></td>
+</tr>
+<tr>
+<td><code>random.randrange(start, stop, step)</code></td>
+<td>类似 <code>range</code> 规则，右端点不含</td>
+</tr>
+<tr>
+<td><code>random.choice(seq)</code></td>
+<td>从非空序列随机选一个</td>
+</tr>
+<tr>
+<td><code>random.shuffle(x)</code></td>
+<td>原地打乱可变序列</td>
+</tr>
+<tr>
+<td><code>random.sample(pop, k)</code></td>
+<td>无放回抽取 k 个</td>
+</tr>
+</tbody>
+</table>
+<p>蒙特卡洛估算圆周率：</p>
+<pre><code class="language-python">import random
+
+random.seed(42)
+n = 1000000
+inside = 0
+for _ in range(n):  # 一定要有循环，投针n次
+    x = random.random()
+    y = random.random()
+    if x * x + y * y &lt;= 1:
+        inside += 1
+print(4 * inside / n)
+</code></pre>
+<h3>8. 字符串作为序列</h3>
+<p>字符串是不可变序列。可以索引、切片、遍历，但不能改单个字符。</p>
+<pre><code class="language-python">s = &quot;hello&quot;
+print(s[0])
+print(s[-1])
+print(s[1:4])
+for ch in s:
+    print(ch)
+</code></pre>
+<p>常用方法和函数：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>len(s)</code></td>
+<td>字符个数</td>
+</tr>
+<tr>
+<td><code>s.find(sub)</code></td>
+<td>找不到返回 -1</td>
+</tr>
+<tr>
+<td><code>s.index(sub)</code></td>
+<td>找不到抛 ValueError</td>
+</tr>
+<tr>
+<td><code>s.count(sub)</code></td>
+<td>子串出现次数</td>
+</tr>
+<tr>
+<td><code>s.startswith(prefix)</code></td>
+<td>是否以指定前缀开头</td>
+</tr>
+<tr>
+<td><code>s.endswith(suffix)</code></td>
+<td>是否以指定后缀结尾</td>
+</tr>
+<tr>
+<td><code>s.upper()</code></td>
+<td>全大写</td>
+</tr>
+<tr>
+<td><code>s.lower()</code></td>
+<td>全小写</td>
+</tr>
+<tr>
+<td><code>s.capitalize()</code></td>
+<td>首字母大写</td>
+</tr>
+<tr>
+<td><code>s.title()</code></td>
+<td>单词首字母大写</td>
+</tr>
+<tr>
+<td><code>s.swapcase()</code></td>
+<td>大小写互换</td>
+</tr>
+<tr>
+<td><code>s.replace(old, new)</code></td>
+<td>替换子串</td>
+</tr>
+<tr>
+<td><code>s.split(sep=None)</code></td>
+<td>按分隔符切分，默认空白</td>
+</tr>
+<tr>
+<td><code>sep.join(iterable)</code></td>
+<td>用分隔符拼接字符串元素</td>
+</tr>
+<tr>
+<td><code>s.strip()</code></td>
+<td>去两端空白</td>
+</tr>
+<tr>
+<td><code>s.lstrip()</code></td>
+<td>去左端空白</td>
+</tr>
+<tr>
+<td><code>s.rstrip()</code></td>
+<td>去右端空白</td>
+</tr>
+<tr>
+<td><code>ord(ch)</code></td>
+<td>字符转码点</td>
+</tr>
+<tr>
+<td><code>chr(i)</code></td>
+<td>码点转字符</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python">text = &quot;1,2,3&quot;
+nums = text.split(&quot;,&quot;)
+joined = &quot;-&quot;.join(nums)
+print(nums, joined)
+print(ord(&quot;A&quot;), chr(65))
+</code></pre>
+<p>字符串拼接是造新串。需要频繁修改时，通常先用列表，最后用 <code>join</code>。</p>
+<h3>9. 迭代与数值终止条件</h3>
+<p>数值迭代不追求完全等于精确根，而是用容差 <code>eps</code> 判断足够接近。常见终止条件有两种：<code>abs(f(x)) &lt; eps</code> 或 <code>abs(x_new - x_old) &lt; eps</code>。</p>
+<pre><code class="language-python">eps = 1e-6
+max_iter = 100
+for _ in range(max_iter):
+    new_x = ...
+    if abs(new_x - x) &lt; eps:
+        x = new_x
+        break
+    x = new_x
+</code></pre>
+<h3>10. <em>大数加法</em>（值得看）</h3>
+<p>当数字太大超出普通类型范围时，可以用字符串逐位模拟竖式加法。Python 的 <code>int</code> 其实支持大整数，但这里训练的是逐位处理思想。</p>
+<pre><code class="language-python">def big_add(a, b):
+    result = &quot;&quot;
+    carry = 0
+    i = 1
+    while i &lt;= max(len(a), len(b)) or carry:
+        da = int(a[-i]) if i &lt;= len(a) else 0
+        db = int(b[-i]) if i &lt;= len(b) else 0
+        total = da + db + carry
+        result = str(total % 10) + result
+        carry = total // 10
+        i += 1
+    return result
+</code></pre>
+<p>简单模拟乘法可以先重复加法。</p>
+<pre><code class="language-python">a = &quot;123&quot;
+b = 45
+base = a
+for _ in range(b - 1):
+    a = big_add(a, base)
+print(a)
+</code></pre>
+<h2>W4 序列与查找</h2>
+<p>核心问题：有序和查找有什么关系？不同结构分别适合哪些操作？</p>
+<h3>1. list 列表</h3>
+<p>列表是可变序列，元素有序、可重复，按下标访问。</p>
+<pre><code class="language-python">xs = []
+xs.append(1)
+xs.append(2)
+xs[0] = 99
+print(xs)
+</code></pre>
+<p>索引从 0 开始，负索引表示从末尾倒数。</p>
+<pre><code class="language-python">xs = [10, 20, 30, 40]
+print(xs[0], xs[-1])
+print(xs[1:3])
+print(xs[:2])
+print(xs[2:])
+print(xs[::-1])
+</code></pre>
+<p>切片是左闭右开，得到新列表。</p>
+<p>常用列表方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>append(x)</code></td>
+<td>末尾追加一个元素</td>
+</tr>
+<tr>
+<td><code>extend(iterable)</code></td>
+<td>逐个追加多个元素</td>
+</tr>
+<tr>
+<td><code>insert(i, x)</code></td>
+<td>在下标 i 处插入,让索引为i处变为x</td>
+</tr>
+<tr>
+<td><code>remove(x)</code></td>
+<td>删除第一个等于 x 的元素</td>
+</tr>
+<tr>
+<td><code>pop()</code></td>
+<td>弹出末尾元素</td>
+</tr>
+<tr>
+<td><code>pop(i)</code></td>
+<td>弹出并返回指定位置元素</td>
+</tr>
+<tr>
+<td><code>clear()</code></td>
+<td>清空列表</td>
+</tr>
+<tr>
+<td><code>index(x)</code></td>
+<td>查找元素首次下标</td>
+</tr>
+<tr>
+<td><code>count(x)</code></td>
+<td>统计元素个数</td>
+</tr>
+<tr>
+<td><code>sort()</code></td>
+<td>原地排序</td>
+</tr>
+<tr>
+<td><code>reverse()</code></td>
+<td>原地反转</td>
+</tr>
+</tbody>
+</table>
+<p>注意 <code>append</code> 和 <code>extend</code> 的区别：<code>append([3,4])</code> 会把整个列表作为一个元素，<code>extend([3,4])</code> 会拆开加入。</p>
+<pre><code class="language-python">a = [1, 2]
+a.append([3, 4])
+print(a)  # [1, 2, [3, 4]]
+
+b = [1, 2]
+b.extend([3, 4])
+print(b)  # [1, 2, 3, 4]
+</code></pre>
+<p>别名和拷贝很重要。<code>b = a</code> 让两个名字指向同一个列表对象，<code>b = a[:]</code> 或 <code>b = a.copy()</code> 创建新列表。</p>
+<h3>2. tuple 元组</h3>
+<p>元组是不可变序列，适合表示一组绑定在一起的数据。</p>
+<pre><code class="language-python">t = (1, 2, 3)
+one = (1,)
+packed = 1, 2, 3
+</code></pre>
+<p>单元素元组必须有逗号。元组可以索引、切片、遍历，但没有 <code>append</code> 等修改方法。</p>
+<pre><code class="language-python">x, y = (10, 20)
+</code></pre>
+<h3>3. 常用序列函数</h3>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>len(xs)</code></td>
+<td>元素个数</td>
+</tr>
+<tr>
+<td><code>min(xs)</code></td>
+<td>最小值</td>
+</tr>
+<tr>
+<td><code>max(xs)</code></td>
+<td>最大值</td>
+</tr>
+<tr>
+<td><code>sum(xs)</code></td>
+<td>求和</td>
+</tr>
+<tr>
+<td><code>sorted(xs)</code></td>
+<td>返回新排序列表</td>
+</tr>
+<tr>
+<td><code>reversed(xs)</code></td>
+<td>反向迭代器</td>
+</tr>
+<tr>
+<td><code>enumerate(xs)</code></td>
+<td>同时给出下标和元素</td>
+</tr>
+<tr>
+<td><code>zip(a, b)</code></td>
+<td>按位置配对多个序列</td>
+</tr>
+<tr>
+<td><code>any(xs)</code></td>
+<td>有一个真则为真</td>
+</tr>
+<tr>
+<td><code>all(xs)</code></td>
+<td>全部为真才为真</td>
+</tr>
+</tbody>
+</table>
+<p><code>min</code>、<code>max</code>、<code>sorted</code> 都可以接 <code>key=</code>。<code>key</code> 是一个单参数函数，用来决定比较依据。</p>
+<pre><code class="language-python">words = [&quot;apple&quot;, &quot;banana&quot;, &quot;pear&quot;]
+print(max(words, key=len))
+print(sorted(words, key=lambda s: -len(s)))
+</code></pre>
+<h3>4. 参数打包与解包</h3>
+<p>定义函数时，<code>*args</code> 收集多余位置参数为元组，<code>**kwargs</code> 收集多余关键字参数为字典。</p>
+<pre><code class="language-python">def f(a, *args, **kwargs):
+    print(a, args, kwargs)
+
+f(1, 2, 3, eps=1e-3)
+#1 (2, 3) {'eps': 0.001}
+</code></pre>
+<p>调用时 <code>*xs</code> 把列表拆开，<code>**d</code> 把字典按关键字拆开。</p>
+<pre><code class="language-python">xs = [1, 5, 3]
+print(max(*xs))  # 等价 max(1, 5, 3)
+</code></pre>
+<h3>5. 大 O 记号</h3>
+<p>大 O 描述增长趋势。</p>
+<table>
+<thead>
+<tr>
+<th>复杂度</th>
+<th>含义</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>O(1)</code></td>
+<td>常数时间</td>
+<td>列表按索引访问</td>
+</tr>
+<tr>
+<td><code>O(log n)</code></td>
+<td>对数时间</td>
+<td>二分查找</td>
+</tr>
+<tr>
+<td><code>O(n)</code></td>
+<td>线性时间</td>
+<td>线性查找、找最值</td>
+</tr>
+<tr>
+<td><code>O(n log n)</code></td>
+<td>线性对数</td>
+<td>归并排序</td>
+</tr>
+</tbody>
+</table>
+<h3>6. 找最值</h3>
+<pre><code class="language-python">def find_max(xs):
+    if not xs:
+        return None
+    best = xs[0]
+    for x in xs[1:]:
+        if x &gt; best:
+            best = x
+    return best
+</code></pre>
+<p>找最大值下标：</p>
+<pre><code class="language-python">def find_max_index(xs):
+    if not xs:
+        return -1
+    best_idx = 0
+    for i in range(1, len(xs)):
+        if xs[i] &gt; xs[best_idx]:
+            best_idx = i
+    return best_idx
+</code></pre>
+<h3>7. 线性查找</h3>
+<p>线性查找不要求数据有序，时间复杂度 <code>O(n)</code>。</p>
+<pre><code class="language-python">def linear_search(xs, target):
+    for i, x in enumerate(xs): # .items()操作是dict的，返回key and value
+                               # enumerate()才是list的，别记混了
+        if x == target:
+            return i
+    return -1
+</code></pre>
+<p>查找所有出现位置：</p>
+<pre><code class="language-python">def linear_search_all(xs, target):
+    result = []
+    for i, x in enumerate(xs):
+        if x == target:
+            result.append(i)
+    return tuple(result)
+</code></pre>
+<h3>8. 二分查找</h3>
+<p>二分查找要求数据有序，时间复杂度 <code>O(log n)</code>。每次把查找范围缩小一半。</p>
+<pre><code class="language-python">def binary_search(xs, target):
+    left, right = 0, len(xs) - 1
+    while left &lt;= right:
+        mid = (left + right) // 2
+        if xs[mid] == target:
+            return mid
+        if xs[mid] &lt; target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+</code></pre>
+<p>如果先排序，返回的下标对应的是排序后的列表，不再是原列表下标。</p>
+<h3>9. Markdown 与 MathJax 报告</h3>
+<p>报告里表格要用竖线写，代码要用三反引号围起来，公式用 <code>$...$</code> 或 <code>$$...$$</code>。</p>
+<pre><code class="language-markdown">| 策略 | 比较次数 |
+|:---|---:|
+| 线性 | 6 |
+| 二分 | 2 |
+</code></pre>
+<p>复杂度可以写成 <code>$O(n)$</code> 或 <code>$O(\log n)$</code>。</p>
+<h2>W5 哈希</h2>
+<p>核心问题：如何通过键直接定位数据？</p>
+<h3>1. 哈希思想</h3>
+<p>哈希表把键转换成索引，从而实现平均 <code>O(1)</code> 查找。简单哈希函数常取模，例如数字 ID 对表长取模。</p>
+<pre><code class="language-python">def hash_func(key, table_size):
+    num = int(key.split(&quot;-&quot;)[1])
+    return num % table_size
+</code></pre>
+<p>表长常选质数，可以减少冲突聚集。</p>
+<h3>2. 冲突处理</h3>
+<p>不同键可能映射到同一个槽位，这就是哈希冲突。</p>
+<p>开链法：每个槽位是一个列表，冲突时追加到列表末尾。</p>
+<pre><code class="language-python">table_size = 13
+hash_table = [[] for _ in range(table_size)]
+
+def insert(key, value):
+    idx = hash_func(key, table_size)
+    hash_table[idx].append((key, value))
+
+def lookup(key):
+    idx = hash_func(key, table_size)
+    for k, v in hash_table[idx]:
+        if k == key:
+            return v
+    return None
+</code></pre>
+<p>线性探测：冲突时向后找空位。</p>
+<pre><code class="language-python"># 线性探测表必须初始化为 None；它和上面的链地址表不是同一种结构。
+table_size = 13
+hash_table = [None] * table_size
+
+def insert_probe(hash_table, key, value, table_size):
+    idx = hash_func(key, table_size)
+    while hash_table[idx] is not None:
+        idx = (idx + 1) % table_size
+    hash_table[idx] = (key, value)
+</code></pre>
+<h3>3. dict 字典</h3>
+<p>字典是键到值的映射，底层是哈希表。键必须不可变，例如整数、浮点数、字符串、布尔值或由不可变元素组成的元组。列表、字典、集合不能作键。</p>
+<pre><code class="language-python">sensor = {&quot;S-042&quot;: 28.1}
+sensor[&quot;S-117&quot;] = 24.2
+print(sensor.get(&quot;S-999&quot;, &quot;未找到&quot;))
+print(&quot;S-042&quot; in sensor)
+del sensor[&quot;S-042&quot;]
+</code></pre>
+<p>常用字典方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>d[k]</code></td>
+<td>取值或赋值；取值时键不存在会 KeyError</td>
+</tr>
+<tr>
+<td><code>d.get(k, default)</code></td>
+<td>安全取值，不存在返回默认值</td>
+</tr>
+<tr>
+<td><code>d.setdefault(k, default)</code></td>
+<td>不存在时插入默认值</td>
+</tr>
+<tr>
+<td><code>d.update(other)</code></td>
+<td>批量更新，同键覆盖</td>
+</tr>
+<tr>
+<td><code>d.pop(k)</code></td>
+<td>删除并返回对应值</td>
+</tr>
+<tr>
+<td><code>d.popitem()</code></td>
+<td>删除一对，CPython 中通常是最后插入的一对</td>
+</tr>
+<tr>
+<td><code>d.clear()</code></td>
+<td>清空</td>
+</tr>
+<tr>
+<td><code>d.copy()</code></td>
+<td>浅拷贝</td>
+</tr>
+<tr>
+<td><code>d.keys()</code></td>
+<td>键视图</td>
+</tr>
+<tr>
+<td><code>d.values()</code></td>
+<td>值视图</td>
+</tr>
+<tr>
+<td><code>d.items()</code></td>
+<td>键值对视图</td>
+</tr>
+</tbody>
+</table>
+<p>遍历字典时，默认遍历键。</p>
+<pre><code class="language-python">for k in d:
+    print(k, d[k])
+
+for k, v in d.items():
+    print(k, v)
+</code></pre>
+<h3>4. set 集合</h3>
+<p>集合只关心成员是否存在。元素唯一、无序、必须可哈希。<strong>空集合是 <code>set()</code>，不是 <code>{}</code>。</strong></p>
+<pre><code class="language-python">s = set()
+s.add(1)
+s.add(2)
+s.discard(1)
+print(2 in s)
+</code></pre>
+<p>集合运算：</p>
+<table>
+<thead>
+<tr>
+<th>运算</th>
+<th>符号</th>
+<th>方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>并集</td>
+<td><code>\|</code></td>
+<td><code>union</code></td>
+</tr>
+<tr>
+<td>交集</td>
+<td><code>&amp;</code></td>
+<td><code>intersection</code></td>
+</tr>
+<tr>
+<td>差集</td>
+<td><code>-</code></td>
+<td><code>difference</code></td>
+</tr>
+<tr>
+<td>对称差</td>
+<td><code>^</code></td>
+<td><code>symmetric_difference</code></td>
+</tr>
+<tr>
+<td>子集</td>
+<td><code>&lt;=</code></td>
+<td><code>issubset</code></td>
+</tr>
+<tr>
+<td>超集</td>
+<td><code>&gt;=</code></td>
+<td><code>issuperset</code></td>
+</tr>
+<tr>
+<td>无交集</td>
+<td>无</td>
+<td><code>isdisjoint</code></td>
+</tr>
+</tbody>
+</table>
+<p>对称差：并集-交集</p>
+<p>查重一行代码：</p>
+<pre><code class="language-python">has_duplicate = len(xs) != len(set(xs))
+</code></pre>
+<h3>5. 词频统计</h3>
+<pre><code class="language-python">count = {}
+for word in text.split():
+    count[word] = count.get(word, 0) + 1
+print(count)
+</code></pre>
+<p>不要写 <code>count[word] += 1</code>，第一次遇到该词会 KeyError。</p>
+<p>从文件读词频：</p>
+<pre><code class="language-python">count = {}
+f = open(&quot;fox.txt&quot;)
+for line in f:
+    for word in line.split():
+        count[word] = count.get(word, 0) + 1
+f.close()
+</code></pre>
+<p>文件对象可以按行遍历。本周手动 <code>close</code>，后续会讲 <code>with</code>。</p>
+<h3>6. 寻找单身汉</h3>
+<p>绝大多数元素成对出现，只有一个元素落单。</p>
+<pre><code class="language-python">def find_single(xs):
+    count = {}
+    for x in xs:
+        count[x] = count.get(x, 0) + 1
+    for x, c in count.items():
+        if c == 1:
+            return x
+    return None
+</code></pre>
+<p>两个单身汉：</p>
+<pre><code class="language-python">def find_two_singles(xs):
+    count = {}
+    for x in xs:
+        count[x] = count.get(x, 0) + 1
+    result = []
+    for x, c in count.items():
+        if c == 1:
+            result.append(x)
+    return result
+</code></pre>
+<h3>7. <em>两数之和</em>（重点看）</h3>
+<p>用字典记录已经见过的补数。</p>
+<pre><code class="language-python">def two_sum(nums, target):
+    seen = {}
+    for i, x in enumerate(nums):
+        if x in seen:
+            return [seen[x], i]
+        seen[target - x] = i
+    return []
+</code></pre>
+<h3>8. 作用域和 global</h3>
+<p>函数内赋值默认创建局部变量。要给全局名赋新值，必须写 <code>global</code>。</p>
+<pre><code class="language-python">count = 0
+
+def bump():
+    global count
+    count += 1
+</code></pre>
+<p>更好的写法是参数进、返回值出。</p>
+<h3>9. 异常</h3>
+<p>缺键会抛 <code>KeyError</code>，文件不存在会抛 <code>FileNotFoundError</code>。</p>
+<pre><code class="language-python">try:
+    f = open(&quot;fox.txt&quot;)
+except FileNotFoundError:
+    print(&quot;文件不存在&quot;)
+else:
+    for line in f:
+        print(line, end=&quot;&quot;)
+    f.close()
+</code></pre>
+<p>词频缺键应优先用 <code>get</code>，不要靠捕获异常当控制流。不要用裸 <code>except: pass</code> 吞掉错误。</p>
+<h2>W6 递归</h2>
+<p>核心问题：如何用更小的同类问题描述当前问题？</p>
+<h3>1. 递归四基础</h3>
+<table>
+<thead>
+<tr>
+<th>基础</th>
+<th>含义</th>
+<th>缺了会怎样</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base Case</td>
+<td>最小规模直接返回</td>
+<td>无限递归，RecursionError</td>
+</tr>
+<tr>
+<td>Make Progress</td>
+<td>每次调用规模变小</td>
+<td>无法到达终止条件</td>
+</tr>
+<tr>
+<td>Always Believe</td>
+<td>相信子问题已解决</td>
+<td>写不动，容易陷入展开</td>
+</tr>
+<tr>
+<td>Compound Interest</td>
+<td>同一子问题不重复算</td>
+<td>树状递归指数爆炸</td>
+</tr>
+</tbody>
+</table>
+<p>递归模板：</p>
+<pre><code class="language-python">def solve(n):
+    if base_condition(n):
+        return direct_answer
+    sub = solve(smaller(n))
+    return combine(n, sub)
+</code></pre>
+<h3>2. 汉诺塔</h3>
+<p>把 <code>n</code> 个盘从 <code>source</code> 移到 <code>target</code>，需要借助 <code>aux</code>。步骤是：先把上面 <code>n - 1</code> 个盘移到 <code>aux</code>，再把最大盘移到 <code>target</code>，最后把 <code>n - 1</code> 个盘从 <code>aux</code> 移到 <code>target</code>。</p>
+<pre><code class="language-python">def hanoi(n, source, target, aux):
+    if n &gt; 0:
+        hanoi(n - 1, source, aux, target)
+        print(f&quot;move {n} from {source} to {target}&quot;)
+        hanoi(n - 1, aux, target, source)
+</code></pre>
+<h3>3. 阶乘</h3>
+<p><code>n! = n * (n - 1)!</code>，Base Case 是 <code>0! = 1</code> 或 <code>1! = 1</code>。</p>
+<pre><code class="language-python">def factorial(n):
+    if n == 0 or n == 1:
+        return 1
+    return n * factorial(n - 1)
+</code></pre>
+<p><code>factorial(5)</code> 会先递进到 Base Case，再回归时逐步乘回来。</p>
+<h3>4. 线性递归与尾递归</h3>
+<p>每次只调用一次自己是线性递归。如果递归调用是最后一步，返回前不再做额外计算，就是尾递归。</p>
+<pre><code class="language-python">def gcd(x, y):
+    if y == 0:
+        return x
+    return gcd(y, x % y)
+</code></pre>
+<p>尾递归可以改写成循环。</p>
+<pre><code class="language-python">def gcd_iter(x, y):
+    while y != 0:
+        x, y = y, x % y
+    return x
+</code></pre>
+<p>Python 不保证自动消除尾递归，工程上常手动改成循环。</p>
+<h3>5. 树状递归与记忆化</h3>
+<p>斐波那契每次调用两个子问题，形成调用树。</p>
+<pre><code class="language-python">def fib(n):
+    if n &lt;= 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
+</code></pre>
+<p>朴素版会重复计算大量子问题。用字典记忆化可以把时间复杂度降为 <code>O(n)</code>。</p>
+<pre><code class="language-python">def fib_memo(n, memo={0:0,1:1}):
+    if n not in memo:
+        memo[n]=fib_memo(n-1)+fib_memo(n-2)
+    return memo[n]
+</code></pre>
+<p>也可以用 <code>functools.lru_cache</code>。</p>
+<pre><code class="language-python">from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fib(n):
+    if n &lt;= 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
+</code></pre>
+<p>装饰后参数必须可哈希。多组测试之间可以用 <code>fib.cache_clear()</code>。</p>
+<h3>6. 整行杨辉三角</h3>
+<p><code>pascal(n)</code> 返回第 n 行整个列表。上一行只计算一次，存进变量再拼本行。</p>
+<pre><code class="language-python">def pascal(n):
+    if n == 0:
+        return [1]
+    prev = pascal(n - 1)
+    row = [1]
+    for i in range(len(prev) - 1):
+        row.append(prev[i] + prev[i + 1])
+    row.append(1)
+    return row
+</code></pre>
+<p>迭代版：</p>
+<pre><code class="language-python">def pascal_iter(n):
+    row = [1]
+    for _ in range(n):
+        next_row = [1]
+        for i in range(len(row) - 1):
+            next_row.append(row[i] + row[i + 1])
+        next_row.append(1)
+        row = next_row
+    return row
+</code></pre>
+<h3>7. 函数默认参数和注解</h3>
+<p>默认参数在定义时求值一次。不要把可变对象当默认值。</p>
+<pre><code class="language-python">def f(x, items=None):
+    if items is None:
+        items = []
+    items.append(x)
+    return items
+</code></pre>
+<p>注解：</p>
+<pre><code class="language-python">def fib(n: int) -&gt; int:
+    ...
+</code></pre>
+<h2>W7 分治算法</h2>
+<p>核心问题：问题切成两半后，只走一边还是两半都做完再合并？</p>
+<h3>1. 减治与分治</h3>
+<p>减治通常只产生一个子问题，子问题的解就是原问题的解，例如二分查找。分治会产生多个子问题，并且需要合并，例如归并排序。</p>
+<h3>2. 递归版二分查找</h3>
+<p>递归版二分查找是尾递归。</p>
+<pre><code class="language-python">def binary_search_rec(xs, target, left, right):
+    if left &gt; right:
+        return -1
+    mid = (left + right) // 2
+    if xs[mid] == target:
+        return mid
+    if xs[mid] &lt; target:
+        return binary_search_rec(xs, target, mid + 1, right)
+    return binary_search_rec(xs, target, left, mid - 1)
+
+def binary_search(xs, target):
+    return binary_search_rec(xs, target, 0, len(xs) - 1)
+</code></pre>
+<p>尾递归可以改循环。</p>
+<pre><code class="language-python">def binary_search_iter(xs, target):
+    left, right = 0, len(xs) - 1
+    while left &lt;= right:
+        mid = (left + right) // 2
+        if xs[mid] == target:
+            return mid
+        if xs[mid] &lt; target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+</code></pre>
+<h3>3. 归并排序</h3>
+<p>归并排序分三步：对半分，递归排两半，合并两个有序列表。</p>
+<p>切片版：</p>
+<pre><code class="language-python">def merge_sort(arr):
+    if len(arr)&lt;=1:return arr
+    mid=len(arr)//2
+    left=merge_sort(arr[:mid])  # 切片复制，切片上的更改，在原列表不会更改，此时函数返回值便是一个产物结果必须接收
+    right=merge_sort(arr[mid:])
+    h=[]
+    i=j=0
+    while i&lt;len(left) and j&lt;len(right):
+        if left[i]&lt;=right[j]:
+            h.append(left[i])
+            i+=1
+        else:
+            h.append(right[j])
+            j+=1
+    h.extend(left[i:])
+    h.extend(right[j:])
+    arr[:]=h
+    return arr
+</code></pre>
+<p>无需切片，无需def两个函数，我<strong>最喜</strong>版：</p>
+<pre><code class="language-python">def merge_sort(xs, left=0, right=None):
+    if right is None:
+        right = len(xs)
+
+    if right - left &lt;= 1:
+        return xs # 只是为了能够打印函数，其实可以不加
+
+    mid = (left + right) // 2
+    merge_sort(xs, left, mid)  # 而此时这个，一直传的是xs这一个列表，作用的结果是位于原列表的，其返回值就不重要了
+    merge_sort(xs, mid, right)
+
+    i, j = left, mid
+    temp = []
+
+    while i &lt; mid and j &lt; right:
+        if xs[i] &lt;= xs[j]:
+            temp.append(xs[i])
+            i += 1
+        else:
+            temp.append(xs[j])
+            j += 1
+
+    temp.extend(xs[i:mid])
+    temp.extend(xs[j:right]) # 不能是[j:] 现在是在xs的所有内存上，不能直接跑到底
+
+    xs[left:right] = temp
+    return xs  #同理可以不加
+</code></pre>
+<h3>4. 跨中点最大子段和</h3>
+<p>最大连续子段和可能出现在左半、右半或穿过中点。前两种交给子问题，第三种在本层处理。</p>
+<pre><code class="language-python">def max_crossing(arr, lo, mid, hi):
+    best_l = arr[mid - 1]
+    s = best_l
+    for i in range(mid - 2, lo - 1, -1):
+        s += arr[i]
+        best_l = max(best_l, s)
+    best_r = arr[mid]
+    s = best_r
+    for j in range(mid + 1, hi):
+        s += arr[j]
+        best_r = max(best_r, s)
+    return best_l + best_r
+
+def max_subarray(arr, lo, hi):
+    if hi - lo == 1:
+        return arr[lo]  # base case
+    mid = (lo + hi) // 2
+    return max(
+        max_subarray(arr, lo, mid),
+        max_subarray(arr, mid, hi),
+        max_crossing(arr, lo, mid, hi),
+    )
+</code></pre>
+<h3>5. 逆序对</h3>
+<p>逆序对指 <code>i &lt; j</code> 且 <code>arr[i] &gt; arr[j]</code>。归并排序在合并时左右两半已有序，取右半元素时，左半剩余元素都比它大，可以一次性计数。</p>
+<p>切片版：</p>
+<pre><code class="language-python">def merge_count(arr):
+    if len(arr) &lt;= 1:
+        return 0
+
+    mid = len(arr) // 2
+    left = arr[:mid]
+    right = arr[mid:]
+
+    count = merge_count(left) + merge_count(right)
+
+    i = j = 0
+    temp = []
+
+    while i &lt; len(left) and j &lt; len(right):
+        if left[i] &lt;= right[j]:
+            temp.append(left[i])
+            i += 1
+        else:
+            count += len(left) - i
+            temp.append(right[j])
+            j += 1
+
+    temp.extend(left[i:])
+    temp.extend(right[j:])
+
+    arr[:] = temp
+    return count
+</code></pre>
+<p>原地版：</p>
+<pre><code class="language-python">def merge_count(xs, left=0, right=None):
+    ans=0
+    if right is None:
+        right = len(xs)
+
+    if right - left &lt;= 1:
+        return 0
+
+    mid = (left + right) // 2
+    ans+=merge_count(xs, left, mid)  # 而此时这个，一直传的是xs这一个列表，作用的结果是位于原列表的
+    ans+=merge_count(xs, mid, right) # 一定要+到ans里！！！
+
+    i, j = left, mid
+    temp = []
+
+    while i &lt; mid and j &lt; right:
+        if xs[i] &lt;= xs[j]:
+            temp.append(xs[i])
+            i += 1
+        else:
+            ans+=mid-i
+            temp.append(xs[j])
+
+            j += 1
+    temp.extend(xs[i:mid])
+    temp.extend(xs[j:right]) # 不能是[j:] 现在是在xs的所有内存上，不能直接跑到底
+    xs[left:right] = temp
+    return ans
+</code></pre>
+<h3>6. 快速排序</h3>
+<p>快速排序先选基准，把更小的放左、更大的放右，再递归两侧。</p>
+<pre><code class="language-python">def quick_sort(a):
+    if len(a)&lt;=1:
+        return a
+    mid=(len(a))//2
+    a[0],a[mid]=a[mid],a[0]
+    t=a[0]
+    i,j,k=0,len(a)-1,0
+    while k&lt;=j :
+        if a[k]&gt;t:
+            a[k],a[j]=a[j],a[k]
+            j-=1
+        elif a[k]==t:
+            k+=1
+        else:
+            a[k],a[i]=a[i],a[k]
+            i+=1
+            k+=1
+    return quick_sort(a[:i])+[t]*(j-i+1)+quick_sort(a[j+1:])
+</code></pre>
+<h3>7. 杨辉三角格子版</h3>
+<p><code>pascal(n, k)</code> 返回第 n 行第 k 个数。两侧都是 1，中间是上一行两个肩膀之和。</p>
+<p>用 <code>(n, k)</code> 作记忆化键。</p>
+<pre><code class="language-python">def pascal(n,k,memory={(0,0):1}):
+    if k==0 or n==k:        # 注意base case
+        memory[(n,k)]=1
+    if (n,k) not in memory:
+        memory[(n,k)]=pascal(n-1,k-1)+pascal(n-1,k)
+    return memory[(n,k)]
+</code></pre>
+<h2>W8 简单线性数据结构</h2>
+<p>核心问题：数据按什么顺序进出？用什么结构才快？</p>
+<h3>1. 数组与链表</h3>
+<p>数组是连续存放，按下标访问快；链表结点分散存放，通过引用连接。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>数组</th>
+<th>链表</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>按下标访问</td>
+<td><code>O(1)</code></td>
+<td><code>O(n)</code></td>
+</tr>
+<tr>
+<td>头部插入</td>
+<td><code>O(n)</code></td>
+<td><code>O(1)</code></td>
+</tr>
+<tr>
+<td>已知位置插入删除</td>
+<td><code>O(n)</code></td>
+<td><code>O(1)</code></td>
+</tr>
+<tr>
+<td>内存</td>
+<td>连续</td>
+<td>分散</td>
+</tr>
+</tbody>
+</table>
+<p>Python 常用 <code>list</code> 表现数组形态，两端都要快时用 <code>collections.deque</code>。</p>
+<h3>2. list 当栈</h3>
+<p>栈是 LIFO，后进先出。<code>list</code> 的尾部就是栈顶。</p>
+<pre><code class="language-python">stack = []
+stack.append(&quot;A&quot;)  # push
+stack.append(&quot;B&quot;)
+top = stack.pop()  # pop
+print(top)
+</code></pre>
+<h3>3. list.pop(0) 的陷阱</h3>
+<p><code>list.pop(0)</code> 逻辑上像出队，但性能是 <code>O(n)</code>，因为后面所有元素都要前移。队列应该用 <code>deque.popleft()</code>。</p>
+<h3>4. collections.deque</h3>
+<p><code>deque</code> 是双端队列，两端插入删除都是 <code>O(1)</code>。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>append(x)</code></td>
+<td>右端入队</td>
+</tr>
+<tr>
+<td><code>appendleft(x)</code></td>
+<td>左端入队</td>
+</tr>
+<tr>
+<td><code>pop()</code></td>
+<td>右端弹出</td>
+</tr>
+<tr>
+<td><code>popleft()</code></td>
+<td>左端弹出</td>
+</tr>
+<tr>
+<td><code>extend(iterable)</code></td>
+<td>右端逐个加入</td>
+</tr>
+<tr>
+<td><code>extendleft(iterable)</code></td>
+<td>左端逐个加入，顺序会反转</td>
+</tr>
+<tr>
+<td><code>clear()</code></td>
+<td>清空</td>
+</tr>
+<tr>
+<td><code>rotate(n)</code></td>
+<td>循环旋转，正数右移，负数左移</td>
+</tr>
+<tr>
+<td><code>maxlen=n</code></td>
+<td>构造时指定长度，满了自动丢另一端</td>
+</tr>
+</tbody>
+</table>
+<p>队列 FIFO 标准写法：</p>
+<pre><code class="language-python">from collections import deque
+
+orders = deque()
+orders.append(&quot;A&quot;)     # enqueue
+orders.append(&quot;B&quot;)
+first = orders.popleft()  # dequeue
+print(first)
+</code></pre>
+<p>简单队列类：</p>
+<pre><code class="language-python">from collections import deque
+
+class SimpleQueue:
+    def __init__(self):
+        self.items = deque()
+
+    def enqueue(self, x):
+        self.items.append(x)
+
+    def dequeue(self):
+        if not self.items:
+            return None
+        return self.items.popleft()
+
+    def is_empty(self):
+        return len(self.items) == 0
+</code></pre>
+<h3>5. 栈的应用：括号匹配</h3>
+<p>每个右括号都要和最近的未匹配左括号配对，所以用 LIFO 栈。</p>
+<pre><code class="language-python">def is_valid(s):
+    stack = []
+    pairs = {&quot;)&quot;: &quot;(&quot;, &quot;]&quot;: &quot;[&quot;, &quot;}&quot;: &quot;{&quot;}
+    for ch in s:
+        if ch in &quot;([{&quot;:
+            stack.append(ch)
+        else:
+            if not stack or stack[-1] != pairs[ch]:
+                return False
+            stack.pop()
+    return not stack
+</code></pre>
+<p>三个关键点：右括号来时先判空栈，栈顶必须匹配，结束后栈必须为空。</p>
+<h3>6. Git 和 GitHub</h3>
+<p>Git 管本机版本历史，GitHub 托管远程仓库。</p>
+<p>基本流程：</p>
+<pre><code class="language-text">工作区 --git add--&gt; 暂存区 --git commit--&gt; 本地仓库 --git push--&gt; 远程仓库
+</code></pre>
+<p>常用命令：</p>
+<pre><code class="language-bash">git config --global user.name &quot;你的名字&quot;
+git config --global user.email &quot;你的邮箱&quot;
+git init
+git status
+git add README.md
+git add .
+git commit -m &quot;W8 研讨课代码&quot;
+git log --oneline
+git remote add origin &lt;仓库地址&gt;
+git branch -M main
+git push -u origin main
+</code></pre>
+<p><code>.gitignore</code> 用来排除不该提交的文件。</p>
+<pre><code class="language-text">__pycache__/
+*.pyc
+.vscode/
+.DS_Store
+</code></pre>
+<p>常见错误包括未 <code>add</code> 就 <code>commit</code>、重复添加 <code>origin</code>、<code>push</code> 认证失败、提交了缓存文件等。</p>
+<h2>复习速查</h2>
+<h3>顺序结构</h3>
+<table>
+<thead>
+<tr>
+<th>结构</th>
+<th>顺序</th>
+<th>Python 实现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>栈</td>
+<td>LIFO</td>
+<td><code>list</code> + <code>append</code> / <code>pop</code></td>
+</tr>
+<tr>
+<td>队列</td>
+<td>FIFO</td>
+<td><code>deque</code> + <code>append</code> / <code>popleft</code></td>
+</tr>
+</tbody>
+</table>
+<h3>查找策略</h3>
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>前提</th>
+<th>复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>线性查找</td>
+<td>无需有序</td>
+<td><code>O(n)</code></td>
+</tr>
+<tr>
+<td>二分查找</td>
+<td>必须有序</td>
+<td><code>O(log n)</code></td>
+</tr>
+<tr>
+<td>哈希查找</td>
+<td>键可哈希</td>
+<td>平均 <code>O(1)</code></td>
+</tr>
+</tbody>
+</table>
+<h3>递归与分治</h3>
+<table>
+<thead>
+<tr>
+<th>算法</th>
+<th>类型</th>
+<th>Base Case</th>
+<th>合并方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>二分查找</td>
+<td>减治</td>
+<td><code>left &gt; right</code></td>
+<td>无</td>
+</tr>
+<tr>
+<td>欧几里得 GCD</td>
+<td>减治</td>
+<td><code>y == 0</code></td>
+<td>无</td>
+</tr>
+<tr>
+<td>归并排序</td>
+<td>分治</td>
+<td><code>len &lt;= 1</code></td>
+<td><code>merge</code></td>
+</tr>
+<tr>
+<td>逆序对</td>
+<td>分治</td>
+<td><code>len &lt;= 1</code></td>
+<td><code>merge</code> 时计数</td>
+</tr>
+<tr>
+<td>快速排序</td>
+<td>分治</td>
+<td><code>len &lt;= 1</code></td>
+<td>分区后拼接</td>
+</tr>
+</tbody>
+</table>
+<h3>常见复杂度</h3>
+<table>
+<thead>
+<tr>
+<th>复杂度</th>
+<th>典型例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>O(1)</code></td>
+<td>列表按索引访问、字典按键访问</td>
+</tr>
+<tr>
+<td><code>O(log n)</code></td>
+<td>二分查找</td>
+</tr>
+<tr>
+<td><code>O(n)</code></td>
+<td>线性查找、词频统计</td>
+</tr>
+<tr>
+<td><code>O(n log n)</code></td>
+<td>归并排序</td>
+</tr>
+<tr>
+<td><code>O(n^2)</code></td>
+<td>简单快排最坏情况、<code>list.pop(0)</code> 循环清空</td>
+</tr>
+</tbody>
+</table>

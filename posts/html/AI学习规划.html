@@ -1,0 +1,259 @@
+<h1>AI 学习规划</h1>
+<blockquote>
+<p>浙江大学人工智能专业 · 大一到大二学习路线</p>
+</blockquote>
+<h2>培养方案简述</h2>
+<ol>
+<li>大一上：Python，同时带一些数据结构与算法内容。 </li>
+<li>大一下：概率论与数理统计、机器学习。 </li>
+<li>大一下暑假： C++，计划自行了解学习 HPC 高性能计算。 </li>
+<li>大二上：系统学习数据结构与算法分析、深度学习、计算架构与存储。</li>
+<li>大二下：互联与分布式、大模型基础。</li>
+<li>大三：分方向学习，包括理论、模型、系统、工程</li>
+</ol>
+<h2>总体原则</h2>
+<ul>
+<li>不另起炉灶，跟随学校培养方案：<strong>每门课之前补好前置基础，每门课之后做一个能动手的项目</strong>。</li>
+<li>保研最看重前两年绩点，大一大二绩点是读研的入场券。</li>
+<li>课外投入控制在每周 8–12 小时，期末周全部让给复习。</li>
+<li>以不影响课内成绩为前提</li>
+</ul>
+<h2>大一上学期</h2>
+<h3>Python</h3>
+<ul>
+<li>对 AI 来说，Python 是“工具语言”，重点是语法熟练、数据处理、调用库和写脚本，不必一开始就钻研冷门特性。</li>
+<li>推荐路径：</li>
+<li>B 站入门视频：小甲鱼《零基础入门学习 Python》、《Python 从入门到精通教程》。</li>
+<li>系统教程：《Python-100-Days》、Python 官方文档、《Python Cookbook》。</li>
+<li>大一优先掌握：变量与类型、分支循环、函数、列表/字典、文件读写、异常处理、面向对象基础、NumPy/Pandas 入门。</li>
+<li>推荐视频：</li>
+<li>小甲鱼零基础入门学习 Python：<a href="https://www.bilibili.com/video/av4050443">https://www.bilibili.com/video/av4050443</a></li>
+<li>Python 从入门到精通教程：<a href="https://www.bilibili.com/video/av14184325">https://www.bilibili.com/video/av14184325</a></li>
+<li>Python 编程从入门到实践：<a href="https://www.bilibili.com/video/av35698354">https://www.bilibili.com/video/av35698354</a></li>
+<li>推荐教程：</li>
+<li>Python 官方中文文档：<a href="https://docs.python.org/zh-cn/3/">https://docs.python.org/zh-cn/3/</a></li>
+<li>Python-100-Days：<a href="https://github.com/jackfrued/Python-100-Days">https://github.com/jackfrued/Python-100-Days</a></li>
+<li>Python Cookbook：<a href="https://python3-cookbook.readthedocs.io/zh_CN/latest/index.html">https://python3-cookbook.readthedocs.io/zh_CN/latest/index.html</a></li>
+</ul>
+<h3>线性代数</h3>
+<ul>
+<li>是 AI 最重要的数学基础：矩阵乘法、特征值、奇异值分解</li>
+<li>资料：<a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">3Blue1Brown《线性代数的本质》</a></li>
+</ul>
+<h3>Linux</h3>
+<ul>
+<li>
+<p>AI 专业不能只会 Windows。Linux 是跑实验、管理环境、使用 GPU、部署模型的基础。</p>
+</li>
+<li>
+<h4>要学内容</h4>
+<ol>
+<li>基础命令：<code>cd</code>、<code>ls</code>、<code>mkdir</code>、<code>cp</code>、<code>mv</code>、<code>rm</code>、<code>cat</code>、<code>less</code>、<code>find</code>。</li>
+<li>文件权限：<code>chmod</code>、<code>chown</code>、<code>sudo</code>。</li>
+<li>Shell：环境变量、<code>.bashrc</code>、别名、管道、重定向。</li>
+<li>包与环境：<code>apt</code>、<code>conda</code>、<code>pip</code>、<code>venv</code>。</li>
+<li>进程管理：<code>ps</code>、<code>top</code>、<code>htop</code>、<code>kill</code>、后台运行。</li>
+<li>远程开发：SSH、SCP、tmux/screen。</li>
+<li>Git：clone、commit、branch、merge、rebase、远程协作。</li>
+<li>GPU/实验环境：CUDA、驱动、<code>nvidia-smi</code>、Docker 入门。</li>
+</ol>
+</li>
+<li>
+<h4>推荐视频</h4>
+</li>
+<li>Linux 零基础入门：<a href="https://www.bilibili.com/video/BV1wyZnY2Ey6/">https://www.bilibili.com/video/BV1wyZnY2Ey6/</a></li>
+<li>Linux 操作系统基础到进阶：<a href="https://www.bilibili.com/video/BV1duwReGEp9/">https://www.bilibili.com/video/BV1duwReGEp9/</a></li>
+<li>Linux 零基础教程：<a href="https://www.bilibili.com/video/BV1KL411W7KY/">https://www.bilibili.com/video/BV1KL411W7KY/</a></li>
+</ul>
+<h3>Git</h3>
+<ul>
+<li>所有课程代码放进 Git 仓库，用 Markdown 记笔记</li>
+<li>课程：<a href="https://missing.csail.mit.edu/">MIT Missing Semester</a>（命令行、Shell、Vim、Git、调试工具）（每周看一两节）</li>
+</ul>
+<h3>刷题</h3>
+<ul>
+<li>用 Python 做基础题，熟悉列表、字典、递归、排序</li>
+<li>平台：<a href="https://pintia.cn/">浙大 PTA</a></li>
+<li>课程：陈越《数据结构》（中国大学 MOOC）</li>
+</ul>
+<h2>大一寒假</h2>
+<h3>C 语言入门（2-3weeks）</h3>
+<ul>
+<li>掌握基本语法、指针、数组、结构体、动态内存分配、多文件编译</li>
+<li>动手写：链表、简单字符串处理、文件读写</li>
+<li>目的：为 CSAPP 和 HPC 打基础，暑假学 C++ 时只需补面向对象、模板和 STL</li>
+</ul>
+<h3>轻度预习机器学习</h3>
+<ul>
+<li>建立直觉即可，不要急着上 PyTorch，对”模型、损失函数、梯度下降“有直观印象</li>
+<li>视频：3Blue1Brown 神经网络系列</li>
+<li>课程：吴恩达 Machine Learning Specialization 第一门</li>
+<li>重点：模型、损失函数、梯度下降</li>
+</ul>
+<h2>建立硬件直观认识</h2>
+<ul>
+<li>看 <a href="https://www.nand2tetris.org/">Nand2Tetris</a>；更深入的计算机组成/体系结构等学校课程再深入即可</li>
+</ul>
+<h2>大一下学期</h2>
+<h3>课内</h3>
+<ul>
+<li>概率论与数理统计</li>
+<li>机器学习</li>
+</ul>
+<h3>课外主线：从零实现课上算法</h3>
+<ul>
+<li>用 NumPy 手写：线性回归、逻辑回归、K 均值聚类、决策树</li>
+<li>与 scikit-learn 结果对比</li>
+<li>学期末整理成小型机器学习库（带测试和 README）放上 GitHub</li>
+<li>真正理解梯度是怎么推导出来的，正则化为什么能防止过拟合，而不只是会调用 fit 和 predict</li>
+</ul>
+<h3>进阶</h3>
+<ul>
+<li>Kaggle 入门比赛：e.g.泰坦尼克生存预测、房价预测</li>
+<li>开始读 CSAPP 第一至三章</li>
+<li>信息表示、整数浮点数、机器级表示</li>
+<li>实验：Data Lab、Bomb Lab</li>
+</ul>
+<h2>大一下暑假</h2>
+<h3>HPC101</h3>
+<h3>C++ 学习</h3>
+<ul>
+<li>资料：<a href="https://www.learncpp.com/">learncpp.com</a>、《C++ Primer》</li>
+<li>动手实现：简化版动态数组、哈希表、线程池</li>
+<li>练习：内存管理、移动语义、多线程</li>
+</ul>
+<h3>HPC 入门项目：矩阵乘法优化（强烈推荐）</h3>
+<p>按以下步骤逐步优化并记录性能变化：</p>
+<ol>
+<li>三重循环朴素版本，测量 FLOPS</li>
+<li>调整循环顺序</li>
+<li>分块（block）优化缓存</li>
+<li>AVX 指令向量化</li>
+<li>OpenMP 多线程</li>
+<li>与 OpenBLAS 对比<br />
+- 对“为什么同样的计算，写法不同速度能差几十倍”有切身体会，而这正是 HPC 和系统方向最核心的直觉</li>
+</ol>
+<h3>并行计算入门</h3>
+<ul>
+<li>课程：<a href="https://csd.cmu.edu/course-profiles/parallel-computer-architecture-and-programming-15-418">CMU 15-418</a> 前几讲</li>
+</ul>
+<h3>CSAPP 续读</h3>
+<ul>
+<li>第五章（优化程序性能）+ 第六章（存储器层次结构）</li>
+<li>实验：Cache Lab</li>
+<li>与矩阵乘法优化项目同步进行，效果最好</li>
+</ul>
+<h2>大二上学期</h2>
+<h3>课内</h3>
+<ul>
+<li>数据结构与算法分析</li>
+<li>深度学习</li>
+<li>计算架构与存储</li>
+</ul>
+<h3>数据结构与算法</h3>
+<ul>
+<li>用 C++ 实现课上的数据结构</li>
+<li>刷 LeetCode，以中等题为主，每周保持一定量</li>
+</ul>
+<h3>深度学习</h3>
+<ul>
+<li>资料：</li>
+<li>李沐《动手学深度学习》</li>
+<li><a href="https://karpathy.ai/zero-to-hero.html">Karpathy: Neural Networks: Zero to Hero</a></li>
+<li>动手项目：</li>
+<li><strong>micrograd</strong>：手写自动求导引擎，弄懂反向传播</li>
+<li>用 PyTorch 手写 CNN，在 MNIST / CIFAR-10 上完整训练（数据加载 → 训练循环 → 验证 → 保存模型）</li>
+</ul>
+<h3>CUDA 入门（如有 GPU）</h3>
+<ul>
+<li>从向量加法、归约到矩阵乘法，写几个核函数</li>
+<li>书：《Programming Massively Parallel Processors》</li>
+</ul>
+<h3>CSAPP 续读</h3>
+<ul>
+<li>第七至九章：链接、异常控制流、虚拟内存</li>
+<li>实验：Shell Lab、Malloc Lab</li>
+</ul>
+<h3>！！！重要：联系导师进组 ！！！</h3>
+<ul>
+<li>看学院老师主页，挑两三个感兴趣的方向，各读几篇代表论文</li>
+<li>学期末或寒假前发邮件申请进组</li>
+<li>保研夏令营在大三下，必须大二进组积累科研经历</li>
+</ul>
+<h2>大二下学期</h2>
+<h3>课内</h3>
+<ul>
+<li>互联与分布式</li>
+<li>大模型基础</li>
+</ul>
+<h3>课外主线：科研 + 大模型项目</h3>
+<ul>
+<li>分布式系统</li>
+<li>课程：<a href="https://pdos.csail.mit.edu/6.824/">MIT 6.5840</a>（原 6.824）</li>
+<li>实验：用 Go 实现 MapReduce、Raft 共识算法</li>
+<li>大模型项目</li>
+<li>跟随 <a href="https://github.com/karpathy/nanoGPT">Karpathy nanoGPT</a>，在小数据集（如中文诗词）上从零训练小型 GPT</li>
+<li>自己实现 KV Cache 推理，对比开启/关闭的生成速度</li>
+<li>延伸方向：系统方向（若感兴趣） → 推理加速、显存优化；模型方向（若感兴趣） → LoRA 微调</li>
+<li>大模型应用工程（若感兴趣）</li>
+<li>星球项目：PaiCLI-Python（ReAct 循环、工具调用、上下文压缩、多 Agent 协作）</li>
+<li>星球项目：派聪明 RAG</li>
+</ul>
+<h3>CSAPP 收尾</h3>
+<ul>
+<li>第十至十二章：系统级 I/O、网络编程、并发</li>
+<li>实验：Proxy Lab</li>
+</ul>
+<h2>CSAPP 学习节奏总览</h2>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>章节</th>
+<th>配套实验</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大一下</td>
+<td>第 1–3 章：信息表示、整数浮点、机器级表示</td>
+<td>Data Lab、Bomb Lab</td>
+</tr>
+<tr>
+<td>大一下暑假</td>
+<td>第 5–6 章：性能优化、存储器层次结构</td>
+<td>Cache Lab</td>
+</tr>
+<tr>
+<td>大二上</td>
+<td>第 7–9 章：链接、异常控制流、虚拟内存</td>
+<td>Shell Lab、Malloc Lab</td>
+</tr>
+<tr>
+<td>大二下</td>
+<td>第 10–12 章：系统 I/O、网络编程、并发</td>
+<td>Proxy Lab</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>完成标准：每一章对应的实验能独立做完</li>
+</ul>
+<h2>工程能力小项目清单</h2>
+<ol>
+<li>小型机器学习库（NumPy 从零实现）— 大一下</li>
+<li>矩阵乘法优化（HPC 入门）— 大一下暑假</li>
+<li>动态数组 / 哈希表 / 线程池（C++）— 大一下暑假</li>
+<li>micrograd 自动求导引擎 — 大二上</li>
+<li>PyTorch CNN 训练 — 大二上</li>
+<li>CUDA 核函数练习 — 大二上</li>
+<li>nanoGPT 小型 GPT 训练与 KV Cache 推理 — 大二下</li>
+<li>MIT 6.5840 MapReduce / Raft 实验 — 大二下</li>
+<li>星球项目：派聪明 RAG、PaiCLI-Python</li>
+</ol>
+<h2>其他建议</h2>
+<ul>
+<li><strong>竞赛</strong>：喜欢算法可考 CCF CSP 认证（部分夏令营机试参考），但不要为拿奖挤占绩点和科研时间。</li>
+<li><strong>分方向</strong>：理论 / 模型 / 系统 / 工程，现在不用决定。按路线走完两年，哪个方向做得最有兴趣、成绩最好，答案自然出来。</li>
+<li><strong>大一最重要</strong>：不是学得多，而是把基础打牢、把习惯养好。</li>
+</ul>

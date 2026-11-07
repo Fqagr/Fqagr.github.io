@@ -1,0 +1,536 @@
+<h1></h1>
+<h1>Algorithm · Sort 排序</h1>
+<blockquote>
+<p>注：主要看函数部分，头尾（IO）一致，不想删改了。<br><br />
+注：python代码为codex生成，我仍需日后复习时<strong>重打</strong>一遍</p>
+</blockquote>
+<h2>0. 预备概念</h2>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基于比较</td>
+<td>通过元素间比较决定顺序，下界 <span class="arithmatex">\(O(n\log n)\)</span></td>
+</tr>
+<tr>
+<td>不基于比较</td>
+<td>利用值本身的分布（如桶/计数排序），可突破到 <span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+<tr>
+<td>稳定性</td>
+<td>相同值的元素排序后<strong>相对位置</strong>是否保持不变</td>
+</tr>
+<tr>
+<td>原地排序</td>
+<td>是否只使用 <span class="arithmatex">\(O(1)\)</span> 额外空间</td>
+</tr>
+<tr>
+<td>时间复杂度</td>
+<td>平均 / 最坏，见各节</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. 桶排序：不基于比较，非原地，稳定*</h2>
+<p><strong>思路</strong>：找到最小值 <code>min_value</code> 作为基准线，把每个元素减去基准线后放入对应的桶（计数），再按桶序重新装回。</p>
+<ul>
+<li>时间复杂度：<span class="arithmatex">\(O(n + V)\)</span>，其中 <span class="arithmatex">\(V\)</span> 是值域范围</li>
+<li>缺点：值域 <span class="arithmatex">\(V\)</span> 不能过大（空间 <span class="arithmatex">\(O(V)\)</span>）</li>
+<li>*稳定性说明：对纯整数无所谓；若桶里存的是记录，朴素的"按序重装"会打乱相同值，稳定版需要前缀和 + 逆序回填</li>
+</ul>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+const int MAXN = 1e5 + 8;
+const int MAXV = 1e5 + 8;   // cnt 大小要覆盖值域范围！
+int n;
+int a[MAXN];
+int cnt[MAXV];              // cnt[v] = (v + min_value) 出现的次数
+
+void bucket_sort() {
+    // 1. 找最小值作为基准线
+    int min_value = a[1];   // a 从 1 开始使用
+    for (int i = 2; i &lt;= n; i++)
+        if (a[i] &lt; min_value) min_value = a[i];
+
+    // 2. 计数：减去基准线后放入对应的桶
+    for (int i = 1; i &lt;= n; i++)
+        cnt[a[i] - min_value]++;
+
+    // 3. 重新装回：按值的顺序遍历&quot;桶&quot;，而不是遍历 1..n！
+    int idx = 1;
+    for (int v = 0; v &lt; MAXV; v++) {
+        for (int j = 1; j &lt;= cnt[v]; j++)
+            a[idx++] = v + min_value;   // 之前减掉的现在加回来
+    }
+}
+
+int main() {
+    cin &gt;&gt; n;
+    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; a[i];
+    bucket_sort();
+    for (int i = 1; i &lt;= n; i++) cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
+    return 0;
+}
+</code></pre>
+<pre><code class="language-python">def bucket_sort(a):
+    if not a:
+        return a
+    mn = min(a)
+    cnt = [0] * (max(a) - mn + 1)
+    for x in a:
+        cnt[x - mn] += 1
+    res = []
+    for v, c in enumerate(cnt):
+        res.extend([v + mn] * c)
+    return res
+</code></pre>
+<hr />
+<h2>2. 选择排序：未排序区间选最大值放到最后，<span class="arithmatex">\(O(n^2)\)</span>，不稳定</h2>
+<p><strong>不常用，有印象即可。</strong> 为什么记索引而不是记值：如果只存最大值，交换时原位置的值会丢失。</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+const int MAXN = 1e5 + 8;
+int n;
+int a[MAXN];
+
+void select_sort() {
+    for (int i = n; i &gt;= 2; i--) {      // i 是未排序区的右端
+        int max_index = 1;
+        for (int j = 1; j &lt;= i; j++)
+            if (a[j] &gt; a[max_index]) max_index = j;
+        swap(a[max_index], a[i]);       // 交换会破坏稳定性（远距离交换）
+    }
+}
+
+int main() {
+    cin &gt;&gt; n;
+    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; a[i];
+    select_sort();
+    for (int i = 1; i &lt;= n; i++) cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
+    return 0;
+}
+</code></pre>
+<pre><code class="language-python">def select_sort(a):
+    for i in range(len(a) - 1, 0, -1):
+        mi = max(range(i + 1), key=lambda j: a[j])
+        a[mi], a[i] = a[i], a[mi]
+</code></pre>
+<hr />
+<h2>3. 冒泡排序：相邻两两比较，大者后移，<span class="arithmatex">\(O(n^2)\)</span>，稳定</h2>
+<p><strong>优化点</strong>：记录每轮交换次数。某轮零交换说明已整体有序，直接停止——基本有序时进化到 <span class="arithmatex">\(O(n)\)</span>。不记录的话表现与选择排序一样死板。</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+const int MAXN = 1e5 + 8;
+int n;
+int a[MAXN];
+
+void bubble_sort() {
+    for (int i = n; i &gt;= 2; i--) {
+        int swap_times = 0;             // 每轮单独计数
+        for (int j = 1; j &lt;= i - 1; j++) {
+            if (a[j] &gt; a[j + 1]) {      // 严格大于：相等不换，保证稳定性
+                swap(a[j], a[j + 1]);
+                swap_times++;
+            }
+        }
+        if (swap_times == 0) break;     // 一轮零交换 =&gt; 已经有序
+    }
+}
+
+int main() {
+    cin &gt;&gt; n;
+    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; a[i];
+    bubble_sort();
+    for (int i = 1; i &lt;= n; i++) cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
+    return 0;
+}
+</code></pre>
+<pre><code class="language-python">def bubble_sort(a):
+    for i in range(len(a) - 1, 0, -1):
+        swapped = False
+        for j in range(i):
+            if a[j] &gt; a[j + 1]:
+                a[j], a[j + 1] = a[j + 1], a[j]
+                swapped = True
+        if not swapped:
+            break
+</code></pre>
+<hr />
+<h2>4. 插入排序：维护有序前缀，新元素向前插到正确位置，<span class="arithmatex">\(O(n^2)\)</span>，稳定</h2>
+<p><strong>基本有序时进化为 <span class="arithmatex">\(O(n)\)</span></strong>：每个元素的移动距离 ≈ 逆序对数，几乎有序时几乎不移动。数据量小或近乎有序时它反而是最快的。</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+const int MAXN = 1e5 + 8;
+int n;
+int a[MAXN];
+
+void insert_sort() {
+    for (int i = 2; i &lt;= n; i++) {      // 新元素 a[i]
+        int j = i;
+        while (j &gt; 1 &amp;&amp; a[j] &lt; a[j - 1]) {  // 向前冒泡到正确位置
+            swap(a[j], a[j - 1]);
+            j--;
+        }
+    }
+}
+
+int main() {
+    cin &gt;&gt; n;
+    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; a[i];
+    insert_sort();
+    for (int i = 1; i &lt;= n; i++) cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
+    return 0;
+}
+</code></pre>
+<pre><code class="language-python">def insert_sort(a):
+    for i in range(1, len(a)):
+        j = i
+        while j &gt; 0 and a[j] &lt; a[j - 1]:
+            a[j], a[j - 1] = a[j - 1], a[j]
+            j -= 1
+</code></pre>
+<hr />
+<h2>5. 快速排序：原地，平均 <span class="arithmatex">\(O(n\log n)\)</span>，最坏 <span class="arithmatex">\(O(n^2)\)</span>，不稳定</h2>
+<h3>5.1 原理</h3>
+<p>选定基准值 <code>t</code>（pivot），通过一趟分区把数组切成两部分，使得：</p>
+<div class="arithmatex">\[\underbrace{a[l..i-1]}_{\le t} \;|\; \underbrace{a[i]}_{=t} \;|\; \underbrace{a[i+1..r]}_{\ge t}\]</div>
+<p>然后对左右两部分<strong>递归</strong>做同样的事。与归并不同，快排的处理在递归<strong>之前</strong>完成（先分区后递归），且分区是原地的。</p>
+<p><strong>分区过程（交换法）</strong>——用双指针从两端向中间清扫：</p>
+<ol>
+<li><code>i</code> 从左往右找第一个 <span class="arithmatex">\(\ge t\)</span> 的元素（"放右边太小的"）</li>
+<li><code>j</code> 从右往左找第一个 <span class="arithmatex">\(\le t\)</span> 的元素（"放左边太大的"）</li>
+<li>两者都停且未相遇 → 交换，使小的去左边、大的去右边</li>
+<li>相遇后，<code>t</code> 恰好落在 <code>a[i]</code>，分区完成</li>
+</ol>
+<p><strong>不变量</strong>：任意时刻，<code>i</code> 左侧（已扫过区）都 <span class="arithmatex">\(\le t\)</span>，<code>j</code> 右侧（已扫过区）都 <span class="arithmatex">\(\ge t\)</span>。<code>i &lt; j</code> 守卫保证扫描和交换只发生在未处理区内部。</p>
+<h3>5.2 代码</h3>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+const int MAXN = 1e5 + 8;
+int n;
+int a[MAXN];
+
+void quick_sort(int l, int r) {
+    if (l &gt;= r) return;                 // 终止：空区间 / 单元素
+    int mid = (l + r) / 2;
+    swap(a[l], a[mid]);                 // 取中点当基准：防止基本有序时退化成 O(n^2)
+    int t = a[l];                       // t 未离开数组，随交换在坑位间漂移
+    int i = l, j = r;
+    while (i &lt; j) {
+        while (i &lt; j &amp;&amp; a[j] &gt; t) j--; // 没有等号，codex傻了（我也傻了
+        if (i &lt; j) swap(a[i++], a[j]);
+        while (i &lt; j &amp;&amp; a[i] &lt; t) i++;
+        if (i &lt; j) swap(a[j--], a[i]);
+    }
+    a[i] = t;                           // 此时 a[i] 本就是 t，此行为防御性写法
+    quick_sort(l, i - 1);
+    quick_sort(i + 1, r);
+}
+
+int main() {
+    cin &gt;&gt; n;
+    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; a[i];
+    quick_sort(1, n);
+    for (int i = 1; i &lt;= n; i++) cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
+    return 0;
+}
+</code></pre>
+<h3>5.3 细节与易错点</h3>
+<ul>
+<li><strong><code>i &lt; j</code> 守卫不能删</strong>：删掉后指针会越过相遇点，交换破坏已分区区域（挖坑法里则会导致元素被吞）</li>
+<li><strong>基准选取</strong>：固定取 <code>a[l]</code> 时，对已有序数组每趟只切掉一个元素 → <span class="arithmatex">\(O(n^2)\)</span>。取中点或随机化（<code>swap(a[l], a[rand()%(r-l+1)+l])</code>）可避免</li>
+<li><strong>终止条件</strong>：<code>if (l &gt;= r) return</code> 与递归前的区间守卫是二选一的关系，不能同时都不写</li>
+</ul>
+<h3>5.4 复杂度</h3>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>复杂度</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>平均</td>
+<td><span class="arithmatex">\(O(n\log n)\)</span></td>
+<td>每趟近似对半分，共 <span class="arithmatex">\(\log n\)</span> 层，每层 <span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+<tr>
+<td>最坏</td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+<td>基准总选到极值（如有序数组取端点）</td>
+</tr>
+<tr>
+<td>空间</td>
+<td><span class="arithmatex">\(O(\log n)\)</span></td>
+<td>递归栈；原地分区无额外数组</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python">def quick_sort(a):
+    if len(a) &lt;= 1:
+        return a
+    t = a[len(a) // 2]
+    left  = [x for x in a if x &lt; t]
+    mid   = [x for x in a if x == t]
+    right = [x for x in a if x &gt; t]
+    return quick_sort(left) + mid + quick_sort(right)
+</code></pre>
+<blockquote>
+<p>注：Python 版为便于理解写成非原地的三段式，这其实就是三路分区的思想，见下一节。</p>
+</blockquote>
+<hr />
+<h2>6. 三路快排：每次分区额外确定"等于 t"的整段，重复元素多时显著更优</h2>
+<h3>6.1 原理（荷兰国旗问题）</h3>
+<p>两路快排只把数组分成 <span class="arithmatex">\(\le t\)</span> 和 <span class="arithmatex">\(\ge t\)</span> 两段，等于 <code>t</code> 的元素散落在两边、还要被反复比较。三路分区用<strong>三个指针</strong>把数组一次分成<strong>三段</strong>：</p>
+<div class="arithmatex">\[\underbrace{a[l..i-1]}_{&lt;t} \;|\; \underbrace{a[i..j]}_{=t} \;|\; \underbrace{a[j+1..r]}_{&gt;t}\]</div>
+<p>扫描指针 <code>k</code> 在未知区 <code>[k, j]</code> 里逐个检查，像探照灯一样把元素甩向两侧：</p>
+<table>
+<thead>
+<tr>
+<th>判断</th>
+<th>动作</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a[k] &gt; t</code></td>
+<td><code>swap(a[k],a[j]); j--</code>（<strong>k 不动</strong>）</td>
+<td>换回来的是未知区的元素，还没检查</td>
+</tr>
+<tr>
+<td><code>a[k] == t</code></td>
+<td><code>k++</code></td>
+<td>本来就属于中段，原地扩展</td>
+</tr>
+<tr>
+<td><code>a[k] &lt; t</code></td>
+<td><code>swap(a[k],a[i]); i++; k++</code></td>
+<td>换回来的是"== t"区的元素，身份已知，可跳过</td>
+</tr>
+</tbody>
+</table>
+<p><strong>不变量</strong>：任意时刻 <code>[l, i-1]</code> 全 <span class="arithmatex">\(&lt; t\)</span>，<code>[i, k-1]</code> 全 <span class="arithmatex">\(= t\)</span>，<code>[j+1, r]</code> 全 <span class="arithmatex">\(&gt; t\)</span>，<code>[k, j]</code> 未知。循环到 <code>k &gt; j</code> 时未知区消失，分区完成。</p>
+<h3>6.2 代码</h3>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+const int MAXN = 1e5 + 8;
+int n;
+int a[MAXN];
+
+void quick_third_sort(int l, int r) {
+    if (l &gt;= r) return;
+    int i = l, j = r, k = l;            // j 从 r 开始！（j 是右边界）
+    int mid = (l + r) / 2;
+    swap(a[l], a[mid]);
+    int t = a[l];
+    while (k &lt;= j) {
+        if (a[k] &gt; t) {                 // 更大，甩给右边
+            swap(a[k], a[j]);
+            j--;
+            // k 不动：a[k] 现在是从右边换来的未知元素
+        } else if (a[k] == t) {         // 相等，原地留下
+            k++;
+        } else {                        // 更小，甩给左边
+            swap(a[k], a[i]);
+            i++;
+            k++;                        // 换来的 a[i] 一定是 == t 区的，已看过
+        }
+    }
+    // 循环结束后 [i, j] 内全部 == t，无需再逐个赋值
+    quick_third_sort(l, i - 1);
+    quick_third_sort(j + 1, r);
+}
+
+int main() {
+    cin &gt;&gt; n;
+    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; a[i];
+    quick_third_sort(1, n);
+    for (int i = 1; i &lt;= n; i++) cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
+    return 0;
+}
+</code></pre>
+<h3>6.3 与两路快排的对比</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>两路</th>
+<th>三路</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分区结果</td>
+<td><span class="arithmatex">\(\le t\)</span> / <span class="arithmatex">\(\ge t\)</span> 两段</td>
+<td><span class="arithmatex">\(&lt;t\)</span> / <span class="arithmatex">\(=t\)</span> / <span class="arithmatex">\(&gt;t\)</span> 三段</td>
+</tr>
+<tr>
+<td>相等元素</td>
+<td>参与交换、散落两侧</td>
+<td>一次归拢进中段，不再参与递归</td>
+</tr>
+<tr>
+<td>全相等数组</td>
+<td>取决于实现，可能退化</td>
+<td><strong>一趟结束</strong>，<span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+<tr>
+<td>典型应用</td>
+<td>通用排序</td>
+<td>重复元素多；快速选择第 k 小</td>
+</tr>
+</tbody>
+</table>
+<p>三路分区还是<strong>快速选择（quickselect）</strong>求第 <span class="arithmatex">\(m\)</span> 小的基础：分区后若 <span class="arithmatex">\(m\)</span> 落在 <span class="arithmatex">\([i, j]\)</span>（等于段）内，答案直接是 <code>t</code>；否则只需递归一侧。</p>
+<pre><code class="language-python">def quick_third_sort(a):
+    if len(a) &lt;= 1:
+        return a
+    t = a[len(a) // 2]
+    left  = [x for x in a if x &lt; t]
+    mid   = [x for x in a if x == t]
+    right = [x for x in a if x &gt; t]
+    return quick_third_sort(left) + mid + quick_third_sort(right)
+</code></pre>
+<hr />
+<h2>7. 归并排序</h2>
+<pre><code class="language-cpp">int h[MAXN];//辅助数组
+void merge_sort(int l,int r){
+    if(l&gt;=r) return
+    int mid=(l+r)/2;
+    merge_sort(l,mid);
+    merge_sort(mid+1,r);
+    int i=l,j=mid+1,k=l;
+    while(i&lt;=mid &amp;&amp; j&lt;=r){
+        if(a[i]&lt;=a[j]) h[k++]=a[i++];
+        else h[k++]=a[j++]; 
+    }
+    while(i&lt;=mid) h[k++]=a[i++];
+    while(j&lt;=r) h[k++]=a[j++];
+    for(int i=l;i&lt;=r;i++){
+        a[i]=h[i];
+    }
+}
+</code></pre>
+<pre><code class="language-python">def merge_sort(arr):
+    if len(arr)&lt;=1:
+        return arr
+    mid=len(arr)//2
+    left=merge_sort(arr[:mid]) #需要一个left 和 right 接受返回值，不像cpp是void，python函数会返回值，必须接收
+    right=merge_sort(arr[mid:])
+    i,j=0
+    ans=[]
+    while(i&lt;=len(left) and j&lt;=len(right)):
+        if arr[i]&lt;=arr[j]:
+            ans.append(left[i])
+            i+=1
+        else:
+            ans.append(right[j])
+            j+=1
+    ans.extend(left[i:])
+    ans.extend(right[j:])
+    return ans
+</code></pre>
+<h2>8.基数排序</h2>
+<pre><code class="language-cpp">const int MAXN=1e5+8;
+const int BASE=10; //按照什么进制位数去寻找
+int cnt[BASE];
+int h[MAXN];//辅助数组
+
+void radix_sort(){
+    //1. 找最大值确认执行次数
+    int maxv=a[1];//a从1开始
+    for(int i=1;i&lt;=n;i++){
+        maxv=max(maxv,a[i]);
+    }
+    int t=0;//执行次数
+    while(maxv){
+        maxv/=BASE;
+        t++;
+    }
+    //2. 计算每一位出现的次数
+    for(int i=1,offset=1;i&lt;=t;i++,offset*=BASE){
+        memset(cnt,0,sizeof cnt);//初始化
+        for(int j=1;j&lt;=n;j++){
+            cnt[a[j]/offset%BASE]
+        }
+    }
+
+}
+</code></pre>
+<h2>7. 总结对比</h2>
+<table>
+<thead>
+<tr>
+<th>算法</th>
+<th>平均</th>
+<th>最坏</th>
+<th>空间</th>
+<th>稳定</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>桶排序</td>
+<td><span class="arithmatex">\(O(n+V)\)</span></td>
+<td><span class="arithmatex">\(O(n+V)\)</span></td>
+<td><span class="arithmatex">\(O(V)\)</span></td>
+<td>视实现</td>
+<td>值域小才划算</td>
+</tr>
+<tr>
+<td>选择排序</td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td>✗</td>
+<td>交换次数最少</td>
+</tr>
+<tr>
+<td>冒泡排序</td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td>✓</td>
+<td>基本有序时 <span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+<tr>
+<td>插入排序</td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td>✓</td>
+<td>小数据 / 近乎有序之王</td>
+</tr>
+<tr>
+<td>快速排序</td>
+<td><span class="arithmatex">\(O(n\log n)\)</span></td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+<td><span class="arithmatex">\(O(\log n)\)</span></td>
+<td>✗</td>
+<td>通用最快，注意基准选取</td>
+</tr>
+<tr>
+<td>三路快排</td>
+<td><span class="arithmatex">\(O(n\log n)\)</span></td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+<td><span class="arithmatex">\(O(\log n)\)</span></td>
+<td>✗</td>
+<td>重复元素多时最优</td>
+</tr>
+</tbody>
+</table>

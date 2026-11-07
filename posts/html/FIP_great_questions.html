@@ -1,0 +1,407 @@
+<h2>题目</h2>
+<h3>1. <code>print</code> 输出</h3>
+<pre><code class="language-python">def f(n):
+    n += 1
+
+print(f(2))
+</code></pre>
+<ul>
+<li>A. <code>3</code></li>
+<li>B. <code>2</code></li>
+<li>C. <code>None</code></li>
+<li>D. 报错</li>
+</ul>
+<h3>2. 字符串长度</h3>
+<p><code>len("hello")</code> 的结果是？</p>
+<ul>
+<li>A. <code>4</code></li>
+<li>B. <code>5</code></li>
+<li>C. <code>6</code></li>
+<li>D. 报错</li>
+</ul>
+<h3>3. 集合长度</h3>
+<p><code>len({1, 2, 2, 3})</code> 的结果是？</p>
+<ul>
+<li>A. <code>2</code></li>
+<li>B. <code>3</code></li>
+<li>C. <code>4</code></li>
+<li>D. 报错</li>
+</ul>
+<h3>4. 浮点数格式化</h3>
+<p><code>print(f"{2.71828:.2f}")</code> 的输出是？</p>
+<ul>
+<li>A. <code>2.72</code></li>
+<li>B. <code>2.7</code></li>
+<li>C. <code>2.71828</code></li>
+<li>D. <code>2.718</code></li>
+</ul>
+<h3>5. <code>zip</code> 配对</h3>
+<p><code>print(list(zip([1, 2, 3], "abc")))</code> 的输出是？</p>
+<ul>
+<li>A. <code>[(1, 'a'), (2, 'b'), (3, 'c')]</code></li>
+<li>B. <code>[(1, 'a'), (2, 'b')]</code></li>
+<li>C. <code>[['1', 'a'], ['2', 'b'], ['3', 'c']]</code></li>
+<li>D. 报错</li>
+</ul>
+<h3>6. 集合交集</h3>
+<p><code>len({1, 2, 3}.intersection({2, 3, 4}))</code> 的结果是？</p>
+<ul>
+<li>A. <code>1</code></li>
+<li>B. <code>2</code></li>
+<li>C. <code>3</code></li>
+<li>D. <code>4</code></li>
+</ul>
+<h3>7. 字符串替换</h3>
+<p><code>"hello".replace("l", "L")</code> 的结果是？</p>
+<ul>
+<li>A. <code>"heLLo"</code></li>
+<li>B. <code>"heLlo"</code></li>
+<li>C. <code>"hello"</code></li>
+<li>D. 报错</li>
+</ul>
+<h3>8. 字符串大小写</h3>
+<p><code>"abc".upper()</code> 的结果是？</p>
+<ul>
+<li>A. <code>"ABC"</code></li>
+<li>B. <code>"Abc"</code></li>
+<li>C. <code>"abc"</code></li>
+<li>D. 报错</li>
+</ul>
+<h3>9. 字符串切分</h3>
+<p><code>"1,2,3".split(",")</code> 的结果是？</p>
+<ul>
+<li>A. <code>['1', '2', '3']</code></li>
+<li>B. <code>[1, 2, 3]</code></li>
+<li>C. <code>('1', '2', '3')</code></li>
+<li>D. <code>"1 2 3"</code></li>
+</ul>
+<h3>10. 字典更新</h3>
+<p><code>d.update({"b": 2})</code> 会？</p>
+<ul>
+<li>A. 只读取不修改</li>
+<li>B. 插入或覆盖键 <code>"b"</code></li>
+<li>C. 删除键 <code>"b"</code></li>
+<li>D. 报错</li>
+</ul>
+<h3>11. 负数整除与取余</h3>
+<p><code>print(-7 // 2, -7 % 2)</code> 的输出是？</p>
+<ul>
+<li>A. <code>-3 -1</code></li>
+<li>B. <code>-4 1</code></li>
+<li>C. <code>-3 1</code></li>
+<li>D. <code>-4 -1</code></li>
+</ul>
+<h3>12. 幂运算优先级</h3>
+<p><code>2 ** 3 ** 2</code> 等于？</p>
+<ul>
+<li>A. <code>64</code></li>
+<li>B. <code>512</code></li>
+<li>C. <code>256</code></li>
+<li>D. <code>36</code></li>
+</ul>
+<h3>13. <code>or</code> 短路求值</h3>
+<p><code>0 or [] or 'x'</code> 得到？</p>
+<ul>
+<li>A. <code>True</code></li>
+<li>B. <code>False</code></li>
+<li>C. <code>'x'</code></li>
+<li>D. <code>[]</code></li>
+</ul>
+<h3>14. 字符串转整数</h3>
+<p><code>int('3.5')</code> 会？</p>
+<ul>
+<li>A. 得到 <code>3</code></li>
+<li>B. 得到 <code>4</code></li>
+<li>C. 得到 <code>3.5</code></li>
+<li>D. 抛出 <code>ValueError</code></li>
+</ul>
+<h3>15. 可哈希对象</h3>
+<p>下面哪个可以用作字典键？</p>
+<ul>
+<li>A. <code>[1, 2]</code></li>
+<li>B. <code>{1, 2}</code></li>
+<li>C. <code>(1, [2])</code></li>
+<li>D. <code>(1, 2)</code></li>
+</ul>
+<h3>16. 闭区间二分</h3>
+<p>闭区间二分查找的循环条件应为？</p>
+<ul>
+<li>A. <code>left &lt; right</code></li>
+<li>B. <code>left &lt;= right</code></li>
+<li>C. <code>left == right</code></li>
+<li>D. <code>left &gt; right</code></li>
+</ul>
+<h3>17. 别名、浅拷贝与返回值</h3>
+<pre><code class="language-python">a = [[1], [2]]
+b = a[:]
+b[0].append(3)
+b[1] = [9]
+print(a)
+print(b)
+print(a.reverse())
+print(a)
+</code></pre>
+<h3>18. 字典方法</h3>
+<pre><code class="language-python">d = {}
+for x in ['b', 'a', 'b']:
+    d[x] = d.get(x, 0) + 1
+
+print(d.get('c', 0), 'c' in d)
+print(d.setdefault('c', 4))
+print(list(d.items()))
+</code></pre>
+<h3>19. 递进与回归</h3>
+<pre><code class="language-python">def walk(n):
+    if n == 0:
+        return
+    print(n, end=' ')
+    walk(n - 1)
+    print(n, end=' ')
+
+walk(3)
+print()
+</code></pre>
+<h3>20. <code>deque</code> 与短路</h3>
+<pre><code class="language-python">from collections import deque
+
+d = deque([1, 2, 3])
+d.extendleft([4, 5])
+print(d.popleft(), d.pop())
+d.rotate(1)
+print(list(d))
+
+st = []
+print(not st or st[-1] == '(')
+</code></pre>
+<h3>21. 取整与 <code>int</code></h3>
+<p>输出什么？</p>
+<pre><code class="language-python">print(int(-3.5))
+</code></pre>
+<h2>参考答案</h2>
+<h3>1. <code>print</code> 输出</h3>
+<p><strong>答案：C. <code>None</code></strong></p>
+<p><code>f(n)</code> 只执行 <code>n += 1</code>，没有 <code>return</code>，所以返回 <code>None</code>。</p>
+<blockquote>
+<p>注：<code>def</code> 定义的函数如果不写 <code>return</code>，默认返回 <code>None</code>，并不会报错。</p>
+</blockquote>
+<h3>2. 字符串长度</h3>
+<p><strong>答案：B. <code>5</code></strong></p>
+<p><code>"hello"</code> 有 5 个字符。</p>
+<blockquote>
+<p>注：对 <code>str</code> 做 <code>len()</code> 是可以的，因为字符串是可遍历的 <code>iterable</code>。</p>
+</blockquote>
+<h3>3. 集合长度</h3>
+<p><strong>答案：B. <code>3</code></strong></p>
+<p>集合会去重，<code>{1, 2, 2, 3}</code> 实际是 <code>{1, 2, 3}</code>。</p>
+<blockquote>
+<p>注：注意区分 <code>dict</code> 和 <code>set</code>。两者都用 <code>{}</code> 书写，<code>set</code> 中没有键值对，并且会自动去重。</p>
+</blockquote>
+<h3>4. 浮点数格式化</h3>
+<p><strong>答案：A. <code>2.72</code></strong></p>
+<p><code>.2f</code> 表示保留两位小数。</p>
+<h3>5. <code>zip</code> 配对</h3>
+<p><strong>答案：A. <code>[(1, 'a'), (2, 'b'), (3, 'c')]</code></strong></p>
+<p><code>zip</code> 按位置配对，字符按原字符保留，不会转成整数。<code>zip</code> 中的每一项都是 <code>tuple</code>，不是 <code>list</code>。</p>
+<h3>6. 集合交集</h3>
+<p><strong>答案：B. <code>2</code></strong></p>
+<p>交集是 <code>{2, 3}</code>。</p>
+<blockquote>
+<p>注：<code>set.union()</code>、<code>set.intersection()</code>、<code>set.difference()</code> 分别对应并集、交集、差集，都会返回新集合。</p>
+</blockquote>
+<h3>7. 字符串替换</h3>
+<p><strong>答案：A. <code>"heLLo"</code></strong></p>
+<p><code>replace("l", "L")</code> 会替换<strong>所有</strong> <code>"l"</code>。</p>
+<h3>8. 字符串大小写</h3>
+<p><strong>答案：A. <code>"ABC"</code></strong></p>
+<p><code>upper()</code> 转成全大写。</p>
+<h3>9. 字符串切分</h3>
+<p><strong>答案：A. <code>['1', '2', '3']</code></strong></p>
+<p><code>split()</code> 返回字符串列表，元素仍是 <code>str</code>。</p>
+<blockquote>
+<p>注：记得仍是 <code>str</code> 类型</p>
+</blockquote>
+<p>常用字符串方法：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>len(s)</code></td>
+<td>字符个数</td>
+</tr>
+<tr>
+<td><code>s.find(sub)</code></td>
+<td>查找子串，找不到返回 <code>-1</code></td>
+</tr>
+<tr>
+<td><code>s.index(sub)</code></td>
+<td>查找子串，找不到抛出 <code>ValueError</code></td>
+</tr>
+<tr>
+<td><code>s.count(sub)</code></td>
+<td>子串出现次数</td>
+</tr>
+<tr>
+<td><code>s.startswith(prefix)</code></td>
+<td>是否以指定前缀开头</td>
+</tr>
+<tr>
+<td><code>s.endswith(suffix)</code></td>
+<td>是否以指定后缀结尾</td>
+</tr>
+<tr>
+<td><code>s.upper()</code></td>
+<td>转全大写</td>
+</tr>
+<tr>
+<td><code>s.lower()</code></td>
+<td>转全小写</td>
+</tr>
+<tr>
+<td><code>s.capitalize()</code></td>
+<td>首字母大写</td>
+</tr>
+<tr>
+<td><code>s.title()</code></td>
+<td>单词首字母大写</td>
+</tr>
+<tr>
+<td><code>s.swapcase()</code></td>
+<td>大小写互换</td>
+</tr>
+<tr>
+<td><code>s.replace(old, new)</code></td>
+<td>替换子串</td>
+</tr>
+<tr>
+<td><code>s.split(sep=None)</code></td>
+<td>按分隔符切分，默认按空白切分</td>
+</tr>
+<tr>
+<td><code>sep.join(iterable)</code></td>
+<td>用分隔符拼接字符串元素</td>
+</tr>
+<tr>
+<td><code>s.strip()</code></td>
+<td>去两端空白</td>
+</tr>
+<tr>
+<td><code>s.lstrip()</code></td>
+<td>去左端空白</td>
+</tr>
+<tr>
+<td><code>s.rstrip()</code></td>
+<td>去右端空白</td>
+</tr>
+<tr>
+<td><code>ord(ch)</code></td>
+<td>字符转码点</td>
+</tr>
+<tr>
+<td><code>chr(i)</code></td>
+<td>码点转字符</td>
+</tr>
+</tbody>
+</table>
+<h3>10. 字典更新</h3>
+<p><strong>答案：B. 插入或覆盖键 <code>"b"</code></strong></p>
+<p>如果 <code>"b"</code> 不存在就插入；如果存在就覆盖旧值。</p>
+<h3>11. 负数整除与取余</h3>
+<p><strong>答案：B. <code>-4 1</code></strong></p>
+<p>Python 的 <code>//</code> 是<strong>向下取整</strong>，所以 <code>-7 // 2</code> 是 <code>-4</code>。余数保持和除数同号，所以 <code>-7 % 2</code> 是 <code>1</code>。</p>
+<h3>12. 幂运算优先级</h3>
+<p><strong>答案：B. <code>512</code></strong></p>
+<p>幂运算从右往左计算：<code>2 ** 3 ** 2 = 2 ** 9 = 512</code>。</p>
+<h3>13. <code>or</code> 短路求值</h3>
+<p><strong>答案：C. <code>'x'</code></strong></p>
+<p><code>or</code> 返回第一个真值。<code>0</code> 和 <code>[]</code> 都是假值，<code>'x'</code> 是真值。</p>
+<p><code>and</code> / <code>or</code> 不返回 <code>True</code> 或 <code>False</code>：</p>
+<ul>
+<li><code>and</code> 返回第一个为假的值；如果都为真，返回最后一个值。</li>
+<li><code>or</code> 返回第一个为真的值；如果都为假，返回最后一个值。</li>
+</ul>
+<h3>14. 字符串转整数</h3>
+<p><strong>答案：D. 抛出 <code>ValueError</code></strong></p>
+<p><code>int()</code> 不能直接把 <code>"3.5"</code> 转成整数。应先 <code>float("3.5")</code>，或者使用 <code>int(float("3.5"))</code>。</p>
+<h3>15. 可哈希对象</h3>
+<p><strong>答案：D. <code>(1, 2)</code></strong></p>
+<p>字典键必须可哈希。列表、集合、包含列表的元组都不可哈希；纯数字元组 <code>(1, 2)</code> 可哈希。</p>
+<blockquote>
+<p>注：即使 <code>(1, [2])</code> 也不行。<code>tuple</code> 本身可哈希的前提是其中的所有元素也都可哈希。</p>
+</blockquote>
+<h3>16. 闭区间二分</h3>
+<p><strong>答案：B. <code>left &lt;= right</code></strong></p>
+<p>闭区间 <code>[left, right]</code> 中，<code>left == right</code> 时还有一个元素需要检查，所以循环条件要允许相等。</p>
+<h3>17. 别名、浅拷贝与返回值</h3>
+<p>输出：</p>
+<pre><code class="language-text">[[1, 3], [2]]
+[[1, 3], [9]]
+None
+[[2], [1, 3]]
+</code></pre>
+<p>解释：</p>
+<ul>
+<li><code>b = a[:]</code> 是浅拷贝：外层列表是新列表，但内层 <code>[1]</code>、<code>[2]</code> 仍共享。</li>
+<li><code>b[0].append(3)</code> 修改的是共享的内层列表，所以会影响 <code>a[0]</code>。</li>
+<li><code>b[1] = [9]</code> 只是让 <code>b[1]</code> 指向新列表，不影响 <code>a[1]</code>。</li>
+<li><code>list.reverse()</code> 原地反转 <code>a</code>，但返回值是 <code>None</code>。</li>
+</ul>
+<blockquote>
+<p>注：浅拷贝后，修改共享的<strong>可变</strong>内层对象(list,dict,set是共享的)会影响原列表；给外层元素重新赋值只改变当前列表中的引用，不影响另一个列表。<br />
+注：每次看到这都去拿 <code>pythontutor</code> 看一遍</p>
+</blockquote>
+<h3>18. 字典方法</h3>
+<p>输出：</p>
+<pre><code class="language-text">0 False
+4
+[('b', 2), ('a', 1), ('c', 4)]
+</code></pre>
+<p>解释：</p>
+<ul>
+<li><code>d.get('c', 0)</code> 不会插入 <code>'c'</code>，所以 <code>'c' in d</code> 是 <code>False</code>。</li>
+<li><code>setdefault('c', 4)</code> 会插入缺失键并返回 <code>4</code>。</li>
+<li>字典保留插入顺序。<blockquote>
+<p>注：<code>setdefault</code> 后一定要记得插入！！！</p>
+</blockquote>
+</li>
+</ul>
+<h3>19. 递进与回归</h3>
+<p>输出：</p>
+<pre><code class="language-text">3 2 1 1 2 3
+</code></pre>
+<p>解释：</p>
+<ul>
+<li>进入递归时依次打印 <code>3 2 1</code>。</li>
+<li>回到上一层后依次打印 <code>1 2 3</code>。</li>
+<li>最后一行 <code>print()</code> 只是换行。</li>
+</ul>
+<blockquote>
+<p>注：使用 <code>print()</code> 时要注意 <code>sep</code> 和 <code>end</code> 参数。</p>
+</blockquote>
+<h3>20. <code>deque</code> 与短路</h3>
+<p>输出：</p>
+<pre><code class="language-text">5 3
+[2, 4, 1]
+True
+</code></pre>
+<p>解释：</p>
+<ul>
+<li><code>extendleft([4, 5])</code> 会把可迭代对象反着放到左端，得到 <code>deque([5, 4, 1, 2, 3])</code>。</li>
+<li>所以 <code>popleft()</code> 得到 <code>5</code>，<code>pop()</code> 得到 <code>3</code>。</li>
+<li>剩下 <code>[4, 1, 2]</code>，<code>rotate(1)</code> 右移一位，得到 <code>[2, 4, 1]</code>。</li>
+<li><code>st</code> 是空列表，<code>not st</code> 已经是 <code>True</code>，短路后不再判断 <code>st[-1] == '('</code>。</li>
+</ul>
+<blockquote>
+<p>注：<code>pop()</code> 和 <code>popleft()</code> 都会弹出并删除对应端点的元素。<br />
+一定要弹出删除后再往下看！！！</p>
+</blockquote>
+<h3>21. 取整与 <code>int</code></h3>
+<p>输出：</p>
+<pre><code class="language-text">-3
+</code></pre>
+<p>解释：</p>
+<p><code>int()</code> 对浮点数做<strong>向零取整</strong>，不是四舍五入，也不是向下取整。<code>int(-3.5)</code> 得到 <code>-3</code>；如果想得到 <code>-4</code>，要用 <code>math.floor(-3.5)</code>。</p>

@@ -1,0 +1,191 @@
+<h1>6-3 6C02-杨辉哨塔</h1>
+<h2>题目描述</h2>
+<p>哨塔坐标 (n,k) 的兵力等于杨辉三角第 n 行第 k 列（从 0 计）：两端为 1，中间 C(n,k)=C(n−1,k−1)+C(n−1,k)。递归、记忆化。</p>
+<h3>请实现函数 pascal()。</h3>
+<p>函数接口定义：<br />
+def pascal(n, k):<br />
+参数满足 0≤k≤n≤20。返回该格的数。</p>
+<h2>Answer</h2>
+<pre><code class="language-python">def pascal(n,k,memory={(0,0):1}):
+    if k==0 or n==k:
+        memory[(n,k)]=1
+    if (n,k) not in memory:
+        memory[(n,k)]=pascal(n-1,k-1)+pascal(n-1,k)
+    return memory[(n,k)]
+</code></pre>
+<h3>notes：</h3>
+<ul>
+<li>basecase 条件：<code>k==0</code> 和<code>k==n</code> 时（因为要满足<code>pascal(n-1,k)</code>，也就是<code>n-1&gt;=k</code>，所以<code>k==n</code>需要单独看）（并且其实就是杨辉三角的两边就是basecase）</li>
+<li>递归时调用pascal函数不要用memory，memory只记录和返回值</li>
+</ul>
+<hr />
+<h1>6-4 6D01-密码全排列</h1>
+<h2>题目描述</h2>
+<p>无重复字符的密码串，输出字典序全排列，每行一个。用递归生成。</p>
+<h3>请实现函数 list_permutations()，返回字典序排列列表。</h3>
+<p>函数接口定义：<br />
+def list_permutations(s):<br />
+参数 s 为无重复小写字母字符串（1≤∣s∣≤8）。返回全排列字符串列表，按字典序排列。</p>
+<h3>example</h3>
+<ul>
+<li>输入样例：<br />
+cab</li>
+<li>输出样例：<br />
+abc<br />
+acb<br />
+bac<br />
+bca<br />
+cab<br />
+cba</li>
+</ul>
+<h2>Answer</h2>
+<pre><code class="language-python">def list_permutations(s):
+    if s == '':
+        return ['']
+
+    s = sorted(s)
+    ans = []
+
+    for i in range(len(s)):
+        rest = s[:i] + s[i+1:]
+        for j in list_permutations(''.join(rest)):
+            ans.append(s[i] + j)
+
+    return tuple(ans)
+</code></pre>
+<h3>notes</h3>
+<ol>
+<li><strong>base case</strong>：当 <code>s</code> 为空时无法继续递归调用，此时返回<code>['']</code>。</li>
+<li><strong>字典序排序</strong>：<code>s</code> 按字典序排序只需要 <code>sorted(s)</code>。<code>sorted</code> 函数可作用于所有 <code>iterable</code> 可迭代对象，形式为 <code>sorted(iterable, key=, reverse=False)</code>，返回<strong>列表</strong>。</li>
+<li><strong>递归参数类型</strong>：取出一个字符 <code>s[i]</code> 后，剩余字符形成的列表 <code>rest</code> 需要通过 <code>''.join(rest)</code> 变成字符串类型，否则无法作为参数被调用。</li>
+<li><strong>递归返回值处理</strong>：<code>list_permutations</code> 返回的是列表，拼接在取出的 <code>s[i]</code> 后时需要遍历，直接相加会报错。</li>
+</ol>
+<hr />
+<h1>6-5 6D02-货箱层深</h1>
+<h2>题目描述</h2>
+<p>嵌套 list 表示货箱（元素为整数或子 list）。求最大嵌套深度：非 list 深度为 0；空 list 深度为 1；[1, [2, [3]]] 深度为 3。必须递归。</p>
+<h3>请实现函数 max_depth()。</h3>
+<p>函数接口定义：<br />
+def max_depth(xs):<br />
+参数 xs 为嵌套 list（仅 int 与 list）。返回整数深度。</p>
+<h3>example</h3>
+<ul>
+<li>输入样例：<br />
+[1, [2, 3], [[4], 5]]</li>
+<li>输出样例：<br />
+3</li>
+</ul>
+<h2>Answer</h2>
+<pre><code class="language-python">def max_depth(xs):
+    if type(xs)==int:
+        return 0
+
+    if len(xs)==0:
+        return 1
+
+    return max(max_depth(i) for i in xs) + 1
+</code></pre>
+<h3>note</h3>
+<ol>
+<li>base case ：xs若是<code>int</code>，返回0；如果 <code>xs</code> 是<strong>空列表</strong>，需要返回 1，否则进行遍历时会报错。</li>
+<li>判断是否为list：可以用 <code>type()</code> 是否为<code>int</code> ；也可以用 <code>isinstance(xs,int)</code><br />
+   注：<code>isinstance()</code>也可判断多个条件<br />
+<code>isinstance(5, (int, float))  # True</code>满足其一即可</li>
+<li>取最大值直接用 <code>max</code> 函数，并且可以用 for 的糖表达来写：</li>
+</ol>
+<pre><code class="language-python">max(max_depth(i) for i in xs)
+</code></pre>
+<hr />
+<h1>6B02-嵌套货箱</h1>
+<h2>题目描述</h2>
+<p>废土货箱编号嵌套在 list 里。递归 flatten 成一层整数 list，</p>
+<pre><code class="language-python">import ast
+
+def flatten(xs):
+    result = []
+    for item in xs:
+        if isinstance(item, list):
+            result.extend(flatten(item))
+        else:
+            result.append(item)
+    return result
+
+data = ast.literal_eval(input())
+print(*flatten(data))
+</code></pre>
+<p>提示：① 对子 list 递归；② 追加单个整数。</p>
+<h3>example</h3>
+<ul>
+<li>输入样例<br />
+[1, [2, 3], [[4], 5]]</li>
+<li>输出样例<br />
+1 2 3 4 5</li>
+</ul>
+<h2>note</h2>
+<h3><code>extend</code></h3>
+<p><code>extend</code> 是列表方法，作用是把另一个可迭代对象里的元素<strong>逐个拆开</strong>追加到列表末尾，区别于 <code>append</code>：</p>
+<pre><code class="language-python">a = [1, 2]
+a.append([3, 4])    # [1, 2, [3, 4]]  整个塞进去，嵌套保留
+b = [1, 2]
+b.extend([3, 4])    # [1, 2, 3, 4]    拆开铺平
+</code></pre>
+<ul>
+<li><code>item</code> 是子列表时，先递归拍平得到一个列表，再 <code>result.extend(...)</code> 把它的元素并入结果</li>
+<li><code>item</code> 是单个整数时，用 <code>result.append(item)</code> 直接追加</li>
+</ul>
+<h3><code>ast.literal_eval</code></h3>
+<p><code>ast</code> 模块（Abstract Syntax Trees，抽象语法树）里的 <code>literal_eval</code> 可以把<strong>字符串安全地解析成 Python 字面量</strong>：</p>
+<pre><code class="language-python">import ast
+
+data = ast.literal_eval(&quot;[1, [2, 3], 4]&quot;)
+# 得到真正的列表 [1, [2, 3], 4]
+</code></pre>
+<p>因为 <code>input()</code> 读进来的是字符串，不能直接遍历出子列表，所以先用它把输入（字符串）还原成嵌套列表结构。它只接受字面量（数字、字符串、列表、元组、字典等），不会像 <code>eval</code> 那样执行任意代码，因此更安全。</p>
+<p>最后 <code>print(*flatten(data))</code> 里的 <code>*</code> 是解包，把列表元素作为多个参数传给 <code>print</code>，输出就是空格分隔而不是 <code>[1, 2, 3]</code> 这种列表形式。</p>
+<hr />
+<h1>6B03-圈杀幸存者</h1>
+<h2>题目描述</h2>
+<p>n 人围圈编号 1..n，每次数 2 出圈，求最后幸存者编号。递归（k=2 经典公式）填空：</p>
+<pre><code class="language-python">def josephus(n):
+    if n == 1:
+        return 1
+    if n % 2 == 0:
+        return (2 * josephus(n // 2) - 1)
+
+    return (2 * josephus(n // 2) + 1)
+
+n = int(input())
+print(josephus(n))
+</code></pre>
+<h2>note</h2>
+<h3>题目分析</h3>
+<p>本题是经典的约瑟夫问题（Josephus Problem），具体为 <span class="arithmatex">\(k = 2\)</span> 的情况：<span class="arithmatex">\(n\)</span> 个人围成一圈，编号 <span class="arithmatex">\(1 \sim n\)</span>，从 1 开始报数，每次报数到 2 的人出圈（即数 1 的人留下，数 2 的人出圈），求最后幸存者的编号。</p>
+<p>我们需要根据 <span class="arithmatex">\(n\)</span> 的奇偶性，利用递归公式来求解。</p>
+<h3>递推公式推导</h3>
+<p>我们先模拟一下报数过程，找出规律。</p>
+<h4>1. 当 <span class="arithmatex">\(n\)</span> 为偶数时（<span class="arithmatex">\(n = 2m\)</span>）</h4>
+<ul>
+<li><strong>第一轮报数</strong>：1 留下，2 出圈，3 留下，4 出圈…… <span class="arithmatex">\(2m-1\)</span> 留下，<span class="arithmatex">\(2m\)</span> 出圈。</li>
+<li><strong>剩余情况</strong>：第一轮结束后，出圈的是所有偶数编号（2, 4, ..., <span class="arithmatex">\(2m\)</span>），共 <span class="arithmatex">\(m\)</span> 个人。剩下的人编号为：1, 3, 5, ..., <span class="arithmatex">\(2m-1\)</span>，共 <span class="arithmatex">\(m\)</span> 个人。</li>
+<li><strong>下一轮起始</strong>：下一轮从 1 的下一个（即 3 的前一个出圈的是 <span class="arithmatex">\(2m\)</span>，所以接下来从 1 继续报数）开始，1 报 1，3 报 2（出圈）。</li>
+<li><strong>映射关系</strong>：此时，剩下的 <span class="arithmatex">\(m\)</span> 个人（1, 3, 5, ..., <span class="arithmatex">\(2m-1\)</span>）构成了一个新的约瑟夫问题，人数为 <span class="arithmatex">\(m = n/2\)</span>。在这个新圈中，编号为 <span class="arithmatex">\(1, 3, 5, \dots\)</span> 的人，可以看作是新编号 <span class="arithmatex">\(1, 2, 3, \dots, m\)</span>。对应关系为：原编号 <span class="arithmatex">\(2i - 1\)</span> 对应新编号 <span class="arithmatex">\(i\)</span>。</li>
+<li><strong>公式推导</strong>：如果 <span class="arithmatex">\(m\)</span> 个人的幸存者在新编号中是 <span class="arithmatex">\(j = \text{Josephus}(m)\)</span>，那么它在原编号中就是 <span class="arithmatex">\(2j - 1\)</span>。</li>
+</ul>
+<p>所以，当 <span class="arithmatex">\(n\)</span> 为偶数时：<br />
+$$ \text{Josephus}(n) = 2 \times \text{Josephus}(n/2) - 1 $$</p>
+<h4>2. 当 <span class="arithmatex">\(n\)</span> 为奇数时（<span class="arithmatex">\(n = 2m + 1\)</span>）</h4>
+<ul>
+<li><strong>第一轮报数</strong>：1 留下，2 出圈，3 留下，4 出圈…… <span class="arithmatex">\(2m-1\)</span> 留下，<span class="arithmatex">\(2m\)</span> 出圈，<span class="arithmatex">\(2m+1\)</span> 留下（报 1），接下来回到 1，1 报 2（出圈）。</li>
+<li><strong>剩余情况</strong>：第一轮出圈的人：2, 4, ..., <span class="arithmatex">\(2m\)</span>，以及最后的 1。剩下的人编号为：3, 5, 7, ..., <span class="arithmatex">\(2m+1\)</span>，共 <span class="arithmatex">\(m\)</span> 个人。</li>
+<li><strong>下一轮起始</strong>：此时，下一轮从 3 开始报数（3 报 1，5 报 2 出圈）。</li>
+<li><strong>映射关系</strong>：剩下的 <span class="arithmatex">\(m\)</span> 个人（3, 5, ..., <span class="arithmatex">\(2m+1\)</span>）对应新编号 <span class="arithmatex">\(1, 2, \dots, m\)</span>。对应关系为：原编号 <span class="arithmatex">\(2i + 1\)</span> 对应新编号 <span class="arithmatex">\(i\)</span>（即 <span class="arithmatex">\(i = 1\)</span> 对应 3，<span class="arithmatex">\(i = 2\)</span> 对应 5，...，<span class="arithmatex">\(i = m\)</span> 对应 <span class="arithmatex">\(2m+1\)</span>）。</li>
+<li><strong>公式推导</strong>：如果 <span class="arithmatex">\(m\)</span> 个人的幸存者在新编号中是 <span class="arithmatex">\(j = \text{Josephus}(m)\)</span>，那么它在原编号中就是 <span class="arithmatex">\(2j + 1\)</span>。</li>
+</ul>
+<p>所以，当 <span class="arithmatex">\(n\)</span> 为奇数时：<br />
+$$ \text{Josephus}(n) = 2 \times \text{Josephus}(n // 2) + 1 $$</p>
+<h3>代码填空</h3>
+<p>根据上述分析：</p>
+<ul>
+<li>当 <code>n % 2 == 0</code>（偶数）时，使用公式 ①：<code>2 * josephus(n // 2) - 1</code>。</li>
+<li>当 <code>n % 2 != 0</code>（奇数）时，使用公式 ②：<code>2 * josephus(n // 2) + 1</code>。</li>
+</ul>
