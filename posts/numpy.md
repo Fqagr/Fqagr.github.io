@@ -12,19 +12,22 @@ summary: FIP W10 Question and broadcast
 
 ### 题目描述
 
-m 名用户对 k 类影目的评分矩阵（每行一名用户，评分整数 1–5）。为用户 user_id（编号 1..m）找出余弦相似度最高的另一用户 best_id（best_id ≠ user_id）。
+m 名用户对 k 类影目的评分矩阵（每行一名用户，评分整数 1–5）。为用户 user_id（编号 1...m）找出余弦相似度最高的另一用户 `best_id(best_id ≠ user_id)`。
 
   
-请实现函数 best_match()：先对每行归一化，再用向量化方式计算相似度；禁止双重 for 构造完整相似度矩阵（可用 normalized @ normalized.T）。
+请实现函数 `best_match()`：先对每行归一化，再用向量化方式计算相似度； 可用 `normalized @ normalized.T`构造完整相似度矩阵。
 
-约定：保证存在唯一的 best_id。
+约定：保证存在唯一的 `best_id`。
 
   
 函数接口定义：
 
+```python 
 def best_match(ratings, user_id):
+    #  参数 ratings 为 shape (m, k) 整数数组，user_id 为 1 基用户编号。返回元组 (best_id, similarity)，best_id 为 1 基编号，similarity 为浮点数。
+```
 
-参数 ratings 为 shape (m, k) 整数数组，user_id 为 1 基用户编号。返回元组 (best_id, similarity)，best_id 为 1 基编号，similarity 为浮点数。
+
 
 测试程序样例：
 ```python
