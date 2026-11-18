@@ -1,0 +1,181 @@
+<h2>FIP W10 Question</h2>
+<h3>题目描述</h3>
+<p>m 名用户对 k 类影目的评分矩阵（每行一名用户，评分整数 1–5）。为用户 user_id（编号 1..m）找出余弦相似度最高的另一用户 best_id（best_id ≠ user_id）。</p>
+<p>请实现函数 best_match()：先对每行归一化，再用向量化方式计算相似度；禁止双重 for 构造完整相似度矩阵（可用 normalized @ normalized.T）。</p>
+<p>约定：保证存在唯一的 best_id。</p>
+<p>函数接口定义：</p>
+<p>def best_match(ratings, user_id):</p>
+<p>参数 ratings 为 shape (m, k) 整数数组，user_id 为 1 基用户编号。返回元组 (best_id, similarity)，best_id 为 1 基编号，similarity 为浮点数。</p>
+<p>测试程序样例：</p>
+<pre><code class="language-python">import numpy as np
+
+best_match(ratings, user_id):
+    #这里输入答案
+
+m, k, user_id = map(int, input().split())
+
+ratings = np.array([list(map(int, input().split())) for _ in range(m)])
+
+best_id, sim = best_match(ratings, user_id)
+
+print(f&quot;{best_id} {sim:.3f}&quot;)
+</code></pre>
+<h3>解析</h3>
+<pre><code class="language-python">
+import numpy as np
+
+def best_match(ratings, user_id):
+    # 归一化（单位化）
+    ratings = ratings.astype(float)
+
+    norms = np.linalg.norm(ratings, axis=1, keepdims=True)
+
+    normalized = ratings / norms  
+    
+    # 获取相似度矩阵
+    sims = normalized @ normalized.T
+
+    i = user_id - 1
+
+    sims[i, i] = -np.inf
+
+    best_idx = int(np.argmax(sims[i]))
+
+    return best_idx + 1, float(sims[i, best_idx])
+</code></pre>
+<p><strong>注</strong>：<br />
+- 首先要让<code>ratings</code>通过<code>astype</code>变成<code>dtype</code>为<code>float</code>的矩阵，方便归一化<br />
+ - 归一化需要计算每一行向量的范数，沿<code>axis=1</code>进行取模，并且要<code>keepdims=True</code>，否则后续进行<code>normalized = ratings / norms</code>会无法广播<br />
+- <code>sims=normalized @ normalized.T</code><br />
+- 与<code>user_id</code>产生相似度，只需看<code>user_id-1</code> 那一行<br />
+- 并且需要让<code>user_id</code>与自己的相似度归为负无穷<br />
+- <code>np.argmax</code>取最大值的下标</p>
+<p><strong>掌握如何归一化，如何算得这个相似度矩阵，如何返回最大值的下标</strong></p>
+<h2>NumPy的广播机制</h2>
+<h3>广播特性</h3>
+<p>NumPy 的广播是让不同 <code>shape</code> 的数组在运算时自动对齐的机制。它有几个关键特性：</p>
+<ul>
+<li>从<strong>右往左</strong>逐个维度比较。</li>
+<li>某一维度相等，可以广播。</li>
+<li>某一维度一边是 <code>1</code>，可以广播。</li>
+<li>某一边缺少这个维度，也可以广播。</li>
+<li>广播不会真的复制数据，只是逻辑上按扩展后的形状参与运算。</li>
+<li>两个数组都不能单独决定结果时才报错，比如一边是 <code>3</code>，另一边是 <code>4</code>。</li>
+</ul>
+<p><strong>判断方法</strong></p>
+<p>假设两个数组的 shape 分别是：</p>
+<pre><code>a.shape = (5, 1, 3)
+b.shape = (   4, 3)
+</code></pre>
+<p>判断时从右往左补齐：</p>
+<pre><code>a: 5 1 3
+b:   4 3
+</code></pre>
+<p>补齐后相当于：</p>
+<pre><code>a: 5 1 3
+b: 1 4 3
+</code></pre>
+<p>逐列比较：</p>
+<pre><code>5 和 1：可以，结果 5
+1 和 4：可以，结果 4
+3 和 3：可以，结果 3
+</code></pre>
+<p>所以结果 shape 是：</p>
+<pre><code>(5, 4, 3)
+</code></pre>
+<p><strong>结果规则</strong></p>
+<p>广播后的 shape 按每一维取“<strong>较大值</strong>”：</p>
+<pre><code>结果维度 = max(a 的维度, b 的维度)
+</code></pre>
+<p>但前提是每一维都满足：</p>
+<pre><code>相等，或者其中一边是 1，或者其中一边缺失
+</code></pre>
+<p><strong>例子</strong></p>
+<p>例 1：</p>
+<pre><code>a = np.ones((2, 3))
+b = np.ones((3,))
+
+a + b
+</code></pre>
+<p>比较：</p>
+<pre><code>a: 2 3
+b:   3
+</code></pre>
+<p>补齐：</p>
+<pre><code>a: 2 3
+b: 1 3
+</code></pre>
+<p>结果：</p>
+<pre><code>(2, 3)
+</code></pre>
+<p>也就是每一行都加 <code>b</code>。</p>
+<p>例 2：</p>
+<pre><code>a = np.ones((2, 3))
+b = np.ones((2, 1))
+
+a + b
+</code></pre>
+<p>比较：</p>
+<pre><code>a: 2 3
+b: 2 1
+</code></pre>
+<p>结果：</p>
+<pre><code>(2, 3)
+</code></pre>
+<p>也就是每一列都分别加 <code>b</code> 中的值。</p>
+<p>例 3：</p>
+<pre><code>a = np.ones((2, 3))
+b = np.ones((2,))
+
+a + b
+</code></pre>
+<p>比较：</p>
+<pre><code>a: 2 3
+b:   2
+</code></pre>
+<p>补齐：</p>
+<pre><code>a: 2 3
+b: 1 2
+</code></pre>
+<p>最后比较：</p>
+<pre><code>3 和 2 不相等，且都不是 1
+</code></pre>
+<p>所以不能广播，会报：</p>
+<pre><code>ValueError: operands could not be broadcast together
+</code></pre>
+<p>如果想按列广播，要改成：</p>
+<pre><code>b = b.reshape(2, 1)
+</code></pre>
+<p><strong>再看 <code>norms</code> 的例子</strong></p>
+<p><code>ratings.shape = (m, k)</code>，计算每行模长时：</p>
+<pre><code>norms = np.linalg.norm(ratings, axis=1, keepdims=True)
+</code></pre>
+<p><code>norms.shape = (m, 1)</code>，所以：</p>
+<pre><code>ratings / norms
+</code></pre>
+<p>比较：</p>
+<pre><code>ratings: m k
+norms:   m 1
+</code></pre>
+<p>结果：</p>
+<pre><code>(m, k)
+</code></pre>
+<p>表示每一行都除以自己的模长。</p>
+<p>如果 <code>keepdims=False</code>：</p>
+<pre><code>norms.shape = (m,)
+</code></pre>
+<p>就变成：</p>
+<pre><code>ratings: m k
+norms:     m
+</code></pre>
+<p>补齐：</p>
+<pre><code>ratings: m k
+norms:   1 m
+</code></pre>
+<p>要求 <code>k == m</code>，否则不能广播；即使刚好相等，语义也通常不是你想要的。</p>
+<p><strong>一句话总结</strong></p>
+<ul>
+<li>能否广播：从右往左比较，每维必须相等或一边是 <code>1</code> 或缺失。</li>
+<li>广播结果：每个维度取较大值。</li>
+<li>最常见坑：<code>(m,)</code> 和 <code>(m, 1)</code> 不是同一个含义；前者是一维向量，后者是列向量。</li>
+</ul>
