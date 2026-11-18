@@ -1,11 +1,12 @@
 <h2>FIP W10 Question</h2>
 <h3>题目描述</h3>
-<p>m 名用户对 k 类影目的评分矩阵（每行一名用户，评分整数 1–5）。为用户 user_id（编号 1..m）找出余弦相似度最高的另一用户 best_id（best_id ≠ user_id）。</p>
-<p>请实现函数 best_match()：先对每行归一化，再用向量化方式计算相似度；禁止双重 for 构造完整相似度矩阵（可用 normalized @ normalized.T）。</p>
-<p>约定：保证存在唯一的 best_id。</p>
+<p>m 名用户对 k 类影目的评分矩阵（每行一名用户，评分整数 1–5）。为用户 user_id（编号 1...m）找出余弦相似度最高的另一用户 <code>best_id(best_id ≠ user_id)</code>。</p>
+<p>请实现函数 <code>best_match()</code>：先对每行归一化，再用向量化方式计算相似度； 可用 <code>normalized @ normalized.T</code>构造完整相似度矩阵。</p>
+<p>约定：保证存在唯一的 <code>best_id</code>。</p>
 <p>函数接口定义：</p>
-<p>def best_match(ratings, user_id):</p>
-<p>参数 ratings 为 shape (m, k) 整数数组，user_id 为 1 基用户编号。返回元组 (best_id, similarity)，best_id 为 1 基编号，similarity 为浮点数。</p>
+<pre><code class="language-python">def best_match(ratings, user_id):
+    #  参数 ratings 为 shape (m, k) 整数数组，user_id 为 1 基用户编号。返回元组 (best_id, similarity)，best_id 为 1 基编号，similarity 为浮点数。
+</code></pre>
 <p>测试程序样例：</p>
 <pre><code class="language-python">import numpy as np
 
