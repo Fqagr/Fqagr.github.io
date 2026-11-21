@@ -33,40 +33,27 @@ h1, h2, h3 { font-family: "Noto Serif SC", serif; }
 .nav {
   max-width: 880px;
   margin: 0 auto;
-  padding: clamp(0.6rem, 1.1vw, 1.1rem) 1.5rem;
+  padding: 1.1rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 0.6rem;
 }
-.logo {
-  font-family: "Noto Serif SC", serif;
-  font-weight: 900;
-  font-size: clamp(14px, 1.2vw, 18px);
+$11.1rem;
   text-decoration: none;
   color: var(--text);
   letter-spacing: 0.02em;
 }
-.nav-links { display: flex; gap: clamp(0.8rem, 1.6vw, 1.8rem); flex-wrap: wrap; }
-.nav-links a {
-  text-decoration: none;
-  color: var(--muted);
-  font-size: clamp(12px, 0.9vw, 15px);
+$11.8rem; flex-wrap: wrap; }
+$10.9rem;
   transition: color 0.2s;
 }
 .nav-links a:hover { color: var(--accent); }
-.nav-links .zh {
-  display: block;
-  color: var(--text);
-  font-weight: 600;
-  font-size: clamp(12px, 0.92vw, 15px);
+$10.92rem;
   line-height: 1.4;
 }
-.nav-links .en {
-  display: block;
-  font-family: "Inter", sans-serif;
-  font-size: clamp(9px, 0.68vw, 12px);
+$10.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);

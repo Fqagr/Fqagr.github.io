@@ -7,6 +7,13 @@
   <link rel="stylesheet" href="../style.css">
   <style>
     .md-error { color: var(--muted); }
+    .zoom-controls { position: fixed; bottom: 1.4rem; right: 1.4rem; display: flex; gap: 0.4rem; z-index: 60; }
+    .zoom-controls button {
+      width: 2.6rem; height: 2.2rem; border: 1px solid var(--border); border-radius: 8px;
+      background: rgba(255,255,255,0.92); color: var(--text); font-weight: 700;
+      cursor: pointer; font-size: 0.95rem; font-family: inherit;
+    }
+    .zoom-controls button:hover { border-color: var(--accent); color: var(--accent); }
     .katex-display { margin: 1.4rem 0; overflow-x: auto; padding: 0.3rem 0; }
     article h2 { margin-top: 2.6rem; }
     article h3 { margin-top: 2.2rem; }
@@ -69,6 +76,11 @@
         <p class="md-error">正在加载文章…</p>
       </article>
       <nav class="toc" id="toc"></nav>
+    </div>
+    <div class="zoom-controls">
+      <button id="z-out" title="缩小正文字号">A−</button>
+      <button id="z-reset" title="恢复默认">A</button>
+      <button id="z-in" title="放大正文字号">A+</button>
     </div>
     <div style="max-width:720px; margin:0 auto; padding:0 1.5rem;">
       <a class="back" href="javascript:history.back()">← 返回</a>
@@ -174,6 +186,23 @@
           });
         })
         .catch(renderMarkdownFallback);
+
+      var ZKEY = "articleZoom";
+      var zoom = parseFloat(localStorage.getItem(ZKEY)) || 1;
+      function applyZoom() {
+        box.style.zoom = zoom;
+        localStorage.setItem(ZKEY, zoom);
+      }
+      applyZoom();
+      document.getElementById("z-in").onclick = function () {
+        zoom = Math.min(2, Math.round((zoom + 0.1) * 10) / 10); applyZoom();
+      };
+      document.getElementById("z-out").onclick = function () {
+        zoom = Math.max(0.8, Math.round((zoom - 0.1) * 10) / 10); applyZoom();
+      };
+      document.getElementById("z-reset").onclick = function () {
+        zoom = 1; applyZoom();
+      };
     })();
   </script>
 </body>
