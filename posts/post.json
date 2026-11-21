@@ -1,5 +1,12 @@
 [
   {
+    "file": "dairy6.md",
+    "title": "Dairy of 19,20,21/11/2026",
+    "date": "2026-11-21",
+    "category": "reviews",
+    "summary": "补上前两天的日记"
+  },
+  {
     "file": "numpy.md",
     "title": "NumPy 知识点总结",
     "date": "2026-11-18",
