@@ -1,5 +1,13 @@
 [
   {
+    "file": "贪心.md",
+    "title": "Algorithm · 贪心",
+    "date": "2026-11-22",
+    "category": "notes",
+    "summary": "贪心算法，洛谷题目整理",
+    "subject": "dsa"
+  },
+  {
     "file": "dairy6.md",
     "title": "Dairy of 19,20,21/11/2026",
     "date": "2026-11-21",
@@ -60,19 +68,19 @@
     "summary": "周总结复盘"
   },
   {
-    "file": "alg1.md",
-    "title": "Algorithm · Sort 排序",
-    "date": "2026-10-23",
-    "category": "notes",
-    "summary": "桶排序、选择、冒泡、插入、快速排序与三路快排的原理、代码与复杂度对比。",
-    "subject": "dsa"
-  },
-  {
     "file": "dairy3.md",
     "title": "Dairy of 23/10/2026 in ZJU",
     "date": "2026-10-23",
     "category": "reviews",
     "summary": "雨夜堕落行"
+  },
+  {
+    "file": "排序sort.md",
+    "title": "Algorithm · Sort 排序",
+    "date": "2026-10-23",
+    "category": "notes",
+    "summary": "桶排序、选择、冒泡、插入、快速排序与三路快排的原理、代码与复杂度对比。",
+    "subject": "dsa"
   },
   {
     "file": "FIP-W6作业整理.md",
