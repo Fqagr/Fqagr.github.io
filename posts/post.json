@@ -1,5 +1,13 @@
 [
   {
+    "file": "位运算及其他性质.md",
+    "title": "位运算与计算机数字存储",
+    "date": "2026-11-22",
+    "category": "notes",
+    "summary": "位、字节、进制、补码与浮点数存储原理，以及位运算技巧速查。",
+    "subject": "cs-basics"
+  },
+  {
     "file": "贪心.md",
     "title": "Algorithm · 贪心",
     "date": "2026-11-22",
