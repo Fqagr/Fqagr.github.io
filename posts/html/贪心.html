@@ -26,6 +26,7 @@ Hanmeimei 90
 Kitty 80
 Tim 28
 </code></pre>
+<h3>Answer</h3>
 <pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
@@ -96,6 +97,7 @@ students.sort(key=cmp_to_key(cmp))
 for name, score in students:
     print(name, score)
 </code></pre>
+<hr />
 <h2>02 P14477 图寻中国</h2>
 <h3>题目描述</h3>
 <p>小 L 喜欢玩图寻中国。</p>
@@ -157,6 +159,7 @@ for name, score in students:
 </tbody>
 </table>
 <p>对于所有数据，<span class="arithmatex">\(1\leq n\leq10^9\)</span>，<span class="arithmatex">\(0\le a,b\le n\)</span>，保证存在一种合法的对决情况满足题目条件。</p>
+<h3>Answer</h3>
 <pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;
 int max_win(int n,int a,int b){
@@ -185,6 +188,7 @@ int main(){
 n,a,b=map(int,input().split())
 print(max_win(n,a,b))
 </code></pre>
+<hr />
 <h2>03 P1208 [USACO1.3] 混合牛奶 Mixing Milk</h2>
 <blockquote>
 <p>注：此题与 “ P2240 【深基12.例1】部分背包问题 ” 基本一致，只保留一道</p>
@@ -219,6 +223,7 @@ print(max_win(n,a,b))
 <span class="arithmatex">\(0 \le n,a_i \le 2 \times 10^6\)</span>，<span class="arithmatex">\(0\le m \le 5000\)</span>，<span class="arithmatex">\(0 \le p_i \le 1000\)</span>。</p>
 <p>题目翻译来自 NOCOW。</p>
 <p>USACO Training Section 1.3</p>
+<h3>Answer</h3>
 <pre><code class="language-python"># 题目过于简单这里只贴python做法当作练习
 n,m=map(int,input().split())
 milk=[]
@@ -239,6 +244,7 @@ for i in range(m):
         n-=num
 print(min_cost)
 </code></pre>
+<hr />
 <h2>04 P1223 排队接水</h2>
 <h3>题目描述</h3>
 <p>有 <span class="arithmatex">\(n\)</span> 个人在一个水龙头前排队接水，假如每个人接水的时间为 <span class="arithmatex">\(T_i\)</span>，请编程找出这 <span class="arithmatex">\(n\)</span> 个人排队的一种顺序，使得 <span class="arithmatex">\(n\)</span> 个人的平均等待时间最小。</p>
@@ -261,6 +267,7 @@ print(min_cost)
 </code></pre>
 <h3>说明/提示</h3>
 <p><span class="arithmatex">\(1\le n \leq 1000\)</span>，<span class="arithmatex">\(1\le t_i \leq 10^6\)</span>，不保证 <span class="arithmatex">\(t_i\)</span> 不重复。</p>
+<h3>Answer</h3>
 <pre><code class="language-python"># 题目过于简单这里只贴python做法当作练习
 n=int(input())
 time=[]
@@ -275,6 +282,7 @@ for i in range(n):
 print()
 print(f&quot;{sum/n:.2f}&quot;)
 </code></pre>
+<hr />
 <h2>05 P2660 zzc 种田</h2>
 <h3>题目背景</h3>
 <p>可能以后 zzc 就去种田了。</p>
@@ -300,6 +308,7 @@ print(f&quot;{sum/n:.2f}&quot;)
 </code></pre>
 <h3>说明/提示</h3>
 <p><span class="arithmatex">\(1\le x,y\le 10^{16}\)</span>。</p>
+<h3>Answer</h3>
 <pre><code class="language-python"># cpp版省略
 def min_energycost(x, y):
     ans = 0
@@ -315,6 +324,7 @@ def min_energycost(x, y):
 x, y = map(int, input().split())
 print(min_energycost(x, y))
 </code></pre>
+<hr />
 <h2>06 P1803 凌乱的yyy / 线段覆盖</h2>
 <h3>题目背景</h3>
 <p><strong>Python 用户可以尝试使用 pypy3 提交试题。</strong></p>
@@ -347,6 +357,7 @@ print(min_energycost(x, y))
 <li>对于 <span class="arithmatex">\(70\%\)</span> 的数据，<span class="arithmatex">\(n \le 10^{5}\)</span>；</li>
 <li>对于 <span class="arithmatex">\(100\%\)</span> 的数据，<span class="arithmatex">\(1\le n \le 10^{6}\)</span>，<span class="arithmatex">\(0 \le a_{i} &lt; b_{i} \le 10^6\)</span>。</li>
 </ul>
+<h3>Answer</h3>
 <pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;
 struct competition{
@@ -390,6 +401,7 @@ for i in range(n):
         end=comp[i][1]
 print(ans)
 </code></pre>
+<hr />
 <h2>07 P14359 [CSP-J 2025] 异或和</h2>
 <h3>题目描述</h3>
 <p>小 R 有一个长度为 <span class="arithmatex">\(n\)</span> 的非负整数序列 <span class="arithmatex">\(a_1, a_2, \dots, a_n\)</span>。定义一个区间 <span class="arithmatex">\([l, r]\)</span> (<span class="arithmatex">\(1 \leq l \leq r \leq n\)</span>) 的权值为 <span class="arithmatex">\(a_l, a_{l+1}, \dots, a_r\)</span> 的二进制按位异或和，即 <span class="arithmatex">\(a_l \oplus a_{l+1} \oplus \dots \oplus a_r\)</span>，其中 <span class="arithmatex">\(\oplus\)</span> 表示二进制按位异或。</p>
@@ -446,7 +458,6 @@ print(ans)
 <p>对于所有测试数据，保证：<br />
 - <span class="arithmatex">\(1 \leq n \leq 5 \times 10^5\)</span>, <span class="arithmatex">\(0 \leq k &lt; 2^{20}\)</span>;<br />
 - 对于所有 <span class="arithmatex">\(1 \leq i \leq n\)</span>，均有 <span class="arithmatex">\(0 \leq a_i &lt; 2^{20}\)</span>。</p>
-<p>::cute-table{tuack}</p>
 <table>
 <thead>
 <tr>
@@ -534,3 +545,279 @@ print(ans)
 <p>特殊性质 A: 对于所有 <span class="arithmatex">\(1 \leq i \leq n\)</span>，均有 <span class="arithmatex">\(a_i = 1\)</span>。</p>
 <p>特殊性质 B: 对于所有 <span class="arithmatex">\(1 \leq i \leq n\)</span>，均有 <span class="arithmatex">\(0 \leq a_i \leq 1\)</span>。</p>
 <p>特殊性质 C: 对于所有 <span class="arithmatex">\(1 \leq i \leq n\)</span>，均有 <span class="arithmatex">\(0 \leq a_i \leq 255\)</span>。</p>
+<h3>Answer</h3>
+<blockquote>
+<p>此题涉及位运算相关知识，已整理同步到网页其他文章中</p>
+</blockquote>
+<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+/**
+本题思路：利用异或的性质（可交换，逆运算仍为异或，a^b^a=b）
+算出每一位的前缀异或和，想要得到[l,r]区间异或和为k的，则需要[0,l-1]异或和为need=k^a[r]
+
+任意区间 [l+1, r] 的异或值可以写成：
+a[r] ⊕ a[l]
+
+    这是因为前缀异或和的定义是：
+    a[r] = a₁ ⊕ a₂ ⊕ ... ⊕ a_r
+    a[l] = a₁ ⊕ a₂ ⊕ ... ⊕ a_l
+    那么：
+    a[r] ⊕ a[l]
+    = (a₁ ⊕ ... ⊕ a_l ⊕ a_{l+1} ⊕ ... ⊕ a_r)
+    ⊕
+    (a₁ ⊕ ... ⊕ a_l)
+    由于异或满足交换律和结合律，前面两段相同的前缀：
+    a₁, a₂, ..., a_l
+    每个数都出现了两次：
+    a₁ ⊕ a₁ = 0
+    a₂ ⊕ a₂ = 0
+    ...
+    全部抵消，最后只剩：
+    a_{l+1} ⊕ a_{l+2} ⊕ ... ⊕ a_r
+    而这段正是区间 [l+1, r] 的异或值。
+
+所以先init一个end=-1，记为上一次选完的最后一位，
+用类似上一题线段覆盖类似的思路（end为上次选择比赛时间结束点位），
+如果在a[i]前有异或和为need=k^a[i]的，记下它的position=lst[need],
+如果position存在且比之前选择的末位还靠右，则可以选，
+（类比上一题比赛，就是当前比赛的开头存在，且在上一个比赛结束之后）
+**/
+int n,k;
+const int MAXN=5e5+8;
+const int MAXK=1048576;
+int a[MAXN];
+int lst[MAXK];//lst[i] 记录上一次前缀异或和为i出现的位置
+int main(){
+    cin&gt;&gt;n&gt;&gt;k;
+    for(int i=1;i&lt;=n;i++) cin&gt;&gt;a[i];
+    memset(lst,-1,sizeof(lst));
+    //init所有lst[i]为-1，即上一次前缀异或和为i的是-1即不存在
+    lst[0]=0;//前缀异或和为0的0位置为0
+    //如果不初始化，lst[0] 会是 -1，程序就会漏掉所有从第 1 个元素开始、并且区间异或值恰好为 k 的情况。
+    int end=-1;
+    int cnt=0;
+    for(int i=1;i&lt;=n;i++){
+        a[i]^=a[i-1];//求前缀异或和
+        int need =a[i]^k;
+        int position=lst[need];//记录need的位置
+        lst[a[i]]=i;//记得要向lst里填写数据！！！否则报错
+        if(position!=-1){//position存在
+            position++;//当前区间的起点position的下一个位置
+            if(position&gt;end) {//能选这个点
+                cnt++;//计数
+                end=i;//现在这个数成为了新的终点
+            }
+        }
+    }
+    cout&lt;&lt;cnt;
+    return 0;
+}
+</code></pre>
+<pre><code class="language-python">n,k=map(int,input().split())
+a=[0]+list(map(int,input().split()))
+end,ans=-1,0
+lst={0:0} # 要识别从第一个元素开始的区间
+
+for i in range(1,n+1):
+    a[i]^=a[i-1]
+    need=k^a[i]
+    pos=lst.get(need,-1) # 我只是取need的位置，不要setdefault
+    lst[a[i]]=i # 一定不要忘记更新值！！！
+    if pos!=-1:
+        start=pos+1
+        if start&gt;end:
+            ans+=1
+            end=i
+print(ans)
+&quot;&quot;&quot;
+注意这里一定要用pos接收get值，
+不能像之前写lst[need]=lst.get(need,-1)
+因为每次写lst[need]都相当于调用最新时need的位置，
+当k=0时need=a[i]
+lst[a[i]]=i前lst[need]是先前的值，而更新后再次lst[need]获得的就是新的值也就是i
+导致start=i+1，区间不存在但是ans依然++
+&quot;&quot;&quot;
+</code></pre>
+<pre><code>0
+</code></pre>
+<hr />
+<h2>08 B3928 [GESP202312 四级] 田忌赛马</h2>
+<h3>题目描述</h3>
+<p>你要和田忌赛马。你们各自有 <span class="arithmatex">\(N\)</span> 匹马，并且要进行 <span class="arithmatex">\(N\)</span> 轮比赛，每轮比赛，你们都要各派出一匹马决出胜负。</p>
+<p>你的马匹的速度分别为 <span class="arithmatex">\(u_1,u_2,\cdots，u_n\)</span>，田忌的马匹的速度分别为 <span class="arithmatex">\(v_1,v_2,\cdots,v_n\)</span>。田忌会按顺序派出他的马匹，请问你要如何排兵布阵，才能赢得最多轮次的比赛？巧合的是，你和田忌的所有马匹的速度两两不同，因此不可能出现平局。</p>
+<h3>输入格式</h3>
+<p>第一行一个整数 <span class="arithmatex">\(N\)</span>。保证 <span class="arithmatex">\(1\le N \le 5\times 10^4\)</span></p>
+<p>接下来一行 <span class="arithmatex">\(N\)</span> 个用空格隔开的整数，依次为 <span class="arithmatex">\(u_1,u_2,\cdots,u_n\)</span>，表示你的马匹们的速度。保证 <span class="arithmatex">\(1\le u_i\le 2N\)</span>。</p>
+<p>接下来一行 <span class="arithmatex">\(N\)</span> 个用空格隔开的整数，依次为 <span class="arithmatex">\(v_1,v_2,\cdots,v_n\)</span>，表示田忌的马匹们的速度。保证 <span class="arithmatex">\(1\le v_i\le 2N\)</span>。</p>
+<h3>输出格式</h3>
+<p>输出一行，表示你最多能获胜几轮。</p>
+<h3>输入输出样例 #1</h3>
+<h4>输入 #1</h4>
+<pre><code>3
+1 3 5
+2 4 6
+</code></pre>
+<h4>输出 #1</h4>
+<pre><code>2
+</code></pre>
+<h3>输入输出样例 #2</h3>
+<h4>输入 #2</h4>
+<pre><code>5
+10 3 5 8 7
+4 6 1 2 9
+</code></pre>
+<h4>输出 #2</h4>
+<pre><code>5
+</code></pre>
+<h3>说明/提示</h3>
+<p><strong>样例解释 1</strong></p>
+<p>第 1 轮，田忌派出速度为 2 的马匹，你可以派出速度为 3 的马匹迎战，本轮你获胜。</p>
+<p>第 2 轮，田忌派出速度为 4 的马匹，你可以派出速度为 5 的马匹迎战，本轮你获胜。</p>
+<p>第 3 轮，田忌派出速度为 6 的马匹，你可以派出速度为 1 的马匹迎战，本轮田忌获胜。</p>
+<p>如此，你可以赢得 2 轮比赛。</p>
+<h3>Answer</h3>
+<pre><code class="language-python">n=int(input())
+u=list(map(int,input().split()))
+v=list(map(int,input().split()))
+u.sort()
+v.sort()
+i,j,ans=0,0,0
+while i&lt;n:
+    if u[i]&gt;v[j]:
+        i+=1
+        j+=1
+        ans+=1
+    else:
+        i+=1
+print(ans)
+</code></pre>
+<hr />
+<h2>09 P9749 [CSP-J 2023] 公路</h2>
+<h3>题目描述</h3>
+<p>小苞准备开着车沿着公路自驾。</p>
+<p>公路上一共有 <span class="arithmatex">\(n\)</span> 个站点，编号为从 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(n\)</span>。其中站点 <span class="arithmatex">\(i\)</span> 与站点 <span class="arithmatex">\(i + 1\)</span> 的距离为 <span class="arithmatex">\(v_i\)</span> 公里。</p>
+<p>公路上每个站点都可以加油，编号为 <span class="arithmatex">\(i\)</span> 的站点一升油的价格为 <span class="arithmatex">\(a_i\)</span> 元，且每个站点只出售整数升的油。</p>
+<p>小苞想从站点 <span class="arithmatex">\(1\)</span> 开车到站点 <span class="arithmatex">\(n\)</span>，一开始小苞在站点 <span class="arithmatex">\(1\)</span> 且车的油箱是空的。已知车的油箱足够大，可以装下任意多的油，且每升油可以让车前进 <span class="arithmatex">\(d\)</span> 公里。问小苞从站点 <span class="arithmatex">\(1\)</span> 开到站点 <span class="arithmatex">\(n\)</span>，至少要花多少钱加油？</p>
+<h3>输入格式</h3>
+<p>输入的第一行包含两个正整数 <span class="arithmatex">\(n\)</span> 和 <span class="arithmatex">\(d\)</span>，分别表示公路上站点的数量和车每升油可以前进的距离。</p>
+<p>输入的第二行包含 <span class="arithmatex">\(n - 1\)</span> 个正整数 <span class="arithmatex">\(v_1, v_2\dots v_{n-1}\)</span>，分别表示站点间的距离。</p>
+<p>输入的第三行包含 <span class="arithmatex">\(n\)</span> 个正整数 <span class="arithmatex">\(a_1, a_2 \dots a_n\)</span>，分别表示在不同站点加油的价格。</p>
+<h3>输出格式</h3>
+<p>输出一行，仅包含一个正整数，表示从站点 <span class="arithmatex">\(1\)</span> 开到站点 <span class="arithmatex">\(n\)</span>，小苞至少要花多少钱加油。</p>
+<h3>输入输出样例 #1</h3>
+<h4>输入 #1</h4>
+<pre><code>5 4
+10 10 10 10
+9 8 9 6 5
+</code></pre>
+<h4>输出 #1</h4>
+<pre><code>79
+</code></pre>
+<h3>说明/提示</h3>
+<p><strong>【样例 1 解释】</strong></p>
+<p>最优方案下：小苞在站点 <span class="arithmatex">\(1\)</span> 买了 <span class="arithmatex">\(3\)</span> 升油，在站点 <span class="arithmatex">\(2\)</span> 购买了 <span class="arithmatex">\(5\)</span> 升油，在站点 <span class="arithmatex">\(4\)</span> 购买了 <span class="arithmatex">\(2\)</span> 升油。</p>
+<p><strong>【样例 2】</strong></p>
+<p>见选手目录下的 <code>road/road2.in</code> 与 <code>road/road2.ans</code>。</p>
+<p><strong>【数据范围】</strong></p>
+<p>对于所有测试数据保证：<span class="arithmatex">\(1 \leq n \leq 10^5\)</span>，<span class="arithmatex">\(1 \leq d \leq 10^5\)</span>，<span class="arithmatex">\(1 \leq v_i \leq 10^5\)</span>，<span class="arithmatex">\(1 \leq a_i \leq 10^5\)</span>。</p>
+<p>::cute-table{tuack}</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">测试点</th>
+<th style="text-align: center;"><span class="arithmatex">\(n \leq\)</span></th>
+<th style="text-align: center;">特殊性质</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="arithmatex">\(1\sim 5\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\(8\)</span></td>
+<td style="text-align: center;">无</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="arithmatex">\(6\sim 10\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\(10^3\)</span></td>
+<td style="text-align: center;">^</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="arithmatex">\(11\sim 13\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\(10^5\)</span></td>
+<td style="text-align: center;">A</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="arithmatex">\(14\sim 16\)</span></td>
+<td style="text-align: center;">^</td>
+<td style="text-align: center;">B</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="arithmatex">\(17\sim 20\)</span></td>
+<td style="text-align: center;">^</td>
+<td style="text-align: center;">无</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>特殊性质 A：站点 <span class="arithmatex">\(1\)</span> 的油价最低。</li>
+<li>特殊性质 B：对于所有 <span class="arithmatex">\(1 \leq i &lt; n\)</span>，<span class="arithmatex">\(v_i\)</span> 为 <span class="arithmatex">\(d\)</span> 的倍数。</li>
+</ul>
+<h3>Answer</h3>
+<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+const int N=1e5+7;
+int s[N],v[N];
+int main()
+{
+    int n,d;cin&gt;&gt;n&gt;&gt;d;
+    for(int i=1;i&lt;n;i++) cin&gt;&gt;s[i];
+    for(int i=1;i&lt;=n;i++) {
+        cin&gt;&gt;v[i];
+        if(i!=1) v[i]=min(v[i],v[i-1]);
+    }
+    long long cost=0;
+    int l=0;
+    for(int i=1;i&lt;n;i++){
+        int need=ceil(1.0*(s[i]-l)/d);//计算需要加多少升油
+        cost+=need*v[i];//买油
+        l+=need*d;//加油
+        l-=s[i];//开过去
+    }
+    cout&lt;&lt;cost;
+
+
+    return 0;
+}
+</code></pre>
+<pre><code class="language-python">n, d = map(int, input().split())
+v = list(map(int, input().split()))
+price = list(map(int, input().split()))
+
+pre = [0]
+for x in v:
+    pre.append(pre[-1] + x)
+
+i = 0
+cap = 0 # 剩余油还能跑多少公里
+ans = 0
+
+while i &lt; n - 1:
+    j = i + 1
+
+    while j &lt; n - 1 and price[j] &gt;= price[i]:
+        j += 1
+
+    dist = pre[j] - pre[i]
+    lack = dist - cap
+
+    if lack &gt; 0:
+        buy = (lack + d - 1) // d
+        ans += buy * price[i]
+        cap += buy * d
+
+    cap -= dist
+    i = j
+
+print(ans)
+</code></pre>
+<hr />
