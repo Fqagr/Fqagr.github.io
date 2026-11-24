@@ -1,5 +1,5 @@
 ---
-title: Dairy of 03/11/2026 in ZJU
+title: Diary of 03/11/2026 in ZJU
 date: 2026-11-03
 category: reviews
 summary: lznb！！！

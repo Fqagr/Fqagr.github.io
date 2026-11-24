@@ -1,11 +1,11 @@
 ---
-title: Dairy of 02/11/2026 in ZJU
+title: Diary of 02/11/2026 in ZJU
 date: 2026-11-02
 category: reviews
 summary: 如听仙乐耳暂明
 ---
 
-# Dairy of 02/11/2026 in ZJU
+
 
 - 猛地发现日记不一定要记下一整天的流水账
 - 记下的其实是一天里**最宝贵、最珍贵的**

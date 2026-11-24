@@ -1,11 +1,11 @@
 ---
-title: Dairy of 19/10/2026 in ZJU
+title: Diary of 19/10/2026 in ZJU
 date: 2026-10-19
 category: reviews
 summary: 第一次写日记~
 ---
 
-# Dairy of 19/10/2026 in ZJU
+
 
 ## 了却了几件大事
 

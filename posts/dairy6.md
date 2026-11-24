@@ -1,5 +1,5 @@
 ---
-title: Dairy of 19,20,21/11/2026
+title: Diary of 19,20,21/11/2026
 date: 2026-11-21
 category: reviews
 summary: 补上前两天的日记
