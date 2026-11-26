@@ -1,0 +1,313 @@
+<h2>1. 常见递归统计</h2>
+<h3>计算一般树高度</h3>
+<pre><code class="language-python">def height(node):
+    if not node.children:
+        return 0
+    return 1 + max(height(child) for child in node.children)
+</code></pre>
+<h3>计算二叉树节点总数</h3>
+<pre><code class="language-python">def count_nodes(node):
+    if not node:
+        return 0
+    return 1 + count_nodes(node.left) + count_nodes(node.right)
+</code></pre>
+<h3>计算二叉树叶子数</h3>
+<pre><code class="language-python">def count_leaves(node):
+    if not node:
+        return 0
+    if not node.left and not node.right:
+        return 1
+    return count_leaves(node.left) + count_leaves(node.right)
+</code></pre>
+<p>错误写法是先访问 <code>node.left</code>，再判断空树。空树传入时会发生：</p>
+<pre><code class="language-python">None.left
+</code></pre>
+<p>直接报 <code>AttributeError</code>。</p>
+<hr />
+<h2>2. 深度优先遍历  DFS 递归版</h2>
+<h3>前序遍历</h3>
+<pre><code class="language-python">def preorder(node):
+    if not node:
+        return
+    print(node.val, end=' ')
+    preorder(node.left)
+    preorder(node.right)
+</code></pre>
+<h3>中序遍历</h3>
+<pre><code class="language-python">def inorder(node):
+    if not node:
+        return
+    inorder(node.left)
+    print(node.val, end=' ')
+    inorder(node.right)
+</code></pre>
+<h3>后序遍历</h3>
+<pre><code class="language-python">def postorder(node):
+    if not node:
+        return
+    postorder(node.left)
+    postorder(node.right)
+    print(node.val, end=' ')
+</code></pre>
+<hr />
+<h2>3. 遍历背后的栈和队列</h2>
+<p>前序、中序、后序都是 DFS，递归版本使用 Python 的调用栈。</p>
+<p>也可以用显式栈模拟。</p>
+<p>比如前序：</p>
+<pre><code class="language-python">def preorder_stack(root):
+    if not root:
+        return
+
+    stack = [root]
+
+    while stack:
+        node = stack.pop()
+        print(node.val, end=' ')
+
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+</code></pre>
+<p>注意先压右、再压左，这样弹出时才是先左后右。</p>
+<p>中序显式栈写法：</p>
+<pre><code class="language-python">def inorder_stack(root):
+    stack = []
+    node = root
+
+    while stack or node:
+        while node:
+            stack.append(node)
+            node = node.left
+
+        node = stack.pop()
+        print(node.val, end=' ')
+        node = node.right
+</code></pre>
+<p>后序显式栈常用双栈：</p>
+<pre><code class="language-python">def postorder_stack(root):
+    if not root:
+        return
+
+    s1 = [root]
+    s2 = []
+
+    while s1:
+        node = s1.pop()
+        s2.append(node)
+
+        if node.left:
+            s1.append(node.left)
+        if node.right:
+            s1.append(node.right)
+
+    while s2:
+        print(s2.pop().val, end=' ')
+</code></pre>
+<hr />
+<h2>4. 层序遍历  BFS</h2>
+<p>层序遍历是 BFS，按层从左到右访问，用队列。</p>
+<pre><code class="language-python">from collections import deque
+
+def level_order(root):
+    if not root:
+        return
+
+    q = deque([root])
+
+    while q:
+        node = q.popleft()
+        print(node.val, end=' ')
+
+        if node.left:
+            q.append(node.left)
+        if node.right:
+            q.append(node.right)
+</code></pre>
+<hr />
+<h2>5. 表达式树  AST</h2>
+<p>表达式也可以画成二叉树。</p>
+<p>例如 <code>(3 + 4) * 2</code>：</p>
+<pre><code class="language-text">      *
+     / \
+    +   2
+   / \
+  3   4
+</code></pre>
+<p>三种遍历对应：</p>
+<table>
+<thead>
+<tr>
+<th>遍历</th>
+<th>表达式形式</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>前序</td>
+<td>前缀表达式</td>
+<td><code>* + 3 4 2</code></td>
+</tr>
+<tr>
+<td>中序</td>
+<td>中缀表达式</td>
+<td><code>3 + 4 * 2</code></td>
+</tr>
+<tr>
+<td>后序</td>
+<td>后缀表达式</td>
+<td><code>3 4 + 2 *</code></td>
+</tr>
+</tbody>
+</table>
+<p>中序遍历表达式树时，如果去掉括号，运算优先级可能不明确，所以中缀表达式需要括号才严谨。</p>
+<hr />
+<h2>6. 二叉搜索树 BST</h2>
+<p>BST 是 Binary Search Tree，二叉搜索树。</p>
+<p>性质：</p>
+<blockquote>
+<p>对任意节点：左子树所有值 &lt; 当前节点 &lt; 右子树所有值，并且左右子树也分别满足 BST 性质。</p>
+</blockquote>
+<p>注意是“整棵左子树”和“整棵右子树”，<strong>不是只比较直接左右孩子</strong>。</p>
+<p>例如：</p>
+<pre><code class="language-text">      50
+     /  \
+   30    70
+  / \    / \
+20  40  60  80
+</code></pre>
+<p>这是合法 BST。</p>
+<hr />
+<h2>7. BST 查找</h2>
+<pre><code class="language-python">def search(root, val):
+    if not root:
+        return False
+
+    if root.val == val:
+        return True
+
+    if val &lt; root.val:
+        return search(root.left, val)
+    else:
+        return search(root.right, val)
+</code></pre>
+<p>查找 <code>60</code> 的路径：</p>
+<pre><code class="language-text">50 -&gt; 70 -&gt; 60
+</code></pre>
+<p>每次比较排除一半，平均复杂度是：</p>
+<pre><code class="language-text">O(log n)
+</code></pre>
+<hr />
+<h2>8. BST 插入</h2>
+<pre><code class="language-python">def insert(root, value):
+    if not root:
+        return TreeNode(value)
+
+    if value &lt; root.value:
+        root.left = insert(root.left, value)
+    elif value &gt; root.value:
+        root.right = insert(root.right, value)
+
+    return root
+</code></pre>
+<p>插入的本质：</p>
+<ol>
+<li>按查找规则往下走。</li>
+<li>找到空位 <code>None</code>。</li>
+<li>创建新节点。</li>
+<li>把新节点接回父节点。</li>
+</ol>
+<p>为什么必须写：</p>
+<pre><code class="language-python">root.left = insert(root.left, value)
+</code></pre>
+<p>因为 <code>root.left</code> 可能原来是 <code>None</code>，<code>insert()</code> 返回新建节点后要把它接回父节点。</p>
+<p>同样，构建整棵树时要写：</p>
+<pre><code class="language-python">root = insert(root, value)
+</code></pre>
+<p>不能只写：</p>
+<pre><code class="language-python">insert(root, value)
+</code></pre>
+<p>否则第一次插入的新根会丢失。</p>
+<p><strong>一定要有东西来接收返回值！！！</strong></p>
+<hr />
+<h2>9. BST 删除（待讲待查）</h2>
+<p>删除分三种情况。</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>特征</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>叶子节点</td>
+<td>左右都为空</td>
+<td>直接删除</td>
+</tr>
+<tr>
+<td>只有一个孩子</td>
+<td>只有左孩子或只有右孩子</td>
+<td>用孩子替代自己</td>
+</tr>
+<tr>
+<td>有两个孩子</td>
+<td>左右都有</td>
+<td>用后继节点替换，再删除后继</td>
+</tr>
+</tbody>
+</table>
+<h3>后继节点</h3>
+<p>后继是右子树中的最小值。</p>
+<pre><code class="language-python">def find_successor(node):
+    succ = node.right
+    while succ.left:
+        succ = succ.left
+    return succ
+</code></pre>
+<p>删除代码：</p>
+<pre><code class="language-python">def delete(root, val):
+    if not root:
+        return None
+
+    if val &lt; root.val:
+        root.left = delete(root.left, val)
+    elif val &gt; root.val:
+        root.right = delete(root.right, val)
+    else:
+        if not root.left:
+            return root.right
+        if not root.right:
+            return root.left
+
+        succ = root.right
+        while succ.left:
+            succ = succ.left
+
+        root.val = succ.val
+        root.right = delete(root.right, succ.val)
+
+    return root
+</code></pre>
+<p>例如删除：</p>
+<pre><code class="language-text">      50
+     /  \
+   30    70
+  / \    / \
+20  40  60  80
+</code></pre>
+<p>删除 <code>50</code>：</p>
+<ol>
+<li><code>50</code> 有两个孩子。</li>
+<li>右子树是 <code>70, 60, 80</code>。</li>
+<li>右子树最小值是 <code>60</code>。</li>
+<li>用 <code>60</code> 替换 <code>50</code>。</li>
+<li>再删除右子树中的 <code>60</code>。</li>
+</ol>
+<p>错误做法是直接用左孩子或右孩子替代，这样可能破坏 BST 性质。</p>
+<hr />
+<h2>10. 建树</h2>
+<pre><code class="language-python">
+</code></pre>
