@@ -5,6 +5,16 @@
         return 0
     return 1 + max(height(child) for child in node.children)
 </code></pre>
+<h3>计算二叉树高度</h3>
+<pre><code class="language-python">def height(node):
+    if not node :
+        # 这里不能直接写not node.left and not node.right
+        # 否则当node只有left时，访问height(node.right)就会因为NoneType
+        # 没有right导致报错
+        return -1
+    return 1+max(height(node.right),height(node.right))
+
+</code></pre>
 <h3>计算二叉树节点总数</h3>
 <pre><code class="language-python">def count_nodes(node):
     if not node:
@@ -308,6 +318,200 @@ def level_order(root):
 </ol>
 <p>错误做法是直接用左孩子或右孩子替代，这样可能破坏 BST 性质。</p>
 <hr />
-<h2>10. 建树</h2>
+<h2>10. 建树(普通二叉树)</h2>
+<blockquote>
+<p>若要建立BST二叉树，用insert进行创建</p>
+</blockquote>
+<pre><code class="language-python">root=None
+for v in values:
+    root=insert(root,v)
+</code></pre>
+<pre><code class="language-python">from collections import deque
+
+class TreeNode:
+    def __init__(self,value):
+        self.value=value
+        self.left=None
+        self.right=None
+
+def tree_building(values): 
+    # values为传入的list 如：1 2 3 4 5 -1 -1 -1 -1 -1
+    if not values or values[0]==-1 :
+        return None
+    root=TreeNode(values[0])
+    q=deque[root]
+    i=1
+    while q and i&lt;len(values):
+        node=q.popleft()
+        if i&lt;len(values) and values[i]!=-1:
+            node.left=TreeNode(values[i])
+            q.append(node.left)
+        i+=1
+        if i&lt;len(values) and values[i]!=-1:
+                    node.right=TreeNode(values[i])
+                    q.append(node.right)
+        i+=1
+    return root
+</code></pre>
+<hr />
+<h2>11. 判断BST（二分搜索树）是否合法 （FIP-W11-11D02）</h2>
+<pre><code class="language-python">from collections import deque
+
+class TreeNode:
+    def __init__(self,value):
+        self.value=value
+        self.left=None
+        self.right=None
+
+def tree_building(values):
+    if not values or values[0] == -1:
+        return None
+
+    root = TreeNode(values[0])
+    q = deque([root])
+    i = 1
+
+    while q and i &lt; len(values):
+        node = q.popleft()
+
+        if i &lt; len(values) and values[i] != -1:
+            node.left = TreeNode(values[i])
+            q.append(node.left)
+        i += 1
+
+        if i &lt; len(values) and values[i] != -1:
+            node.right = TreeNode(values[i])
+            q.append(node.right)
+        i += 1
+
+    return root
+
+
+def is_valid(node, low=float('-inf'), high=float('inf')):
+    if not node:
+        return True
+
+    left = node.left is None or node.left.value &lt; node.value
+    right = node.right is None or node.right.value &gt; node.value
+
+    if not left or not right:
+        return False
+
+    return is_valid(node.left, low, node.value) and \
+           is_valid(node.right, node.value, high)
+
+&quot;&quot;&quot;
+1. `node.left`、`node.right` 可能为 `None`，直接取 `.value` 会报错，
+   所以比较前要先判断它们是否存在。
+2. 只判断 `node.left.value &lt; node.value &lt; node.right.value` 也不可取，
+   有可能子树本身成立，但整棵树不成立。
+   比如右子树里某个深层节点可能小于整棵树的根，只看父子关系发现不了。
+        10
+        /  \
+     5      20
+           /
+          8
+3. 修改方法是用上下界递归：每个节点额外带上允许的取值范围 `low` 和 `high`。
+   进入左子树时把上界更新为当前节点的值，进入右子树时把下界更新为当前节点的值，
+   这样任何一个深层节点都必须落在从根到它这条路径约束出的范围里。
+&quot;&quot;&quot;
+</code></pre>
+<hr />
+<h2>12. 查找路径（FIP-W11-11D01）</h2>
+<h3>题目描述</h3>
+<p>废土档案按 <code>BST</code> 规则插入编号：小于当前结点去左子树，大于去右子树。查找目标时，记录经过的结点值（含最后访问的结点）。</p>
+<p>请实现类 <code>BST</code>。插入只更新对象自己的 <code>self.root</code>，调用者不用再写 <code>root = insert(...)</code>。</p>
+<p>若找到目标，<code>search_path</code> 返回完整路径（含目标值）；<br />
+若未找到，返回已访问路径并在末尾追加 -1。</p>
+<h3>类接口定义：</h3>
 <pre><code class="language-python">
+class BST:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, val):
+        ...
+
+    def search_path(self, target):
+        ...
+
+</code></pre>
+<p>insert 把 val 插进这棵树。search_path 返回整数列表。</p>
+<h3>裁判测试程序样例：</h3>
+<pre><code class="language-python">
+# 请在这里填写答案
+#class BST:
+
+
+n = int(input())
+values = list(map(int, input().split()))
+target = int(input())
+tree = BST()
+for v in values:
+    tree.insert(v)
+print(*tree.search_path(target))
+
+</code></pre>
+<p>输入样例:</p>
+<pre><code>7
+50 30 70 20 40 60 80
+40
+</code></pre>
+<p>输出样例:</p>
+<pre><code>50 30 40
+</code></pre>
+<p>未找到样例:<br />
+输入 <code>65</code> 时输出：</p>
+<p><code>50 70 60 -1</code></p>
+<pre><code class="language-python">class TreeNode:
+    def __init__(self,value):
+        self.value=value
+        self.left=None
+        self.right=None
+    &quot;&quot;&quot; 
+    也可以将TreeNode定义放在BST类下，调用时只需改成BST.TreeNode()
+    至于为什么要class BST后还要class TreeNode：
+        `BST` 定义了一个类为树，而 `TreeNode` 则是定义一个类为节点，二者其实是两种东西。
+
+    &quot;&quot;&quot;
+
+class BST:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, val):
+        # `insert` 函数里有 `self` 后不能像往常一样直接递归写，
+        # 这里需要先令 `node = self.root`，再进行循环判断；
+        # 注意每次 base case，取 `left` 或 `right` 前也要判断是否为空。
+
+        if not self.root:
+            self.root=TreeNode(val)
+            return
+        node=self.root
+        while True:
+            if val&gt;node.value:
+                if not node.right:
+                    node.right=TreeNode(val)
+                    return
+                node=node.right
+            else:
+                if not node.left:
+                    node.left=TreeNode(val)
+                    return
+                node=node.left
+
+
+    def search_path(self, target):
+        path=[]
+        node=self.root
+
+        while node:
+            path.append(node.value)
+            if target== node.value:
+                return path
+            elif target&gt; node.value:
+                node=node.right
+            else:
+                node=node.left
+        return path+[-1] # 能进行到这里说明没有找到
 </code></pre>
