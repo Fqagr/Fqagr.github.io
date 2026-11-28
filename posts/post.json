@@ -1,5 +1,12 @@
 [
   {
+    "file": "Missing-Semester.md",
+    "title": "Missing Semester",
+    "date": "2026-11-28",
+    "category": "notes",
+    "summary": "CS中遗失的知识内容，持续更新"
+  },
+  {
     "file": "树.md",
     "title": "树",
     "date": "2026-11-26",

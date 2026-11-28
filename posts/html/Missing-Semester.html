@@ -1,0 +1,838 @@
+<p>[TOC]</p>
+<h2><span class="arithmatex">\(\S\)</span> 0. 科学写作工具——Vim、Mkd和LaTeX</h2>
+<h3>0.1 Vim 编辑器</h3>
+<h4>基础说明</h4>
+<ul>
+<li>编辑器最好不要用word(word的公式修改很差)，可以用emacs、vim、vscode、gedit，但要<strong>稳定在一种</strong>编辑软件</li>
+<li>其中一个重要的编辑器是Vim，它是一种古老的编辑器，区分大小写</li>
+<li>对学习Vim来说，VScode中使用Vim的插件也是一种选项</li>
+</ul>
+<p>在终端环境中打开Vim</p>
+<pre><code class="language-bash"># 打开文件，如果不存在就创造这个文件
+vim test.c
+vi test.c
+# 两种写法效果一致
+</code></pre>
+<h4>三种模式</h4>
+<p>懂得三种模式的切换就入门了一半</p>
+<div class="arithmatex">\[
+ \underbrace{\boxed{\textbf{编辑 i}}}_{写改} \leftrightarrow \underbrace{\boxed{\textbf{正常}}}_{看} \leftrightarrow \underbrace{\boxed{\textbf{命令行:}}}_{存、退、搜索}
+\]</div>
+<ul>
+<li>正常模式 <span class="arithmatex">\(\rightarrow\)</span> 编辑模式</li>
+<li>按 i (小写)，变成insert模式 (这时候新写入的字在<strong>光标的左侧</strong>)</li>
+<li>编辑模式 <span class="arithmatex">\(\rightarrow\)</span> 正常模式</li>
+<li>esc</li>
+<li>正常模式 <span class="arithmatex">\(\rightarrow\)</span> 命令行模式</li>
+<li>:</li>
+</ul>
+<p>在命令模式下:<br />
+- 保存并退出<br />
+  - esc : w q (wq表示written然后 quit)，或者等效用:x<br />
+- 保存并退出<br />
+  - esc : q !</p>
+<p>另外，命令行可以进入可视块，能够批量注释</p>
+<h4>初步</h4>
+<ul>
+<li>光标移动——H、J、K、L</li>
+<li>插前附后——大写I或shift+i，到最前面；大写A或shift+a，到最前面</li>
+<li>新增到一行——o新增下一行，O或shift+o新增上一行</li>
+<li>移动到最边缘——G或shift+g移动到最下面；gg移动到最上面</li>
+<li>删除当前一行——dd</li>
+<li>复制粘贴——yy、p</li>
+<li>重复上一次操作——.</li>
+<li>撤回/撤回撤回——u ctrl+r</li>
+<li>删除字符(否/是进入编辑模式)——dw、cw</li>
+<li>移动到下个单词的首/尾部——w、e</li>
+<li>移动到上个单词的首部——b</li>
+</ul>
+<hr />
+<h3>0.2 Markdown 标记语言</h3>
+<h4>基础说明</h4>
+<ul>
+<li>简化版的html，本质是一种<strong>标记语言</strong>，不决定最后的排版样式，中间还有CSS处理（所以不同软件和界面中得到的markdown导出的pdf文件不同）：和LaTeX不一样</li>
+<li><strong>纯文本</strong>表示格式 + 易读性</li>
+<li>初始语法太简单，所以后续的延申标准显得太简单</li>
+</ul>
+<blockquote>
+<p>例如对于标题“#”，有些解析器会认为后面必须有空格，有些却无所谓。这样就会<strong>产生争议</strong></p>
+</blockquote>
+<p>但总的来讲，好处是远大于坏处的。现在的大语言模型的输出都是markdown语法，这是和LLM沟通的重要桥梁</p>
+<ul>
+<li>学习建议：掌握基础语法后，在用中学即可。在记笔记时、写文档时将遇到的困难给AI解决，尤其AI输出的内容也大概率是markdown语法</li>
+</ul>
+<h4>语法摘录</h4>
+<ol>
+<li><strong>标题</strong>：建议一个文件里面<strong>一个一级标题</strong>，标题有#语法的(一共有6级)，也有老式的-和=的语法的(一共有2级)</li>
+<li><strong>段落</strong>：</li>
+<li>换行：比较有争议，比如vscode中的换一行就是换一行，但其他情况下换行得到的结果就是<strong>一个空格</strong>。保险情况下用两个空格，或者<strong>双换行符号，这是一个好习惯</strong></li>
+<li>空格：每行开头的空格是不会记录的，除非积累到<strong>4个构成缩进</strong>，转化为代码块或者列表的内容。空格的正确使用一般是 \&nbsp; 或者 \&emsp; (1m的宽度)</li>
+</ol>
+<pre><code>\&amp;nbsp; 一段话
+一段话
+m&amp;nbsp;m&amp;emsp;m
+</code></pre>
+<p>&nbsp; 一段话<br />
+一段话<br />
+m&nbsp;m&emsp;m</p>
+<ol start="3">
+<li>引言：使用&gt;</li>
+</ol>
+<pre><code>&gt; 引文内容
+</code></pre>
+<blockquote>
+<p>引文内容</p>
+</blockquote>
+<pre><code>&gt; ##### Quote
+&gt; 引用中也可以加标题
+&gt; 内容
+仍然在
+
+
+&gt; 正常
+&gt;&gt; 嵌套
+&gt;&gt;&gt; 三层
+</code></pre>
+<blockquote>
+<h5>Quote</h5>
+<p>引用中也可以加标题<br />
+内容<br />
+仍然在</p>
+<p>正常</p>
+<blockquote>
+<p>嵌套</p>
+<blockquote>
+<p>三层</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ol start="4">
+<li>列表：</li>
+<li><strong>无序列表</strong>：一般用-，+和*也可以。在列表中也可以使用双换行符。两个列贴在一起和拆开效果是不同的</li>
+<li><strong>有序列表</strong>：用1. ，或者也可以1)。用<strong>第一个数字的标号</strong>，即第一个数字可以不是1，且后面会像excel的自动标序一样递增</li>
+<li>有序列表和无序列表可以嵌套</li>
+</ol>
+<pre><code>- 我是奶龙
++ 我是奶龙
+* 我是奶龙
+</code></pre>
+<ul>
+<li>我是奶龙</li>
+<li>我是奶龙</li>
+<li>我是奶龙</li>
+</ul>
+<pre><code>1. 第一项
+2. 第二项
+3. 第三项
+</code></pre>
+<blockquote>
+<ol start="2">
+<li>第一项</li>
+<li>第二项</li>
+<li>第三项</li>
+</ol>
+</blockquote>
+<ol start="5">
+<li><strong>分割线</strong>：-之间的空格可以任意多，很多三个符号都可以</li>
+</ol>
+<pre><code>---
+</code></pre>
+<blockquote>
+<hr />
+</blockquote>
+<ol start="6">
+<li><strong>代码</strong>：用四个空格缩进可以，但最好用<strong>三个反引号</strong>`，三个~也是可以的。呈现的效果就如同前面的几个例子一样，黑色的背景框</li>
+<li>文本标记：</li>
+<li><em>斜体</em>，<strong>粗体</strong>，<strong><em>粗斜体</em></strong>，<code>行内代码</code>，<del>删除线</del>，<del>删除线</del>，<u>下划线</u></li>
+<li>斜体、粗体、粗斜体可以使用的符号有多种</li>
+<li>插入</li>
+<li><strong>图片</strong> </li>
+<li><strong>链接</strong> </li>
+</ol>
+<pre><code>![图片描述](https://smapse.com/storage/2018/08/converted/660_464_zhejiang-university-zheda-5.jpg)，大小调节的图片就要用html的语法&lt;img scr=&quot;&quot; alt=&quot;图片描述&quot; style=&quot;&quot;&gt;
+</code></pre>
+<blockquote>
+<p><img alt="图片描述" src="https://smapse.com/storage/2018/08/converted/660_464_zhejiang-university-zheda-5.jpg" /></p>
+</blockquote>
+<p>大小调节的图片就要用html的语法<img scr="" alt="图片描述" style=""></p>
+<p>而链接，有<strong>行内式</strong>和<strong>参考式</strong>。</p>
+<pre><code>[文字](www.cc98.org) 
+</code></pre>
+<blockquote>
+<p><a href="www.cc98.org">文字</a> </p>
+</blockquote>
+<pre><code>&lt;www.cc98.org&gt;
+</code></pre>
+<blockquote>
+<p><www.cc98.org></p>
+</blockquote>
+<p>下面这个是参考式的</p>
+<pre><code>我认为[Google][1]上找到的有用信息要比在[百度][2]上的多
+
+[1]: http://google.com
+[2]: http://baidu.com
+</code></pre>
+<blockquote>
+<p>我认为<a href="http://google.com">Google</a>上找到的有用信息要比在<a href="http://baidu.com">百度</a>上的多</p>
+</blockquote>
+<ol start="9">
+<li><strong>转义字符</strong>，遇事不决，反斜杠即可 \</li>
+</ol>
+<pre><code>\* **\***
+\\ \'
+\&gt;
+</code></pre>
+<p>* <strong>*</strong><br />
+\ \'<br />
+&gt;</p>
+<p>其他一些上面提到的例子如下：</p>
+<pre><code>- 贴在一起
+- 贴在一起
+
+
+- 不贴着
+
+- 不贴着
+</code></pre>
+<ul>
+<li>贴在一起</li>
+<li>
+<p>贴在一起</p>
+</li>
+<li>
+<p>不贴着</p>
+</li>
+<li>
+<p>不贴着</p>
+</li>
+</ul>
+<pre><code>1. great
+2. excellent
+
+3) cucumber
+4) whopper
+</code></pre>
+<ol>
+<li>great</li>
+<li>excellent</li>
+</ol>
+<p>3) cucumber<br />
+4) whopper</p>
+<pre><code>
+    d
+
+
+```python
+import potato
+</code></pre>
+<pre><code class="language-markdown">get
+</code></pre>
+<pre><code>
+
+    d
+
+
+```python
+import potato
+</code></pre>
+<pre><code class="language-markdown">get
+</code></pre>
+<h4>扩展语法</h4>
+<h5>表格</h5>
+<pre><code>| 不处理     | 左对齐 | 右对齐 | 居中对齐 |
+| ---------- | :----- | -----: | :------: |
+| 0          | 1      |      2 |    3     |
+| 转义的竖线 | \|     |        |          |
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>不处理</th>
+<th style="text-align: left;">左对齐</th>
+<th style="text-align: right;">右对齐</th>
+<th style="text-align: center;">居中对齐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td>转义的竖线</td>
+<td style="text-align: left;">|</td>
+<td style="text-align: right;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<p>如果觉得表格的代码部分不够整齐好看，可以采用<strong>shift+alt+F</strong>。当然在vscode中也可以设置，在保存后自动对齐代码。不过这种操作也有一些弊端，尤其是表格的中某列内容数量爆炸时，会让代码自动对齐并不美观</p>
+<p><www.tablesgenerator.com>这个网站，不仅可以做LaTeX的表格，还可以做markdown的</p>
+<p>合并单元格需要用html</p>
+<h5>脚注</h5>
+<pre><code>六翮[^1]飘飖[^yao]私自怜，一离京洛[^京洛]十余年
+
+[^1]:鸟的羽翼
+[^京洛]:长安和洛阳
+[^yao]:第二声
+</code></pre>
+<blockquote>
+<p>六翮<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>飘飖<sup id="fnref:yao"><a class="footnote-ref" href="#fn:yao">3</a></sup>私自怜，一离京洛<sup id="fnref:京洛"><a class="footnote-ref" href="#fn:京洛">2</a></sup>十余年</p>
+</blockquote>
+<p>最后的注释是出现在文档末，可以下拉至文档末查看</p>
+<h5>任务列表</h5>
+<ul>
+<li>[ ] 背部飞鸟</li>
+<li>[x] 划船</li>
+<li>[ ] 有氧自行车 </li>
+</ul>
+<p>Github上就是这个原理，如果有权限也可以直接点击按钮来改；在vscode中也可以点击右侧的mkd preview中的空格或勾勾，实现 <span class="arithmatex">\(\boxed{}\)</span> 和 <span class="arithmatex">\(\boxed{\checkmark}\)</span> 之间的转换</p>
+<h5>流程图、时序图、甘特图等</h5>
+<p><strong>本质不是markdown本身语法</strong>，详细查看官方文档即可。<br />
+其中一些使用mermaid.js完成的，比如下面我绘制了一个树结构</p>
+<pre><code class="language-mermaid">graph TD
+A[6] --&gt; B[4]
+A --&gt; C[1]
+B --&gt; D[3]
+D --&gt; E[2]
+D --&gt; F[5]
+</code></pre>
+<h5>内联html</h5>
+<p>比如html中常见的段落处理</p>
+<pre><code>&lt;p&gt;段落&lt;/p&gt;
+
+&lt;div class=&quot;alert alert-success&quot;&gt;
+&lt;b&gt;解决：&lt;/b&gt;
+&lt;ol&gt;
+&lt;li&gt; 上传到GitHub上&lt;/li&gt;
+&lt;li&gt; 图片转换成字符串输入Markdown&lt;/li&gt;
+
+
+&lt;/ol&gt;
+&lt;li&gt;缺陷：图片转成字符串，会非常庞大，一般有上千行&lt;/li&gt;
+&lt;/div&gt;
+
+&lt;p align='left'&gt;左对齐&lt;/p&gt;
+&lt;p align='right'&gt;右对齐&lt;/p&gt;
+</code></pre>
+<p>段落</p>
+
+<div class="alert alert-success">
+<b>解决：</b>
+<ol>
+<li> 上传到GitHub上</li>
+<li> 图片转换成字符串输入Markdown</li>
+
+
+</ol>
+<li>缺陷：图片转成字符串，会非常庞大，一般有上千行</li>
+</div>
+
+<p align='left'>左对齐</p>
+<p align='right'>右对齐</p>
+
+<p>再比如文字处理<br />
+- 比如字体的颜色转换，<font color = "red">红</font>、<font color=red>红</font>、<font color=Red>红</font>、<font color="Red">红</font><br />
+- 比如不同的字体：<font face="黑体">黑体字</font>、<font face="微软雅黑">微软雅黑</font><br />
+- 比如文字背景色：<table><tr><td bgcolor=green>借用了HTML的语法</td></tr></table><br />
+- 比如字体大小：<font face='微软雅黑' color='red' size=5>索拉卡寄过来看的</font><br />
+- 比如左右对齐和居中：<center>居中</center></p>
+<pre><code>&lt;font color = &quot;red&quot;&gt;红&lt;/font&gt;、&lt;font color=red&gt;红&lt;/font&gt;、&lt;font color=Red&gt;红&lt;/font&gt;、&lt;font color=&quot;Red&quot;&gt;红&lt;/font&gt;
+
+&lt;font face=&quot;黑体&quot;&gt;黑体字&lt;/font&gt;、&lt;font face=&quot;微软雅黑&quot;&gt;微软雅黑&lt;/font&gt;
+
+&lt;table&gt;&lt;tr&gt;&lt;td bgcolor=green&gt;借用了HTML的语法&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;font face='微软雅黑' color='red' size=5&gt;索拉卡寄过来看的&lt;/font&gt;
+
+
+</code></pre>
+<ul>
+<li>比如不借用LaTeX实现的下标： H<sub>2</sub>O</li>
+<li>比如超链接：<a herf="zjuers.com" target="_blank">浙大轻首页</a></li>
+</ul>
+<pre><code>H&lt;sub&gt;2&lt;/sub&gt;O
+
+&lt;a herf=&quot;zjuers.com&quot; target=&quot;_blank&quot;&gt;浙大轻首页&lt;/a&gt;
+</code></pre>
+<p>从这里也可以看出markdown强大的兼容性</p>
+<h4>延申工具</h4>
+<ol>
+<li><strong>文档编写</strong></li>
+</ol>
+<ul>
+<li>vscode+MPE插件</li>
+</ul>
+<p>在转化为pdf文件保存时，最好是<strong>右键+用浏览器打开</strong>（Open in Browser），基本保证右侧浏览和输出的一致，包括==高亮==（当然在我的浏览器中是可以看到的，但是你用一些pdf浏览器打开很可能看不到我这里的高亮效果）。其他方式格式都有问题</p>
+<ul>
+<li>专注模式</li>
+</ul>
+<p>ctrl+K+Z(K和Z的顺序不能错)，进入<strong>禅模式</strong>（Zen），需要按两下Esc才能退出<br />
+类似的也可以使用F11，再按F11退出</p>
+<ol start="2">
+<li>
+<p><strong>网站搭建</strong></p>
+<ol>
+<li>笔记类：mkdocs，<www.mkdocs.org>，唯一推荐的模板是mkdocs-material</li>
+<li>博客类：hexo不是很好用</li>
+<li>幻灯片类：reveal-md，用html做幻灯片。做动画和插入图片比较复杂。TonyCrane/slide-template。如果要导出pdf，只需要在网址栏里面添加?print-pdf</li>
+<li>书籍类</li>
+</ol>
+</li>
+<li>
+<p>jupyter中的markdown<br />
+每个块有<strong>两种操作模式</strong>：蓝色的命令模式和绿色的编辑模式。<br />
+- 在绿色模式时按esc可以退回蓝色模式；在蓝色模式时可以按enter进入绿色模式<br />
+- 蓝色命令模式下按m，可以把code块转化为markdown</p>
+</li>
+</ol>
+<p>这对数据科学相关的课程和工作就很有帮助了，比如我在写毕业论文的时候跑代码用这个就比较方便</p>
+<blockquote>
+<p>这里的感觉就很像vim了</p>
+</blockquote>
+<h4>数学公式</h4>
+<p>这个是markdown受欢迎的另一个理由，可以兼容 <span class="arithmatex">\(LaTeX\)</span> 中的很多语法，尤其是数学公式。这个部分就放到第四小节介绍了</p>
+<p>在结尾，还有脚注代码自动生成的分隔线与脚注 <span class="arithmatex">\(\downarrow\)</span></p>
+<h3>0.3 LaTeX 排版系统</h3>
+<h4>基础说明</h4>
+<ul>
+<li>简介：基于TeX(technology)的，最流行的是 <span class="arithmatex">\(2\epsilon\)</span>。是<strong>纯文本文件</strong>，后缀为tex</li>
+<li>比较：Word是字处理软件，LaTeX是排版软件，让我们不要在样式上关注太多</li>
+<li><strong>文件构成</strong>：LaTeX工程包括 <strong>tex的主文件</strong>、<strong>bib参考文献信息</strong>、<strong>cls用于控制最终版面样式</strong>、<strong>bst控制最终参考文献格式</strong>。还有一些其他的临时文件（当然也有别的一些图片表格文件作为附件插入文档）</li>
+<li>建议：最好在用中学</li>
+</ul>
+<h4>本地部署和OverLeaf</h4>
+<p>本地部署比较方便，编译快，不过要占不少硬盘空间</p>
+<p>不想安装就可以直接用<strong>overleaf</strong><br />
+- www.overleaf.com，基本已经全部布置好了<br />
+  - 商业网站，但是很好用，工作环境不错，<strong>多人协作</strong><br />
+  - 模板：<strong>模板</strong>库丰富，可以下载在本机使用<br />
+  - 缺点：<strong>编译速度慢</strong>，大图片经常编译失败</p>
+<blockquote>
+<p>中文的latex模板基本都不太好，很多都要收费。直接在overleaf上搜索Chinese就可以了</p>
+</blockquote>
+<ul>
+<li>www.ctex.org 是中文化的平替</li>
+<li>latex-beamer.com/faq/ 这个是用latex做<strong>幻灯片</strong></li>
+</ul>
+<p>在终端运行</p>
+<pre><code class="language-bash"># 利用下载的模板生成文章
+
+cd mathsoft/example/SIAM
+ls
+
+make
+# 这是写的一个脚本
+
+okular ex_article.pdf
+
+</code></pre>
+<h4>基础语法</h4>
+<p>最简单直白的语法特点是，喜欢<strong>用环境将需要处理的内容包裹起来</strong></p>
+<ol>
+<li><strong>布局</strong>：文件类型+导言区+正文</li>
+<li>开头声明文件类型</li>
+<li>导言区用于添加宏包。\usepackage{}，有几个很常用的宏包，amsmath、minted(代码高亮) </li>
+<li><strong>命令</strong>：用  开头，<strong>必需参数</strong>是{}，<strong>可选参数</strong>是[]</li>
+<li><strong>注释</strong>：%，用\%表示正常的百分号</li>
+<li>☆<strong>环境</strong>：\begin 开始， \end 结束</li>
+<li><strong>章节</strong>：有好几档，section有自动编号</li>
+<li>常见使用   </li>
+<li><strong>表格</strong>：排版可以使用 <www.latex-tables.com> </li>
+<li><strong>字体</strong>：\textbf、\textit、\emph、\underline等</li>
+<li><strong>特殊字符</strong><ol>
+<li>转义字符：_ % $ {} </li>
+<li>~{}  \^{}</li>
+</ol>
+</li>
+</ol>
+<p>其中，<strong>调整字号</strong>可以有： </p>
+<blockquote>
+<p>{\tiny 我}     % 最小字号<br />
+{\scriptsize 我}<br />
+{\footnotesize 我}<br />
+{\small 我}    % 常用的小号字体<br />
+{\normalsize 我} % 正常字号（默认）<br />
+{\large 我}<br />
+{\Large 我}<br />
+{\LARGE 我}<br />
+{\huge 我}<br />
+{\Huge 我}     % 最大字号</p>
+</blockquote>
+<p>另外，一些文字的表现可以更加<strong>美观</strong>，比如：</p>
+<blockquote>
+<p>dif{}f{}icult <br />
+使用 {} 可以让字母重叠分开</p>
+</blockquote>
+<h4>自动编号和交叉引用</h4>
+<p>除了环境以外另一个LaTeX的显著特点。==愚蠢的人类做不好编号这件事==，所以发明这一软件的人将编号全部交给LaTeX</p>
+<ol>
+<li><strong>章节</strong>：\section{Introduction}，不需要写成\section{1 Introduction}，实际上编号是自动补齐的</li>
+<li><strong>公式</strong>：类似的“由公式 2 可知”，也是“愚蠢”的写法。采用<strong>label</strong>可以自动编号。label作为标签，标签中填写的内容可以表示公式的命名。</li>
+</ol>
+<p>比如下面的</p>
+<pre><code>  \begin{equation} \label{eq:square}
+      a^2 + b^2 = c^2
+  \end{equation}
+</code></pre>
+<p>在正文中如下写就可以起到自动编号的效果了 </p>
+<blockquote>
+<p>For example, see Equation \ref{eq:square} and Equation <strong eq:fractal>\ref</strong></p>
+</blockquote>
+<p>不建议用下面的这种命名法，因为这样就无法用label对公式进行命名区分了</p>
+<pre><code>\begin{equation} \label{eq:1}
+    a^2 + b^2 = c^2
+\end{equation}
+</code></pre>
+<ol start="3">
+<li><strong>图表</strong>：同理的，图片、表格等都可以取名字、自动编号，写法和公式类似</li>
+<li><strong>文献</strong>：使用bib文件进行管理，其中的每个文献在bib文件中的所有信息写入，<strong>类似结构体</strong>。在正文中使用<strong>\cite</strong>（当然也有别的引用方法，比如\upcite{}，引用写在上标）进行引用，可以使用<strong>谷歌学术</strong>提供的bib文本，也可以用“作者名——年份——标题首单词”来命名<ul>
+<li>不同的期刊有不同的要求，比如按照作者名字的字母序排列，这就只需要修改一些参数。</li>
+<li>每次看一篇文献，最好也是在谷歌学术上检索得到LaTeX bib格式的结构体保存到个人的bib数据库中（比如使用zotero，就可以复制到备注中）；叶可以存在云上，如GitHub</li>
+</ul>
+</li>
+</ol>
+<p>另外，交叉引用需要我们多次的编译，如果编译次数不够，就会有很多"?"。当然在overleaf中没有这样的问题</p>
+<h4>矢量图形</h4>
+<p>矢量图形也是overleaf中不可不品的一环。图形一般分为两类：<br />
+1. 一类是<strong>点阵</strong>，本质上就是矩阵，但是会很大，压缩后失真，并且放大或缩小过度后，图形就会扭曲<br />
+2. 一类是<strong>矢量</strong>图形，形成的图形依靠的是矢量函数，可以无极缩放，大小很小，但会很消耗算力资源。论文中最好进行矢量化</p>
+<blockquote>
+<p>一种很常见的矢量图类型是svg，常常可以用浏览器进行查看‘当然更加接近生活的一种矢量图是部分pdf</p>
+</blockquote>
+<p>两者并不是非黑即白的，都有各自的<strong>使用场景</strong><br />
+- <strong>抽象概念用矢量图</strong>，比如流程图(运营管理、算法)、各种数据分析图应该用矢量图<br />
+- <strong>真实世界用点阵图</strong><br />
+- 矢量图绘制<br />
+  - LaTeX中有可以绘制矢量图的工具。最好是要用到时再学，可以参考<texample.net/tikz/examples>，提供了很多例子，还可以在线编译<br />
+  - IPad中有用笔绘制转化为LaTeX矢量图的软件</p>
+<p>绘制矢量图中也有使用到环境。比如我采用了forest包，绘制了一个复杂的树结构，那么也是用环境</p>
+<pre><code>  \begin{forest}
+[根节点
+  [子节点1 [孙节点1] [孙节点2] ]
+  [子节点2 ]
+]
+  \end{forest}
+</code></pre>
+<hr />
+<h3>0.4 LaTeX 数学公式</h3>
+<h4>公式环境</h4>
+<ol>
+<li>
+<p><strong>行间公式</strong> <strong>不要使用"两刀"</strong>（ $$...$$ ） ，这种原始语法易导致问题。在mkd中一般没问题，但在LaTeX中会有很多问题。应该用 \[ \]</p>
+</li>
+<li>
+<p><strong>行内公式</strong> 一个美刀是可以的，当然 \( \) 也可以</p>
+</li>
+</ol>
+<blockquote>
+<p>大模型的输出似乎都喜欢挑战“美元霸权”，偏好框框，而不是$<br />
+也有的喜欢用 <code>d</code> ，在本次修改的2025年下半年，DS和Gemini都挺喜欢输出这种类型的</p>
+</blockquote>
+<ol start="3">
+<li><strong>多行公式</strong> 有多种方法</li>
+</ol>
+<p><strong>align</strong> - 每行都有编号</p>
+<pre><code>\begin{align}
+  x &amp;= y + z \\
+  a &amp;= b + c
+\end{align}
+</code></pre>
+<p><strong>aligned</strong> - 整个块一个编号</p>
+<pre><code>\begin{equation}
+  \begin{aligned}
+    x &amp;= y + z \\
+    a &amp;= b + c
+  \end{aligned}
+\end{equation}
+</code></pre>
+<p><strong>align*</strong> - 都没有编号</p>
+<pre><code>\begin{align*}
+  x &amp;= y + z \\
+  a &amp;= b + c
+\end{align*}
+</code></pre>
+<ul>
+<li>为了美观，可以使用 <strong>&amp;</strong> 来对齐</li>
+<li>在align中每行都编号，但也可以做一些小操作</li>
+</ul>
+<p><strong>不编号某行</strong></p>
+<pre><code>\[
+  \begin{align} 
+    a &amp;= b + c \\
+    d &amp;= e - f \nonumber  % 不编号某行
+  \end{align}
+\]
+
+</code></pre>
+<div class="arithmatex">\[
+  \begin{align} 
+    a &amp;= b + c \\
+    d &amp;= e - f \nonumber  % 不编号某行
+  \end{align}
+\]</div>
+<p><strong>单个公式多行</strong></p>
+<pre><code>\[
+  \begin{equation}
+    \begin{split}
+      a &amp;= b + c \\
+      &amp;\quad + d + e  % \quad 添加缩进
+    \end{split}
+  \end{equation}
+\]
+
+</code></pre>
+<div class="arithmatex">\[
+  \begin{equation}
+    \begin{split}
+      a &amp;= b + c \\
+      &amp;\quad + d + e  % \quad 添加缩进
+    \end{split}
+  \end{equation}
+\]</div>
+<p>还有<strong>决策变量或分段函数</strong>的公式</p>
+<pre><code>\[
+   \delta_{k} = 
+   \begin{cases} 
+   1, &amp; \text{当}k = 1 \\
+   0, &amp; \text{otherwise}
+   \end{cases}
+\]
+</code></pre>
+<div class="arithmatex">\[
+   \delta_{k} = 
+   \begin{cases} 
+   1, &amp; \text{当}k = 1 \\
+   0, &amp; \text{otherwise}
+   \end{cases}
+\]</div>
+<p>下面是多行<strong>数学规划</strong>的公式</p>
+<pre><code>\[
+    \min cx \\
+    s.t.  
+    \left\{\begin{aligned}
+      Ax = b   \\
+      x \ge 0
+    \end{aligned}\right.
+\]
+</code></pre>
+<div class="arithmatex">\[\min cx \\
+s.t.  \left\{\begin{aligned}
+Ax = b   \\
+x \ge 0
+\end{aligned}
+\right.\]</div>
+<p>但这种写法是不好的，在<strong>overleaf</strong>中上面这个可能不灵，可以使用写成下面这样：</p>
+<pre><code>\begin{align}
+  \min \quad &amp; \sum_{j} \left[ K_i c^{(f)}_{ij} x_{ij} + c^{(v)}_{ij} S_{ij}(1 - x_{ij}) \right] \label{eq:objective} \\
+  \text{s.t.} \quad &amp; x_{i,j} \in \{0,1\} \label{eq:constraint}
+\end{align}
+</code></pre>
+<h4>公式细节与备忘录</h4>
+<p>首先，在公式中，很多LaTeX中直接使用的<strong>环境语法</strong>都是可行的：<br />
+- 加粗 <span class="arithmatex">\( \textbf{你好} \)</span> 斜体 <span class="arithmatex">\( \textit{你好} \)</span><br />
+- 包括 \quad \qquad \, 这些在LaTeX中，公式和非公式环境都可以用，可以交错使用</p>
+<p>然后是一些表达的技巧或备忘录：</p>
+<ul>
+<li>用 <strong>\limits</strong> <strong>强制显示行内公式上下标</strong> </li>
+</ul>
+<blockquote>
+<p>$\sum \limits_{i=1}^n$<br />
+<span class="arithmatex">\(\sum \limits_{i=1}^n\)</span></p>
+</blockquote>
+<ul>
+<li>
+<p><strong>多行下标</strong> \substack</p>
+<blockquote>
+<p>$\sum_{\substack{i=1 \ i \neq j}}^n a_i$<br />
+<span class="arithmatex">\(\sum_{\substack{i=1 \\ i \neq j}}^n a_i\)</span></p>
+</blockquote>
+</li>
+<li>
+<p>除了变量以外其他都建议用<strong>正体</strong>，特别是<em>微分算子</em>   </p>
+</li>
+</ul>
+<blockquote>
+<p>$ \int x^2 \, \mathrm{d}  x $ <br />
+<span class="arithmatex">\( \int x^2 \, \mathrm{d}  x \)</span> </p>
+</blockquote>
+<ul>
+<li><strong>分式</strong>的大小用两种形式控制  </li>
+</ul>
+<blockquote>
+<p>$ \dfrac{1}{n}  \frac{1}{n}$ <br />
+<span class="arithmatex">\(\dfrac{1}{n}  \frac{1}{n}\)</span> </p>
+</blockquote>
+<ul>
+<li><strong>小于等于</strong>的形式有两种 </li>
+</ul>
+<blockquote>
+<p>$\leq \leqslant $ <br />
+ $\leq \leqslant $ </p>
+</blockquote>
+<ul>
+<li>
+<p><strong>尖括号</strong>的形式有两种</p>
+<blockquote>
+<p>$ \langle x \rangle \&lt;x&gt; $<br />
+$ \langle x \rangle <x> $</p>
+</blockquote>
+</li>
+<li>
+<p><strong>上划线</strong>的形式有两种</p>
+</li>
+</ul>
+<blockquote>
+<p>$\bar{adfadf}$<br />
+$\overline{adfadf}$ </p>
+<p><span class="arithmatex">\(\bar{adfadf}\)</span> <br />
+<span class="arithmatex">\(\overline{adfadf}\)</span> 这种更加的普适</p>
+</blockquote>
+<ul>
+<li><strong>矩阵和行列式</strong>有多种形式： </li>
+</ul>
+<blockquote>
+<p>$\begin{bmatrix} a &amp; b \ c &amp; d \end{bmatrix}$<br />
+<span class="arithmatex">\(\begin{bmatrix} a &amp; b \\ c &amp; d \end{bmatrix}\)</span></p>
+<p>$\begin{pmatrix} a &amp; b \ c &amp; d \end{pmatrix}$<br />
+<span class="arithmatex">\(\begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix}\)</span></p>
+<p>$\begin{vmatrix} a &amp; b \ c &amp; d \end{vmatrix}$<br />
+<span class="arithmatex">\(\begin{vmatrix} a &amp; b \\ c &amp; d \end{vmatrix}\)</span></p>
+</blockquote>
+<ul>
+<li><strong>向量</strong>的公式是：</li>
+</ul>
+<blockquote>
+<p>$\vec{a} = \vec a = \begin{bmatrix} a \ b \ c \end{bmatrix}$<br />
+<span class="arithmatex">\(\vec{a} = \vec a = \begin{bmatrix} a \\ b \\ c \end{bmatrix}\)</span></p>
+</blockquote>
+<ul>
+<li><strong>范数</strong>看似可以由两种写法，但前者更好 </li>
+</ul>
+<blockquote>
+<p>$| \mathbb{x} |$、$||x||$ <br />
+<span class="arithmatex">\(\| \mathbb{x} \|\)</span>、<span class="arithmatex">\(||x||\)</span> ，前者显然更好</p>
+</blockquote>
+<ul>
+<li>
+<p><strong>取整</strong>符号 </p>
+<blockquote>
+<p>$\lfloor \frac{xy}{x+y} \rfloor \left\lfloor \frac{xy}{x+y} \right\rfloor \big\lfloor \frac{xy}{x+y} \big\rfloor$<br />
+$\lfloor \frac{xy}{x+y} \rfloor $ $ \left\lfloor \frac{xy}{x+y} \right\rfloor $ <span class="arithmatex">\(\big\lfloor \frac{xy}{x+y} \big\rfloor\)</span></p>
+</blockquote>
+</li>
+<li>
+<p><strong>小空格</strong> </p>
+<blockquote>
+<p>$a\,b$， $a\;b$， $a \: b$， $a!b$<br />
+<span class="arithmatex">\(a\,b\)</span>， <span class="arithmatex">\(a\;b\)</span>， <span class="arithmatex">\(a \: b\)</span>， <span class="arithmatex">\(a\!b\)</span></p>
+</blockquote>
+</li>
+<li>
+<p>善用多种<strong>数学字体</strong></p>
+</li>
+</ul>
+<blockquote>
+<p>$\mathrm{T} $ 、 $\mathcal{A}$、$\mathbb{R}$、$\mathscr{M}$、$\mathfrak{X}$<br />
+<span class="arithmatex">\(\mathrm{T} \)</span> 、 <span class="arithmatex">\(\mathcal{A}\)</span>、<span class="arithmatex">\(\mathbb{R}\)</span>、<span class="arithmatex">\(\mathscr{M}\)</span>、<span class="arithmatex">\(\mathfrak{X}\)</span></p>
+</blockquote>
+<ul>
+<li>定义</li>
+</ul>
+<blockquote>
+<p>$\triangleq$ <br />
+<span class="arithmatex">\(\triangleq\)</span></p>
+</blockquote>
+<ul>
+<li><strong>交并</strong>的两种形式，一般是 <span class="arithmatex">\(\cap、\cup\)</span> ，当甚至有时更经常用的是 <span class="arithmatex">\(\bigcap、\bigcup\)</span> ，因为用它们写下标上面很方便：</li>
+</ul>
+<p>[ \bigcap_{i=1}^n A_i ]<br />
+$ \bigcap\limits_{i=1}^n A_i $</p>
+<blockquote>
+<p>\[ \bigcap_{i=1}^n A_i \]<br />
+$ \bigcap\limits_{i=1}^n A_i $</p>
+</blockquote>
+<ul>
+<li>集合的子集 <span class="arithmatex">\(\subset\)</span> 、 <span class="arithmatex">\(\subseteq\)</span> 、 <span class="arithmatex">\(\subsetneq\)</span> ， <span class="arithmatex">\(\supset\)</span> 、<span class="arithmatex">\(\supseteq\)</span> 、 <span class="arithmatex">\(\not\subseteq\)</span>。表示集合$\set{d} $</li>
+</ul>
+<blockquote>
+<p>$\subset$ 、 $\subseteq$ 、 $\subsetneq$ ， $\supset$ 、$\supseteq$ 、 $\not\subseteq$。$\set{d} $</p>
+</blockquote>
+<ul>
+<li>集合的限制</li>
+</ul>
+<blockquote>
+<p>$ \mathcal{R} \mid_Y$<br />
+$ \mathcal{R} \mid_Y$</p>
+</blockquote>
+<ul>
+<li>其他一些收集</li>
+</ul>
+<blockquote>
+<p>$\c A $<br />
+$\c A $</p>
+<p>$\cong$<br />
+<span class="arithmatex">\(\cong\)</span></p>
+</blockquote>
+<h4>数学公式的妙用</h4>
+<ul>
+<li>数学公式来绘制一些简易的图形，包括<strong>下划强调</strong>、<strong>框框</strong>：</li>
+</ul>
+<div class="arithmatex">\[
+ \underbrace{\textbf{状态丰富}}_{\text{高温阶段}} \rightarrow \underbrace{\boxed{\textbf{缓慢降温}}}_{} \rightarrow \underbrace{\text{状态稳定}}_{\text{低温阶段}}
+\]</div>
+<blockquote>
+<p>\[<br />
+ \underbrace{\textbf{状态丰富}}<em _text_低温阶段>{\text{高温阶段}} \rightarrow \boxed{\textbf{缓慢降温}} \rightarrow \underbrace{\text{状态稳定}}</em>}<br />
+\]</p>
+</blockquote>
+<p>$ \checkmark $</p>
+<ul>
+<li>可以用公式绘制<strong>表格</strong><br />
+[<br />
+\begin{array}{c|cc|c}<br />
+(a_{ij}, x_{ij}) &amp; (a_{ij} - x_{ij})<em i_j>+ &amp; a</em> \}(1 - x_{ij}) &amp; \text{那我问你<br />
+\hline<br />
+(0,0) &amp; 0 &amp; 0 \times 1 = 0 &amp; \checkmark \<br />
+(0,1) &amp; 0 &amp; 0 \times 0 = 0 &amp; \checkmark \<br />
+(1,0) &amp; 1 &amp; 1 \times 1 = 1 &amp; \checkmark \<br />
+(1,1) &amp; 0 &amp; 1 \times 0 = 0 &amp; \checkmark \<br />
+\end{array}<br />
+]</li>
+</ul>
+<blockquote>
+<p>\[<br />
+\begin{array}{c|cc|c}<br />
+(a_{ij}, x_{ij}) &amp; (a_{ij} - x_{ij})<em i_j>+ &amp; a</em> \}(1 - x_{ij}) &amp; \text{那我问你<br />
+\hline<br />
+(0,0) &amp; 0 &amp; 0 \times 1 = 0 &amp; \checkmark \<br />
+(0,1) &amp; 0 &amp; 0 \times 0 = 0 &amp; \checkmark \<br />
+(1,0) &amp; 1 &amp; 1 \times 1 = 1 &amp; \checkmark \<br />
+(1,1) &amp; 0 &amp; 1 \times 0 = 0 &amp; \checkmark \<br />
+\end{array}<br />
+\]</p>
+</blockquote>
+<div class="arithmatex">\[
+\begin{array}{c|c|c|c}
+\text{输入} &amp; \text{输出} &amp; \text{损失} &amp; \text{梯度} \\
+\hline
+x=1 &amp; y=2 &amp; L=3 &amp; \nabla L = 4 \\
+x=2 &amp; y=3 &amp; L=1 &amp; \nabla L = -1 \\
+\end{array}
+\]</div>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>鸟的羽翼&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:京洛">
+<p>长安和洛阳&#160;<a class="footnote-backref" href="#fnref:京洛" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:yao">
+<p>第二声&#160;<a class="footnote-backref" href="#fnref:yao" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
